@@ -145,6 +145,19 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
 .ed{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--accent);background:var(--soft);flex:none}
 .ed.on{background:var(--accent-fill);color:var(--on-accent)}
 .ed svg{width:20px;height:20px}
+.cmp{gap:10px}
+.cmp .back{min-height:28px;padding:0}
+.cmp .modes{gap:8px}
+.cmp .mode{min-height:60px;padding:6px 4px;font-size:13px;border-width:1.5px;border-radius:14px}
+.cmp .mode svg{width:22px;height:22px;margin-bottom:2px}
+.cmp .mode .gu{font-size:11px}
+.cmp .card{padding:12px;gap:10px}
+.cmp .fld label{font-size:13px}
+.cmp .fld label .gu{font-weight:500;color:var(--muted);margin-left:4px;font-size:11px}
+.cmp input[type=text],.cmp input[type=tel],.cmp input[type=email]{min-height:42px}
+.cmp textarea{min-height:56px;padding:8px 14px}
+.cmp .btn{flex-direction:row;gap:8px;min-height:44px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .nav{flex:none;background:var(--surface);border-top:1px solid var(--line)}
 .nav-in{display:grid;grid-template-columns:repeat(5,1fr);height:76px}
 .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:var(--muted);min-width:0;line-height:1.2}
@@ -221,21 +234,7 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
             <div class="sub">વસ્તુનું નામ (અંગ્રેજી)</div>
             <input type="text" id="item-en" autocapitalize="words" enterkeyhint="next">
           </div>
-          <div class="fld">
-            <label for="item-gu">Item name (Gujarati)</label>
-            <div class="sub">વસ્તુનું નામ (ગુજરાતી)</div>
-            <div class="guRow">
-              <input type="text" id="item-gu" lang="gu">
-              <button type="button" class="kbBtn micBtn" data-mic="gu" aria-pressed="false" hidden aria-label="Voice typing in Gujarati / ગુજરાતીમાં બોલીને લખો"><svg class="i" viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11h-2z"/></svg></button>
-              <button type="button" class="kbBtn" id="kbBtn" aria-pressed="false" aria-label="Gujarati keyboard / ગુજરાતી કીબોર્ડ"><svg class="i" viewBox="0 0 24 24"><path d="M20 5H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8v-2h8v2zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg></button>
-            </div>
-          </div>
-          <div class="autoNote" id="autoNote" hidden>Filled in from the English name. Tap the box to edit. · અંગ્રેજી નામ પરથી આપોઆપ ભરાયું છે. ફેરફાર કરવા બોક્સ પર ટેપ કરો.</div>
-          <div class="micNote" id="micNote" hidden></div>
-          <div class="sugs" id="sugs" hidden></div>
-          <div class="kb" id="kb" hidden></div>
-          <div class="hint">Type the English name and the Gujarati translation fills in by itself. Edit it, or pick a phonetic spelling below. Use the keyboard button for matra and bindi. / અંગ્રેજી નામ લખો, ગુજરાતી અનુવાદ આપોઆપ ભરાશે. ફેરફાર કરો અથવા નીચેથી ઉચ્ચાર મુજબ જોડણી પસંદ કરો. માત્રા અને બિંદુ માટે કીબોર્ડ બટન વાપરો.</div>
-          <div class="fld">
+                    <div class="fld">
             <label for="item-unit">Unit</label>
             <div class="sub">એકમ</div>
             <select id="item-unit"></select>
@@ -261,7 +260,7 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
       </div>
     </section>
 
-    <section class="view" id="v-customer" hidden>
+    <section class="view cmp" id="v-customer" hidden>
       <button class="back" id="custBack"><svg class="i" viewBox="0 0 24 24"><path d="M15.4 6 16.8 7.4 12.2 12l4.6 4.6-1.4 1.4-6-6z"/></svg>Admin · એડમિન</button>
       <div class="modes" id="cuModes">
         <button class="mode" data-cmode="add" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>Add Customer<span class="gu">ગ્રાહક ઉમેરો</span></button>
@@ -269,23 +268,20 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
         <button class="mode" data-cmode="delete" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>Delete Customer<span class="gu">ગ્રાહક કાઢો</span></button>
       </div>
       <div class="card">
-        <h3 id="cuTitle">Add Customer / ગ્રાહક ઉમેરો</h3>
         <div class="prompt" id="cuPrompt" hidden></div>
-        <form id="custForm" class="card" style="border:0;padding:0;border-radius:0;background:none" autocomplete="off">
-          <div class="fld"><label for="cu-en">Customer Name (English)</label><div class="sub">ગ્રાહકનું નામ (અંગ્રેજી)</div>
+        <form id="custForm" autocomplete="off" style="display:flex;flex-direction:column;gap:10px">
+          <div class="fld"><label for="cu-en">Customer Name<span class="gu">ગ્રાહકનું નામ</span></label>
             <input type="text" id="cu-en" autocapitalize="words" enterkeyhint="next"></div>
-          <div class="fld"><label for="cu-gu">Customer Name (Gujarati)</label><div class="sub">ગ્રાહકનું નામ (ગુજરાતી)</div>
-            <div class="guRow"><input type="text" id="cu-gu" lang="gu"><button type="button" class="kbBtn" id="cuKbBtn" aria-pressed="false" aria-label="Gujarati keyboard / ગુજરાતી કીબોર્ડ"><svg class="i" viewBox="0 0 24 24"><path d="M20 5H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8v-2h8v2zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg></button></div></div>
-          <div class="sugs" id="cu-sugs" hidden></div>
-          <div class="kb" id="cu-kb" hidden></div>
-          <div class="fld"><label for="cu-mob">Mobile No.</label><div class="sub">મોબાઇલ નં.</div>
-            <input type="tel" id="cu-mob" inputmode="numeric" maxlength="14"></div>
-          <div class="fld"><label for="cu-email">E-Mail Address</label><div class="sub">ઈ-મેઈલ સરનામું</div>
+          <div class="row2">
+            <div class="fld"><label for="cu-mob">Mobile No.<span class="gu">મોબાઇલ નં.</span></label>
+              <input type="tel" id="cu-mob" inputmode="numeric" maxlength="14"></div>
+            <div class="fld"><label for="cu-city">City<span class="gu">શહેર</span></label>
+              <input type="text" id="cu-city" autocapitalize="words"></div>
+          </div>
+          <div class="fld"><label for="cu-email">E-Mail Address<span class="gu">ઈ-મેઈલ</span></label>
             <input type="email" id="cu-email" inputmode="email" autocapitalize="off"></div>
-          <div class="fld"><label for="cu-addr">Address</label><div class="sub">સરનામું</div>
-            <textarea id="cu-addr" rows="3"></textarea></div>
-          <div class="fld"><label for="cu-city">City</label><div class="sub">શહેર</div>
-            <input type="text" id="cu-city" autocapitalize="words"></div>
+          <div class="fld"><label for="cu-addr">Address<span class="gu">સરનામું</span></label>
+            <textarea id="cu-addr" rows="2"></textarea></div>
           <div class="actions">
             <button type="submit" class="btn pri">Save<span class="gu">સાચવો</span></button>
             <button type="button" class="btn sec" id="cuCancel">Cancel<span class="gu">રદ કરો</span></button>
@@ -293,10 +289,10 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
         </form>
         <div class="confirm" id="cuConfirm" hidden><b id="cuConfirmTxt"></b><div class="actions"><button type="button" class="btn dng" id="cuYes">Delete<span class="gu">કાઢો</span></button><button type="button" class="btn sec" id="cuNo">Cancel<span class="gu">રદ કરો</span></button></div></div>
       </div>
-      <div class="tbl"><div class="th"><div>Customer<small>ગ્રાહક</small></div><div>Mobile<small>મોબાઇલ</small></div></div><div id="cuRows"></div></div>
+      <div class="tbl" id="cuTbl" hidden><div class="th"><div>Customer<small>ગ્રાહક</small></div><div>Mobile<small>મોબાઇલ</small></div></div><div id="cuRows"></div></div>
     </section>
 
-    <section class="view" id="v-supplier" hidden>
+    <section class="view cmp" id="v-supplier" hidden>
       <button class="back" id="suppBack"><svg class="i" viewBox="0 0 24 24"><path d="M15.4 6 16.8 7.4 12.2 12l4.6 4.6-1.4 1.4-6-6z"/></svg>Admin · એડમિન</button>
       <div class="modes" id="suModes">
         <button class="mode" data-smode="add" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>Add Supplier<span class="gu">સપ્લાયર ઉમેરો</span></button>
@@ -304,23 +300,20 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
         <button class="mode" data-smode="delete" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>Delete Supplier<span class="gu">સપ્લાયર કાઢો</span></button>
       </div>
       <div class="card">
-        <h3 id="suTitle">Add Supplier / સપ્લાયર ઉમેરો</h3>
         <div class="prompt" id="suPrompt" hidden></div>
-        <form id="suppForm" class="card" style="border:0;padding:0;border-radius:0;background:none" autocomplete="off">
-          <div class="fld"><label for="su-en">Supplier Name (English)</label><div class="sub">સપ્લાયરનું નામ (અંગ્રેજી)</div>
+        <form id="suppForm" autocomplete="off" style="display:flex;flex-direction:column;gap:10px">
+          <div class="fld"><label for="su-en">Supplier Name<span class="gu">સપ્લાયરનું નામ</span></label>
             <input type="text" id="su-en" autocapitalize="words" enterkeyhint="next"></div>
-          <div class="fld"><label for="su-gu">Supplier Name (Gujarati)</label><div class="sub">સપ્લાયરનું નામ (ગુજરાતી)</div>
-            <div class="guRow"><input type="text" id="su-gu" lang="gu"><button type="button" class="kbBtn" id="suKbBtn" aria-pressed="false" aria-label="Gujarati keyboard / ગુજરાતી કીબોર્ડ"><svg class="i" viewBox="0 0 24 24"><path d="M20 5H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8v-2h8v2zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg></button></div></div>
-          <div class="sugs" id="su-sugs" hidden></div>
-          <div class="kb" id="su-kb" hidden></div>
-          <div class="fld"><label for="su-mob">Mobile No.</label><div class="sub">મોબાઇલ નં.</div>
-            <input type="tel" id="su-mob" inputmode="numeric" maxlength="14"></div>
-          <div class="fld"><label for="su-email">E-Mail Address</label><div class="sub">ઈ-મેઈલ સરનામું</div>
+          <div class="row2">
+            <div class="fld"><label for="su-mob">Mobile No.<span class="gu">મોબાઇલ નં.</span></label>
+              <input type="tel" id="su-mob" inputmode="numeric" maxlength="14"></div>
+            <div class="fld"><label for="su-city">City<span class="gu">શહેર</span></label>
+              <input type="text" id="su-city" autocapitalize="words"></div>
+          </div>
+          <div class="fld"><label for="su-email">E-Mail Address<span class="gu">ઈ-મેઈલ</span></label>
             <input type="email" id="su-email" inputmode="email" autocapitalize="off"></div>
-          <div class="fld"><label for="su-addr">Address</label><div class="sub">સરનામું</div>
-            <textarea id="su-addr" rows="3"></textarea></div>
-          <div class="fld"><label for="su-city">City</label><div class="sub">શહેર</div>
-            <input type="text" id="su-city" autocapitalize="words"></div>
+          <div class="fld"><label for="su-addr">Address<span class="gu">સરનામું</span></label>
+            <textarea id="su-addr" rows="2"></textarea></div>
           <div class="actions">
             <button type="submit" class="btn pri">Save<span class="gu">સાચવો</span></button>
             <button type="button" class="btn sec" id="suCancel">Cancel<span class="gu">રદ કરો</span></button>
@@ -328,7 +321,7 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
         </form>
         <div class="confirm" id="suConfirm" hidden><b id="suConfirmTxt"></b><div class="actions"><button type="button" class="btn dng" id="suYes">Delete<span class="gu">કાઢો</span></button><button type="button" class="btn sec" id="suNo">Cancel<span class="gu">રદ કરો</span></button></div></div>
       </div>
-      <div class="tbl"><div class="th"><div>Supplier<small>સપ્લાયર</small></div><div>Mobile<small>મોબાઇલ</small></div></div><div id="suRows"></div></div>
+      <div class="tbl" id="suTbl" hidden><div class="th"><div>Supplier<small>સપ્લાયર</small></div><div>Mobile<small>મોબાઇલ</small></div></div><div id="suRows"></div></div>
     </section>
 
     <section class="view" id="v-prices" hidden>
@@ -581,10 +574,10 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
     if(!showForm&&delId===null){pr.hidden=false;pr.innerHTML=esc(PROMPT[mode][0])+'<span class="gu">'+PROMPT[mode][1]+'</span>'}else pr.hidden=true;
     var it=items.filter(function(x){return x.id===delId})[0];
     $('#confirm').hidden=!(mode==='delete'&&it);
-    if(it)$('#confirmTxt').textContent='Delete “'+it.en+' · '+it.gu+'”? / કાઢી નાખવું?';
+    if(it)$('#confirmTxt').textContent='Delete “'+it.en+'”? / કાઢી નાખવું?';
     var rows=items.map(function(x){
       var cls='tr'+(x.id===editId||x.id===delId?' sel':'');
-      var inner='<div class="n"><b>'+esc(x.en)+'</b><span>'+esc(x.gu)+'</span></div><div class="u">'+esc(x.unit)+'<span>'+esc(unitGu(x.unit))+'</span></div>';
+      var inner='<div class="n"><b>'+esc(x.en)+'</b></div><div class="u">'+esc(x.unit)+'<span>'+esc(unitGu(x.unit))+'</span></div>';
       if(mode==='add')return '<div class="'+cls+'">'+inner+'</div>';
       return '<button type="button" class="'+cls+'" data-row="'+x.id+'">'+inner+'</button>';
     }).join('');
@@ -592,237 +585,110 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
   }
 
   function resetForm(){
-    $('#item-en').value='';$('#item-gu').value='';$('#item-unit').selectedIndex=0;
-    editId=null;guTouched=false;updateSugs();setKb(false);if(voice&&voice.on)stopVoice();
+    $('#item-en').value='';$('#item-unit').selectedIndex=0;
+    editId=null;
   }
   function setMode(m){mode=m;editId=null;delId=null;resetForm();renderItems()}
 
-  function onEnglish(){
-    var en=$('#item-en').value.trim(), g=$('#item-gu');
-    if(!guTouched)g.value=en?computeGu(en).tr:'';
-    updateSugs();
-  }
-  function updateSugs(){
-    var en=$('#item-en').value.trim(), box=$('#sugs'), note=$('#autoNote'), cur=$('#item-gu').value;
-    note.hidden=guTouched||!cur;
-    if(!en){box.hidden=true;box.innerHTML='';return}
-    var c=computeGu(en), chips=[];
-    c.vars.slice(0,1).forEach(function(v,i){
-      chips.push({gu:v,label:i===0?'Phonetic · ઉચ્ચાર':'Spelling '+(i+1)+' · જોડણી '+(i+1)});
-    });
-    box.hidden=false;
-    box.innerHTML='<div class="sugTitle">Phonetic · ઉચ્ચાર</div>'+chips.map(function(x){
-      return '<button type="button" class="sug'+(x.gu===cur?' on':'')+'" data-gu="'+esc(x.gu)+'"'+(x.en?' data-en="'+esc(x.en)+'"':'')+'><span class="g">'+esc(x.gu)+'</span><small>'+esc(x.label)+'</small></button>';
-    }).join('');
-  }
-
-  /* Gujarati on-screen keyboard (matra, bindi and letters) */
-  var KB=[
-    ['Matra · માત્રા','ા િ ી ુ ૂ ૃ ે ૈ ો ૌ'],
-    ['Signs · ચિહ્ન','ં ઃ ઁ ્ ઼ ।'],
-    ['Vowels · સ્વર','અ આ ઇ ઈ ઉ ઊ ઋ એ ઐ ઓ ઔ'],
-    ['Letters · વ્યંજન','ક ખ ગ ઘ ઙ ચ છ જ ઝ ઞ ટ ઠ ડ ઢ ણ ત થ દ ધ ન પ ફ બ ભ મ ય ર લ વ શ ષ સ હ ળ ક્ષ જ્ઞ'],
-    ['Numbers · અંક','૦ ૧ ૨ ૩ ૪ ૫ ૬ ૭ ૮ ૯']
-  ];
-  (function(){
-    var h='';
-    KB.forEach(function(g){
-      h+='<div class="lab">'+g[0]+'</div><div class="rowk">'+g[1].split(' ').map(function(k){
-        var lab=(g[0].indexOf('Matra')===0||k==='઼'||k==='્'||k==='ં'||k==='ઃ'||k==='ઁ')?'◌'+k:k;
-        return '<button type="button" data-k="'+k+'">'+lab+'</button>'}).join('')+'</div>';
-    });
-    h+='<div class="rowk"><button type="button" class="wide" data-k=" ">Space · જગ્યા</button><button type="button" class="wide" data-k="BS">⌫ Delete · ભૂંસો</button></div>';
-    $('#kb').innerHTML=h;
-  })();
-  function setKb(on){
-    kbOpen=on;$('#kb').hidden=!on;$('#kbBtn').setAttribute('aria-pressed',on?'true':'false');
-    var i=$('#item-gu');if(on)i.setAttribute('inputmode','none');else i.removeAttribute('inputmode');
-  }
-  function typeKey(k){
-    guTouched=true;
-    var i=$('#item-gu'),v=i.value,s=i.selectionStart,e=i.selectionEnd;
-    if(s==null){s=e=v.length}
-    if(k==='BS'){ if(s!==e){v=v.slice(0,s)+v.slice(e)} else if(s>0){v=v.slice(0,s-1)+v.slice(s);s--} e=s; }
-    else{ v=v.slice(0,s)+k+v.slice(e); s+=k.length; e=s; }
-    i.value=v;
-    try{i.setSelectionRange(s,s)}catch(x){}
-    updateSugs();
-  }
-  $('#kb').addEventListener('mousedown',function(ev){ev.preventDefault()});
-  $('#kb').addEventListener('touchstart',function(ev){ev.preventDefault();var b=ev.target.closest('button[data-k]');if(b)typeKey(b.dataset.k)},{passive:false});
-  $('#kb').addEventListener('click',function(ev){var b=ev.target.closest('button[data-k]');if(b&&!('ontouchstart' in window))typeKey(b.dataset.k)});
-
-  $('#item-en').addEventListener('input',onEnglish);
-  $('#item-gu').addEventListener('input',function(){guTouched=true;updateSugs()});
   $('#itemForm').addEventListener('submit',function(ev){
     ev.preventDefault();
-    var en=$('#item-en').value.replace(/\s+/g,' ').trim(), gu=$('#item-gu').value.replace(/\s+/g,' ').trim(), unit=$('#item-unit').value;
-    if(!en||!gu){toast('Enter both names · બંને નામ લખો');return}
-    var dup=items.some(function(x){return x.id!==editId&&(norm(x.en)===norm(en)||norm(x.gu)===norm(gu))});
+    var en=$('#item-en').value.replace(/\s+/g,' ').trim(), unit=$('#item-unit').value;
+    if(!en){toast('Enter item name · વસ્તુનું નામ લખો');return}
+    var dup=items.some(function(x){return x.id!==editId&&norm(x.en)===norm(en)});
     if(dup){toast('Item already exists · વસ્તુ પહેલેથી છે');return}
     if(mode==='edit'&&editId!==null){
-      items.forEach(function(x){if(x.id===editId){x.en=en;x.gu=gu;x.unit=unit}});
-      sheetSend({action:'editItem',id:editId,en:en,gu:gu,unit:unit});
+      items.forEach(function(x){if(x.id===editId){x.en=en;x.unit=unit}});
+      sheetSend({action:'editItem',id:editId,en:en,gu:(items.filter(function(x){return x.id===editId})[0]||{}).gu||'',unit:unit});
       toast('Item updated · વસ્તુ સુધારી');
       persist();resetForm();renderItems();return;
     }
-    var ni={id:Date.now(),en:en,gu:gu,unit:unit};items.push(ni);
+    var ni={id:Date.now(),en:en,gu:'',unit:unit};items.push(ni);
     persist();toast('Item saved · વસ્તુ સાચવી');resetForm();renderItems();sheetAdd(ni);
   });
 
   /* ---------- Add Customer ---------- */
-  var CUST_KEY='cyan-navy-customers-v1', customers=load(CUST_KEY,[]), cuTouched=false, cuKbOpen=false, cuMode='add', cuEditId=null, cuDelId=null;
-  $('#cu-kb').innerHTML=$('#kb').innerHTML;
-  function setCuKb(on){
-    cuKbOpen=on;$('#cu-kb').hidden=!on;$('#cuKbBtn').setAttribute('aria-pressed',on?'true':'false');
-    var i=$('#cu-gu');if(on)i.setAttribute('inputmode','none');else i.removeAttribute('inputmode');
-  }
-  function updateCuSugs(){
-    var en=$('#cu-en').value.trim(), box=$('#cu-sugs'), cur=$('#cu-gu').value;
-    var vs=en?computeGu(en).vars.slice(0,4):[];
-    if(vs.length<2){box.hidden=true;box.innerHTML='';return}
-    box.hidden=false;
-    box.innerHTML='<div class="sugTitle">Spelling · જોડણી</div>'+vs.map(function(v){
-      return '<button type="button" class="sug cusug'+(v===cur?' on':'')+'" data-gu="'+esc(v)+'"><span class="g">'+esc(v)+'</span></button>';
-    }).join('');
-  }
-  function onCuEnglish(){
-    var en=$('#cu-en').value.trim();
-    if(!cuTouched)$('#cu-gu').value=en?computeGu(en).ph:'';
-    updateCuSugs();
-  }
+  var CUST_KEY='cyan-navy-customers-v1', customers=load(CUST_KEY,[]), cuMode='add', cuEditId=null, cuDelId=null;
   function resetCust(){
-    ['#cu-en','#cu-gu','#cu-mob','#cu-email','#cu-addr','#cu-city'].forEach(function(s){$(s).value=''});
-    cuEditId=null;cuTouched=false;updateCuSugs();setCuKb(false);renderCust();
+    ['#cu-en','#cu-mob','#cu-email','#cu-addr','#cu-city'].forEach(function(s){$(s).value=''});
+    cuEditId=null;renderCust();
   }
   function renderCust(){
     $$('#cuModes .mode').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.cmode===cuMode?'true':'false')});
-    var T={add:'Add Customer / ગ્રાહક ઉમેરો',edit:'Edit Customer / ગ્રાહક સુધારો',delete:'Delete Customer / ગ્રાહક કાઢો'};
-    $('#cuTitle').textContent=T[cuMode];
     var showForm=cuMode==='add'||(cuMode==='edit'&&cuEditId!==null);
     $('#custForm').hidden=!showForm;
+    $('#cuTbl').hidden=cuMode==='add';
     var pr=$('#cuPrompt'),it=customers.filter(function(x){return x.id===cuDelId})[0];
     if(!showForm&&!it){pr.hidden=false;pr.innerHTML=cuMode==='edit'?'Tap a customer in the list below to edit.<span class="gu">સુધારવા માટે નીચેની યાદીમાંથી ગ્રાહક પસંદ કરો.</span>':'Tap a customer in the list below to delete.<span class="gu">કાઢવા માટે નીચેની યાદીમાંથી ગ્રાહક પસંદ કરો.</span>'}else pr.hidden=true;
     $('#cuConfirm').hidden=!(cuMode==='delete'&&it);
-    if(it)$('#cuConfirmTxt').textContent='Delete “'+it.en+' · '+it.gu+'”? / કાઢી નાખવું?';
+    if(it)$('#cuConfirmTxt').textContent='Delete “'+it.en+'”? / કાઢી નાખવું?';
     $('#cuRows').innerHTML=customers.map(function(x){
       var cls='tr'+(x.id===cuEditId||x.id===cuDelId?' sel':'');
-      var inner='<div class="n"><b>'+esc(x.en)+'</b><span>'+esc(x.gu)+'</span></div><div class="u">'+esc(x.mobile)+'<span>'+esc(x.city||'')+'</span></div>';
-      return cuMode==='add'?'<div class="'+cls+'">'+inner+'</div>':'<button type="button" class="'+cls+'" data-crow="'+x.id+'">'+inner+'</button>';
+      var inner='<div class="n"><b>'+esc(x.en)+'</b></div><div class="u">'+esc(x.mobile)+'<span>'+esc(x.city||'')+'</span></div>';
+      return '<button type="button" class="'+cls+'" data-crow="'+x.id+'">'+inner+'</button>';
     }).join('')||'<div class="emptyRow">No customers yet.<br>હજી કોઈ ગ્રાહક નથી.</div>';
   }
-
-  function typeKeyC(k){
-    cuTouched=true;
-    var i=$('#cu-gu'),v=i.value,s=i.selectionStart,e=i.selectionEnd;
-    if(s==null){s=e=v.length}
-    if(k==='BS'){ if(s!==e){v=v.slice(0,s)+v.slice(e)} else if(s>0){v=v.slice(0,s-1)+v.slice(s);s--} e=s; }
-    else{ v=v.slice(0,s)+k+v.slice(e); s+=k.length; e=s; }
-    i.value=v;
-    try{i.setSelectionRange(s,s)}catch(x){}
-    updateCuSugs();
-  }
-  $('#cu-kb').addEventListener('mousedown',function(ev){ev.preventDefault()});
-  $('#cu-kb').addEventListener('touchstart',function(ev){ev.preventDefault();var b=ev.target.closest('button[data-k]');if(b)typeKeyC(b.dataset.k)},{passive:false});
-  $('#cu-kb').addEventListener('click',function(ev){var b=ev.target.closest('button[data-k]');if(b&&!('ontouchstart' in window))typeKeyC(b.dataset.k)});
-  $('#cu-en').addEventListener('input',onCuEnglish);
-  renderCust();
-  $('#cu-gu').addEventListener('input',function(){cuTouched=this.value!=='';updateCuSugs()});
   $('#custForm').addEventListener('submit',function(ev){
     ev.preventDefault();
-    var en=$('#cu-en').value.trim(), gu=$('#cu-gu').value.trim(), mob=$('#cu-mob').value.replace(/\D/g,''),
+    var en=$('#cu-en').value.replace(/\s+/g,' ').trim(), mob=$('#cu-mob').value.replace(/\D/g,''),
         em=$('#cu-email').value.trim(), ad=$('#cu-addr').value.trim(), ci=$('#cu-city').value.trim();
     if(mob.length>10&&/^(91|0)/.test(mob))mob=mob.slice(-10);
-    if(!en||!gu){toast('Enter customer name · ગ્રાહકનું નામ લખો');return}
+    if(!en){toast('Enter customer name · ગ્રાહકનું નામ લખો');return}
     if(mob.length!==10){toast('Enter 10 digit mobile no. · 10 અંકનો મોબાઇલ નં. લખો');return}
     if(em&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){toast('Enter a valid e-mail · સાચું ઈ-મેઈલ લખો');return}
     if(cuMode==='edit'&&cuEditId!==null){
-      customers.forEach(function(x){if(x.id===cuEditId){x.en=en;x.gu=gu;x.mobile=mob;x.email=em;x.address=ad;x.city=ci}});
+      var old=customers.filter(function(x){return x.id===cuEditId})[0]||{};
+      customers.forEach(function(x){if(x.id===cuEditId){x.en=en;x.mobile=mob;x.email=em;x.address=ad;x.city=ci}});
       save(CUST_KEY,customers);
-      sheetSend({action:'editCustomer',id:cuEditId,en:en,gu:gu,mobile:mob,email:em,address:ad,city:ci});
+      sheetSend({action:'editCustomer',id:cuEditId,en:en,gu:old.gu||'',mobile:mob,email:em,address:ad,city:ci});
       toast('Customer updated · ગ્રાહક સુધાર્યો');resetCust();return;
     }
-    var c={id:Date.now(),en:en,gu:gu,mobile:mob,email:em,address:ad,city:ci};
+    var c={id:Date.now(),en:en,gu:'',mobile:mob,email:em,address:ad,city:ci};
     customers.push(c);save(CUST_KEY,customers);
     toast('Customer saved · ગ્રાહક સાચવ્યો');resetCust();sheetSend(Object.assign({action:'addCustomer'},c));
   });
+  renderCust();
 
   /* ---------- Add Supplier ---------- */
-  var SUPP_KEY='cyan-navy-suppliers-v1', suppliers=load(SUPP_KEY,[]), suTouched=false, suKbOpen=false, suMode='add', suEditId=null, suDelId=null;
-  $('#su-kb').innerHTML=$('#kb').innerHTML;
-  function setSuKb(on){
-    suKbOpen=on;$('#su-kb').hidden=!on;$('#suKbBtn').setAttribute('aria-pressed',on?'true':'false');
-    var i=$('#su-gu');if(on)i.setAttribute('inputmode','none');else i.removeAttribute('inputmode');
-  }
-  function updateSuSugs(){
-    var en=$('#su-en').value.trim(), box=$('#su-sugs'), cur=$('#su-gu').value;
-    var vs=en?computeGu(en).vars.slice(0,4):[];
-    if(vs.length<2){box.hidden=true;box.innerHTML='';return}
-    box.hidden=false;
-    box.innerHTML='<div class="sugTitle">Spelling · જોડણી</div>'+vs.map(function(v){
-      return '<button type="button" class="sug susug'+(v===cur?' on':'')+'" data-gu="'+esc(v)+'"><span class="g">'+esc(v)+'</span></button>';
-    }).join('');
-  }
-  function onSuEnglish(){
-    var en=$('#su-en').value.trim();
-    if(!suTouched)$('#su-gu').value=en?computeGu(en).ph:'';
-    updateSuSugs();
-  }
+  var SUPP_KEY='cyan-navy-suppliers-v1', suppliers=load(SUPP_KEY,[]), suMode='add', suEditId=null, suDelId=null;
   function resetSupp(){
-    ['#su-en','#su-gu','#su-mob','#su-email','#su-addr','#su-city'].forEach(function(s){$(s).value=''});
-    suEditId=null;suTouched=false;updateSuSugs();setSuKb(false);renderSupp();
+    ['#su-en','#su-mob','#su-email','#su-addr','#su-city'].forEach(function(s){$(s).value=''});
+    suEditId=null;renderSupp();
   }
   function renderSupp(){
     $$('#suModes .mode').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.smode===suMode?'true':'false')});
-    var T={add:'Add Supplier / સપ્લાયર ઉમેરો',edit:'Edit Supplier / સપ્લાયર સુધારો',delete:'Delete Supplier / સપ્લાયર કાઢો'};
-    $('#suTitle').textContent=T[suMode];
     var showForm=suMode==='add'||(suMode==='edit'&&suEditId!==null);
     $('#suppForm').hidden=!showForm;
+    $('#suTbl').hidden=suMode==='add';
     var pr=$('#suPrompt'),it=suppliers.filter(function(x){return x.id===suDelId})[0];
     if(!showForm&&!it){pr.hidden=false;pr.innerHTML=suMode==='edit'?'Tap a supplier in the list below to edit.<span class="gu">સુધારવા માટે નીચેની યાદીમાંથી સપ્લાયર પસંદ કરો.</span>':'Tap a supplier in the list below to delete.<span class="gu">કાઢવા માટે નીચેની યાદીમાંથી સપ્લાયર પસંદ કરો.</span>'}else pr.hidden=true;
     $('#suConfirm').hidden=!(suMode==='delete'&&it);
-    if(it)$('#suConfirmTxt').textContent='Delete “'+it.en+' · '+it.gu+'”? / કાઢી નાખવું?';
+    if(it)$('#suConfirmTxt').textContent='Delete “'+it.en+'”? / કાઢી નાખવું?';
     $('#suRows').innerHTML=suppliers.map(function(x){
       var cls='tr'+(x.id===suEditId||x.id===suDelId?' sel':'');
-      var inner='<div class="n"><b>'+esc(x.en)+'</b><span>'+esc(x.gu)+'</span></div><div class="u">'+esc(x.mobile)+'<span>'+esc(x.city||'')+'</span></div>';
-      return suMode==='add'?'<div class="'+cls+'">'+inner+'</div>':'<button type="button" class="'+cls+'" data-srow="'+x.id+'">'+inner+'</button>';
+      var inner='<div class="n"><b>'+esc(x.en)+'</b></div><div class="u">'+esc(x.mobile)+'<span>'+esc(x.city||'')+'</span></div>';
+      return '<button type="button" class="'+cls+'" data-srow="'+x.id+'">'+inner+'</button>';
     }).join('')||'<div class="emptyRow">No suppliers yet.<br>હજી કોઈ સપ્લાયર નથી.</div>';
   }
-
-  function typeKeyS(k){
-    suTouched=true;
-    var i=$('#su-gu'),v=i.value,s=i.selectionStart,e=i.selectionEnd;
-    if(s==null){s=e=v.length}
-    if(k==='BS'){ if(s!==e){v=v.slice(0,s)+v.slice(e)} else if(s>0){v=v.slice(0,s-1)+v.slice(s);s--} e=s; }
-    else{ v=v.slice(0,s)+k+v.slice(e); s+=k.length; e=s; }
-    i.value=v;
-    try{i.setSelectionRange(s,s)}catch(x){}
-    updateSuSugs();
-  }
-  $('#su-kb').addEventListener('mousedown',function(ev){ev.preventDefault()});
-  $('#su-kb').addEventListener('touchstart',function(ev){ev.preventDefault();var b=ev.target.closest('button[data-k]');if(b)typeKeyS(b.dataset.k)},{passive:false});
-  $('#su-kb').addEventListener('click',function(ev){var b=ev.target.closest('button[data-k]');if(b&&!('ontouchstart' in window))typeKeyS(b.dataset.k)});
-  $('#su-en').addEventListener('input',onSuEnglish);
-  renderSupp();
-  $('#su-gu').addEventListener('input',function(){suTouched=this.value!=='';updateSuSugs()});
   $('#suppForm').addEventListener('submit',function(ev){
     ev.preventDefault();
-    var en=$('#su-en').value.trim(), gu=$('#su-gu').value.trim(), mob=$('#su-mob').value.replace(/\D/g,''),
+    var en=$('#su-en').value.replace(/\s+/g,' ').trim(), mob=$('#su-mob').value.replace(/\D/g,''),
         em=$('#su-email').value.trim(), ad=$('#su-addr').value.trim(), ci=$('#su-city').value.trim();
     if(mob.length>10&&/^(91|0)/.test(mob))mob=mob.slice(-10);
-    if(!en||!gu){toast('Enter supplier name · સપ્લાયરનું નામ લખો');return}
+    if(!en){toast('Enter supplier name · સપ્લાયરનું નામ લખો');return}
     if(mob.length!==10){toast('Enter 10 digit mobile no. · 10 અંકનો મોબાઇલ નં. લખો');return}
     if(em&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){toast('Enter a valid e-mail · સાચું ઈ-મેઈલ લખો');return}
     if(suMode==='edit'&&suEditId!==null){
-      suppliers.forEach(function(x){if(x.id===suEditId){x.en=en;x.gu=gu;x.mobile=mob;x.email=em;x.address=ad;x.city=ci}});
+      var old=suppliers.filter(function(x){return x.id===suEditId})[0]||{};
+      suppliers.forEach(function(x){if(x.id===suEditId){x.en=en;x.mobile=mob;x.email=em;x.address=ad;x.city=ci}});
       save(SUPP_KEY,suppliers);
-      sheetSend({action:'editSupplier',id:suEditId,en:en,gu:gu,mobile:mob,email:em,address:ad,city:ci});
+      sheetSend({action:'editSupplier',id:suEditId,en:en,gu:old.gu||'',mobile:mob,email:em,address:ad,city:ci});
       toast('Supplier updated · સપ્લાયર સુધાર્યો');resetSupp();return;
     }
-    var c={id:Date.now(),en:en,gu:gu,mobile:mob,email:em,address:ad,city:ci};
+    var c={id:Date.now(),en:en,gu:'',mobile:mob,email:em,address:ad,city:ci};
     suppliers.push(c);save(SUPP_KEY,suppliers);
     toast('Supplier saved · સપ્લાયર સાચવ્યો');resetSupp();sheetSend(Object.assign({action:'addSupplier'},c));
   });
+  renderSupp();
 
   /* ---------- Voice typing ---------- */
   var voice={kind:null,dict:null,SR:null,rec:null,cur:null,base:'',on:false,gone:{},failAt:0};
@@ -933,7 +799,7 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
   function renderPrices(){
     var rows=items.map(function(x){
       var on=priceEdit===x.id;
-      return '<div class="pr"><div class="n"><b>'+esc(x.en)+'</b><span class="g">'+esc(x.gu)+'</span><span class="u">1 '+esc(unitShort(x.unit))+' · '+esc(unitGu(x.unit))+'</span></div>'+
+      return '<div class="pr"><div class="n"><b>'+esc(x.en)+'</b><span class="u">1 '+esc(unitShort(x.unit))+' · '+esc(unitGu(x.unit))+'</span></div>'+
         '<div class="rb"><span class="rs">₹</span><input class="rate" type="text" inputmode="decimal" id="rate-'+x.id+'" data-rate="'+x.id+'" value="'+esc(fmtRate(prices[x.id]))+'"'+(on?'':' readonly')+' aria-label="Rate / ભાવ">'+
         '<button type="button" class="ed'+(on?' on':'')+'" data-edit="'+x.id+'" aria-label="'+(on?'Save rate / ભાવ સાચવો':'Edit rate / ભાવ બદલો')+'">'+(on?CHECK:PENCIL)+'</button></div></div>';
     }).join('');
@@ -969,13 +835,11 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
     var el=ev.target.closest('button');if(!el)return;
     if(el.dataset.open==='customer'){adminView='customer';cuMode='add';cuDelId=null;resetCust();return showView()}
     if(el.id==='custBack'){adminView='menu';return showView()}
-    if(el.id==='cuKbBtn')return setCuKb(!cuKbOpen);
     if(el.id==='cuCancel'){cuDelId=null;return resetCust()}
-    if(el.classList.contains('cusug')){$('#cu-gu').value=el.dataset.gu;cuTouched=true;return updateCuSugs()}
     if(el.dataset.cmode){cuMode=el.dataset.cmode;cuDelId=null;return resetCust()}
     if(el.dataset.crow){
       var cid=+el.dataset.crow,cc=customers.filter(function(x){return x.id===cid})[0];if(!cc)return;
-      if(cuMode==='edit'){cuEditId=cid;$('#cu-en').value=cc.en;$('#cu-gu').value=cc.gu;$('#cu-mob').value=cc.mobile;$('#cu-email').value=cc.email||'';$('#cu-addr').value=cc.address||'';$('#cu-city').value=cc.city||'';cuTouched=true;updateCuSugs();renderCust();$('#cu-en').focus()}
+      if(cuMode==='edit'){cuEditId=cid;$('#cu-en').value=cc.en;$('#cu-mob').value=cc.mobile;$('#cu-email').value=cc.email||'';$('#cu-addr').value=cc.address||'';$('#cu-city').value=cc.city||'';renderCust();$('#cu-en').focus()}
       else if(cuMode==='delete'){cuDelId=cid;renderCust()}
       return;
     }
@@ -983,13 +847,11 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
     if(el.id==='cuYes'){customers=customers.filter(function(x){return x.id!==cuDelId});save(CUST_KEY,customers);sheetSend({action:'deleteCustomer',id:cuDelId});cuDelId=null;toast('Customer deleted · ગ્રાહક કાઢ્યો');return renderCust()}
     if(el.dataset.open==='supplier'){adminView='supplier';suMode='add';suDelId=null;resetSupp();return showView()}
     if(el.id==='suppBack'){adminView='menu';return showView()}
-    if(el.id==='suKbBtn')return setSuKb(!suKbOpen);
     if(el.id==='suCancel'){suDelId=null;return resetSupp()}
-    if(el.classList.contains('susug')){$('#su-gu').value=el.dataset.gu;suTouched=true;return updateSuSugs()}
     if(el.dataset.smode){suMode=el.dataset.smode;suDelId=null;return resetSupp()}
     if(el.dataset.srow){
       var sid=+el.dataset.srow,sc=suppliers.filter(function(x){return x.id===sid})[0];if(!sc)return;
-      if(suMode==='edit'){suEditId=sid;$('#su-en').value=sc.en;$('#su-gu').value=sc.gu;$('#su-mob').value=sc.mobile;$('#su-email').value=sc.email||'';$('#su-addr').value=sc.address||'';$('#su-city').value=sc.city||'';suTouched=true;updateSuSugs();renderSupp();$('#su-en').focus()}
+      if(suMode==='edit'){suEditId=sid;$('#su-en').value=sc.en;$('#su-mob').value=sc.mobile;$('#su-email').value=sc.email||'';$('#su-addr').value=sc.address||'';$('#su-city').value=sc.city||'';renderSupp();$('#su-en').focus()}
       else if(suMode==='delete'){suDelId=sid;renderSupp()}
       return;
     }
@@ -1012,15 +874,10 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
     }
     if(el.id==='itemsBack'){adminView='menu';return showView()}
     if(el.dataset.mode)return setMode(el.dataset.mode);
-    if(el.id==='kbBtn')return setKb(!kbOpen);
-    if(el.classList.contains('sug')){
-      if(el.dataset.en)$('#item-en').value=el.dataset.en;
-      $('#item-gu').value=el.dataset.gu;guTouched=true;updateSugs();return;
-    }
     if(el.id==='cancelBtn'){resetForm();delId=null;renderItems();return}
     if(el.dataset.row){
       var id=+el.dataset.row,it=items.filter(function(x){return x.id===id})[0];if(!it)return;
-      if(mode==='edit'){editId=id;$('#item-en').value=it.en;$('#item-gu').value=it.gu;$('#item-unit').value=it.unit;guTouched=true;updateSugs();renderItems();$('#item-en').focus()}
+      if(mode==='edit'){editId=id;$('#item-en').value=it.en;$('#item-unit').value=it.unit;renderItems();$('#item-en').focus()}
       else if(mode==='delete'){delId=id;renderItems()}
       return;
     }
