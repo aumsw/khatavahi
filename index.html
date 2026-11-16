@@ -361,7 +361,7 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
   var THEME='cyan-navy-theme', ITEMS_KEY='cyan-navy-items-v1', PRICES_KEY='cyan-navy-prices-v1';
   /* GOOGLE SHEET: paste your Apps Script Web App URL between the quotes (ends with /exec). Leave empty to save only on this device. */
   var SHEET_URL='https://script.google.com/macros/s/AKfycby-VWnBj_Vjm2OrVG8T7JsLRCuuTmrB6DKl_ykTitiodjoQfU_7sZzgQ8e6A-tEt0zj/exec';
-  var QUEUE_KEY='cyan-navy-sheet-queue-v1';
+  var QUEUE_KEY='cyan-navy-sheet-queue-v1', SYNC_KEY='cyan-navy-items-synced-v1';
   var UNITS=[['KG','કિલો'],['Gram','ગ્રામ'],['Quintal','ક્વિન્ટલ'],['Ton','ટન'],['Litre','લિટર'],['Bag','બોરી'],['Box','બોક્સ'],['Nos','નંગ']];
   /* English word -> Gujarati word. Used for the default translation. Add more pairs as needed. */
   var DICT=[['Items','વસ્તુઓ'],['Item','વસ્તુ'],['Cement','સિમેન્ટ'],['Wheat','ઘઉં'],['Rice','ચોખા'],['Sugar','ખાંડ'],['Salt','મીઠું'],['Flour','લોટ'],['Oil','તેલ'],['Ghee','ઘી'],['Milk','દૂધ'],['Tea','ચા'],['Steel','સ્ટીલ'],['Iron','લોખંડ'],['Sand','રેતી'],['Bricks','ઈંટ'],['Brick','ઈંટ'],['Coal','કોલસો'],['Cotton','કપાસ'],['Groundnut','મગફળી'],['Castor','એરંડા'],['Cumin','જીરું'],['Chana','ચણા'],
@@ -510,10 +510,27 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
     var q=load(QUEUE_KEY,[]);if(!q.length)return;
     flushing=true;
     (function next(){
-      if(!q.length){flushing=false;toast('Saved to Google Sheet · શીટમાં સાચવ્યું');return}
+      if(!q.length){flushing=false;toast('Saved to Google Sheet · શીટમાં સાચવ્યું');sheetLoadItems();return}
       sheetPost(q[0]).then(function(){q.shift();save(QUEUE_KEY,q);next()})
         .catch(function(){flushing=false;toast('Sheet sync pending · શીટમાં પછી સાચવાશે')});
     })();
+  }
+  function norm(x){return String(x||'').replace(/\s+/g,' ').trim().toLowerCase()}
+  /* The Sheet is the master list of items: load it so every item shows on every device. */
+  function sheetLoadItems(){
+    if(!SHEET_URL)return;
+    if(load(QUEUE_KEY,[]).length){sheetFlush();return}
+    fetch(SHEET_URL+'?type=items').then(function(r){return r.json()}).then(function(rows){
+      if(!Array.isArray(rows)||load(QUEUE_KEY,[]).length)return;
+      var remote=rows.map(function(r){return {id:+r.id,en:r.en,gu:r.gu,unit:r.unit}});
+      if(!load(SYNC_KEY,false)){
+        var ids={},names={};
+        remote.forEach(function(r){ids[r.id]=1;names[norm(r.en)]=1});
+        items.forEach(function(x){if(!ids[x.id]&&!names[norm(x.en)]){remote.push(x);sheetSend({action:'add',id:x.id,en:x.en,gu:x.gu,unit:x.unit})}});
+        save(SYNC_KEY,true);
+      }
+      items=remote;persist();renderItems();if(priceEdit===null)renderPrices();
+    }).catch(function(){});
   }
   function sheetSend(rec){
     if(!SHEET_URL)return;
@@ -537,6 +554,7 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
     $$('.tab').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===tab?'true':'false')});
     $('#ttl').innerHTML=TITLES[tab][0]+'<span class="gu">'+TITLES[tab][1]+'</span>';
     $('#main').scrollTop=0;
+    if(tab==='admin'&&(adminView==='items'||adminView==='prices'))sheetLoadItems();
     try{history.replaceState(null,'','#'+tab)}catch(e){}
   }
   function setTab(t){
@@ -638,12 +656,13 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
   $('#item-gu').addEventListener('input',function(){guTouched=true;updateSugs()});
   $('#itemForm').addEventListener('submit',function(ev){
     ev.preventDefault();
-    var en=$('#item-en').value.trim(), gu=$('#item-gu').value.trim(), unit=$('#item-unit').value;
+    var en=$('#item-en').value.replace(/\s+/g,' ').trim(), gu=$('#item-gu').value.replace(/\s+/g,' ').trim(), unit=$('#item-unit').value;
     if(!en||!gu){toast('Enter both names · બંને નામ લખો');return}
-    var dup=items.some(function(x){return x.en.toLowerCase()===en.toLowerCase()&&x.id!==editId});
+    var dup=items.some(function(x){return x.id!==editId&&(norm(x.en)===norm(en)||norm(x.gu)===norm(gu))});
     if(dup){toast('Item already exists · વસ્તુ પહેલેથી છે');return}
     if(mode==='edit'&&editId!==null){
       items.forEach(function(x){if(x.id===editId){x.en=en;x.gu=gu;x.unit=unit}});
+      sheetSend({action:'editItem',id:editId,en:en,gu:gu,unit:unit});
       toast('Item updated · વસ્તુ સુધારી');
       persist();resetForm();renderItems();return;
     }
@@ -1006,12 +1025,12 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
       return;
     }
     if(el.id==='confirmNo'){delId=null;return renderItems()}
-    if(el.id==='confirmYes'){delete prices[delId];save(PRICES_KEY,prices);items=items.filter(function(x){return x.id!==delId});delId=null;persist();toast('Item deleted · વસ્તુ કાઢી');return renderItems()}
+    if(el.id==='confirmYes'){delete prices[delId];save(PRICES_KEY,prices);items=items.filter(function(x){return x.id!==delId});sheetSend({action:'deleteItem',id:delId});delId=null;persist();toast('Item deleted · વસ્તુ કાઢી');return renderItems()}
   });
 
   applyTheme(load(THEME,'system'));
   renderItems();
-  sheetFlush();
+  sheetLoadItems();
   var h=(location.hash||'').slice(1);
   tab=TITLES[h]?h:'home';
   showView();
