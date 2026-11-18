@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
 /* Payment + view-bill popup */
 .dtw{display:flex;gap:8px;align-items:center}
 .dtw input[type=text],.dtw select{flex:1}
@@ -230,6 +230,96 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
+<style id="compact">
+html,body{height:100%;overflow:hidden}
+body{font-size:13px}
+.app{height:100%;height:100dvh}
+.gut{padding-inline:max(12px,env(safe-area-inset-left,0px)) max(12px,env(safe-area-inset-right,0px))}
+.bar-in{height:48px}
+.logo{width:28px;height:28px;font-size:13px;border-radius:8px}
+.ttl{font-size:17px}.ttl .gu{font-size:13px;margin-left:6px}
+.icon-btn{width:36px;height:36px}
+main{overflow:hidden}
+main>.gut{padding-block:8px;min-height:0}
+.view{gap:8px;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.view::-webkit-scrollbar{display:none}
+.view>*{flex:none}
+.view>.uc{flex:1}
+.view>.tbl{flex:1 1 0;min-height:96px}
+.view>.stats{flex:1 1 0;grid-template-rows:1fr 1fr;max-height:380px}
+#v-bill>.brows{flex:1 1 0;min-height:64px}
+.stats{gap:10px}
+.stat{min-height:0;padding:12px;border-radius:14px}
+.stat .sv{padding-top:8px}
+.nav-in{height:60px}
+.tab .pill-bg{width:48px;height:26px;margin-bottom:1px}
+.tab svg.i{width:20px;height:20px}
+.tab .en,.tab .gu{font-size:10px}
+.toast{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+h2{font-size:11px;margin:0}
+.opt{padding:10px 12px;gap:12px}
+.opt .dot{width:38px;height:38px;border-radius:10px}
+.opt .t b{font-size:14px}
+.opt .t small{font-size:11px;margin-top:0}
+.back{min-height:26px;padding:0}
+.modes{gap:8px}
+.mode{min-height:54px;padding:6px 4px;border-width:1.5px;border-radius:12px;font-size:12px}
+.mode svg{width:20px;height:20px;margin:0}
+.mode .gu{font-size:11px}
+.card{padding:10px;gap:8px;border-radius:12px}
+.card h3{font-size:15px}
+#formTitle{display:none}
+.prompt{padding:8px 10px;font-size:12px;border-radius:10px}
+.confirm{padding:10px;gap:8px}
+.fld{flex-direction:row;flex-wrap:wrap;align-items:baseline;column-gap:6px;row-gap:3px}
+.fld label{font-size:12px}
+.fld .sub{font-size:11px;margin:0}
+.fld>input,.fld>select,.fld>textarea,.fld>.guRow{flex:1 1 100%}
+.row2{gap:8px}
+input[type=text],input[type=tel],input[type=email],textarea,select{min-height:38px;border-radius:10px;padding:0 10px;font-size:14px;text-transform:uppercase}
+textarea{min-height:38px;padding:8px 10px;resize:none}
+.btn{min-height:42px;border-radius:12px;font-size:14px;flex-direction:row;gap:6px;padding:0 12px}
+.btn .gu{font-size:12px}
+.actions{gap:8px}
+.th,.tr{padding:8px 12px}
+.th{position:sticky;top:0;z-index:1}
+.tr{min-height:44px}
+.tbl{overflow-y:auto;border-radius:12px;scrollbar-width:none}
+.tr .n b,.pr .n b,.vp,.vr b{text-transform:uppercase}
+.pr{padding:8px 12px}
+input.rate{min-height:36px;width:84px}
+.ed{width:34px;height:34px}
+.emptyRow{padding:14px 12px}
+.seg{gap:8px}
+.seg span{min-height:40px;flex-direction:row;gap:6px;font-size:14px;border-radius:12px;border-width:1.5px}
+.seg span small{font-size:11px}
+.dtw{gap:6px}
+.dtp,.vbtn{width:38px;height:38px;border-radius:10px}
+.dtp svg,.vbtn svg{width:20px;height:20px}
+.pnote{font-size:12px;line-height:1.4}
+.bcard{padding:10px;gap:8px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:end}
+.c3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.cf{display:flex;flex-direction:column;gap:3px;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;min-width:0}
+.cf input,.cf select{letter-spacing:0}
+.bnoc{display:flex;flex-direction:column;gap:3px;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.bnoc b{min-height:38px;display:flex;align-items:center;font:700 15px var(--head);color:var(--accent);background:var(--soft);border-radius:10px;padding:0 10px;letter-spacing:0}
+.bhead{display:flex;justify-content:space-between;align-items:center;font:700 11px var(--font);letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+.btn.mini{min-height:30px;padding:0 12px;font-size:12px;border-radius:15px}
+.brows{display:flex;flex-direction:column;gap:6px;overflow-y:auto;scrollbar-width:none}
+.brow{padding:8px;gap:6px;border-radius:12px}
+.bt{gap:6px}
+.b3{gap:6px}
+.b3 label,.b-amt{font-size:10px;gap:3px;text-transform:uppercase;letter-spacing:.03em}
+.b3 input{text-transform:none;letter-spacing:0}
+.b-amt b{min-height:38px;font-size:14px;letter-spacing:0}
+.b-del{width:38px;height:38px;border-radius:10px;font-size:15px}
+.btot{padding:8px 12px;gap:2px}
+.btot .bl2 b{font-size:20px}
+.btot .bl2{font-size:13px}
+.bwords{font-size:11px;line-height:1.3}
+.acts{display:grid;grid-template-columns:1.5fr 1fr;gap:8px}
+</style>
 <div class="app">
   <header class="bar"><div class="bar-in gut">
     <div class="brand"><div class="logo">GM</div><div class="ttl" id="ttl"></div></div>
@@ -289,9 +379,9 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
           <div class="fld">
             <label for="item-en">Item name (English)</label>
             <div class="sub">વસ્તુનું નામ (અંગ્રેજી)</div>
-            <input type="text" id="item-en" autocapitalize="words" enterkeyhint="next">
+            <input type="text" id="item-en" autocapitalize="characters" enterkeyhint="next">
           </div>
-                    <div class="fld">
+                    <div class="row2"><div class="fld">
             <label for="item-unit">Unit</label>
             <div class="sub">એકમ</div>
             <select id="item-unit"></select>
@@ -300,7 +390,7 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
             <label for="item-rate" id="rateLbl">Rate for 1 KG</label>
             <div class="sub" id="rateSub">1 કિલો નો ભાવ</div>
             <input type="text" id="item-rate" inputmode="decimal" placeholder="₹">
-          </div>
+          </div></div>
           <div class="actions">
             <button type="submit" class="btn pri">Save<span class="gu">સાચવો</span></button>
             <button type="button" class="btn sec" id="cancelBtn">Cancel<span class="gu">રદ કરો</span></button>
@@ -333,15 +423,15 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
         <div class="prompt" id="cuPrompt" hidden></div>
         <form id="custForm" autocomplete="off" style="display:flex;flex-direction:column;gap:10px">
           <div class="fld"><label for="cu-en">Customer Name</label>
-            <input type="text" id="cu-en" autocapitalize="words" enterkeyhint="next"></div>
+            <input type="text" id="cu-en" autocapitalize="characters" enterkeyhint="next"></div>
           <div class="row2">
             <div class="fld"><label for="cu-mob">Mobile No.</label>
               <input type="tel" id="cu-mob" inputmode="numeric" maxlength="14"></div>
             <div class="fld"><label for="cu-city">City</label>
-              <input type="text" id="cu-city" autocapitalize="words"></div>
+              <input type="text" id="cu-city" autocapitalize="characters"></div>
           </div>
           <div class="fld"><label for="cu-email">E-Mail Address</label>
-            <input type="email" id="cu-email" inputmode="email" autocapitalize="off"></div>
+            <input type="email" id="cu-email" inputmode="email" autocapitalize="characters"></div>
           <div class="fld"><label for="cu-addr">Address</label>
             <textarea id="cu-addr" rows="2"></textarea></div>
           <div class="actions">
@@ -365,15 +455,15 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
         <div class="prompt" id="suPrompt" hidden></div>
         <form id="suppForm" autocomplete="off" style="display:flex;flex-direction:column;gap:10px">
           <div class="fld"><label for="su-en">Supplier Name</label>
-            <input type="text" id="su-en" autocapitalize="words" enterkeyhint="next"></div>
+            <input type="text" id="su-en" autocapitalize="characters" enterkeyhint="next"></div>
           <div class="row2">
             <div class="fld"><label for="su-mob">Mobile No.</label>
               <input type="tel" id="su-mob" inputmode="numeric" maxlength="14"></div>
             <div class="fld"><label for="su-city">City</label>
-              <input type="text" id="su-city" autocapitalize="words"></div>
+              <input type="text" id="su-city" autocapitalize="characters"></div>
           </div>
           <div class="fld"><label for="su-email">E-Mail Address</label>
-            <input type="email" id="su-email" inputmode="email" autocapitalize="off"></div>
+            <input type="email" id="su-email" inputmode="email" autocapitalize="characters"></div>
           <div class="fld"><label for="su-addr">Address</label>
             <textarea id="su-addr" rows="2"></textarea></div>
           <div class="actions">
@@ -666,9 +756,9 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
   function billRowHtml(r,i){
     var it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(it.unit):'';
     return '<div class="brow" data-i="'+i+'"><div class="bt"><select class="b-item">'+billItemOpts(r.item)+'</select><button type="button" class="b-del" aria-label="Remove row">✕</button></div>'+
-      '<div class="b3"><label>Rate / ભાવ<small>'+(u?'₹ per '+u:'₹')+'</small><input type="text" inputmode="decimal" class="b-rate" value="'+esc(r.rate)+'"></label>'+
-      '<label>Qty / જથ્થો<small>'+(u?'in '+u:'units')+'</small><input type="text" inputmode="decimal" class="b-qty" value="'+esc(r.qty)+'"></label>'+
-      '<div class="b-amt">Amount / રકમ<small>&nbsp;</small><b></b></div></div></div>';
+      '<div class="b3"><label>Rate · ભાવ<input type="text" inputmode="decimal" class="b-rate" placeholder="'+(u?'₹/'+u:'₹')+'" value="'+esc(r.rate)+'"></label>'+
+      '<label>Qty · જથ્થો<input type="text" inputmode="decimal" class="b-qty" placeholder="'+(u||'QTY')+'" value="'+esc(r.qty)+'"></label>'+
+      '<div class="b-amt">Amount · રકમ<b></b></div></div></div>';
   }
   function drawRows(){$('#b-rows').innerHTML=bill.rows.map(billRowHtml).join('');billTotals()}
   function billTotals(){
@@ -687,18 +777,18 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
   }
   function renderBill(){
     var out=bill.type==='out';
-    function fld(id,en,gu,val,ph){return '<label class="bl">'+en+' <small>'+gu+'</small><input type="text" inputmode="decimal" id="'+id+'" value="'+esc(val)+'"'+(ph?' placeholder="'+ph+'"':'')+'></label>'}
+    function f(id,en,gu,val){return '<label class="cf">'+en+' · '+gu+'<input type="text" inputmode="decimal" id="'+id+'" placeholder="₹" autocomplete="off" value="'+esc(val)+'"></label>'}
     $('#v-bill').innerHTML='<div class="seg" role="radiogroup" aria-label="Bill type"><label><input type="radio" name="btype" value="in"'+(out?'':' checked')+'><span>Inward<small>ઇનવર્ડ</small></span></label><label><input type="radio" name="btype" value="out"'+(out?' checked':'')+'><span>Outward<small>આઉટવર્ડ</small></span></label></div>'+
-      '<div class="card bcard"><div class="bno"><span>Bill No. <small>બિલ નં.</small></span><b>'+billNo()+'</b></div>'+
-      '<label class="bl">'+(out?'Customer Name':'Supplier Name')+'<select id="b-cust">'+billCustOpts(bill.cust)+'</select></label>'+
-      '<div class="bl">Bill Date <small>બિલ તારીખ · DD/MM/YYYY</small><div class="dtw"><input type="text" id="b-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(bill.date)+'"><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="b-dpick" aria-label="Pick date" value="'+dmyToIso(bill.date)+'"></span></div></div></div>'+
+      '<div class="card bcard"><select id="b-cust" aria-label="'+(out?'Customer':'Supplier')+'">'+billCustOpts(bill.cust)+'</select>'+
+      '<div class="r2"><div class="bnoc">Bill No. · બિલ નં.<b>'+billNo()+'</b></div>'+
+      '<div class="cf">Date · તારીખ<div class="dtw"><input type="text" id="b-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(bill.date)+'"><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="b-dpick" aria-label="Pick date" value="'+dmyToIso(bill.date)+'"></span></div></div></div></div>'+
+      '<div class="bhead"><span>Items · વસ્તુઓ</span><button type="button" class="btn sec mini" id="b-add">+ Add · ઉમેરો</button></div>'+
       '<div id="b-rows" class="brows"></div>'+
-      '<button type="button" class="btn sec" id="b-add">+ Add Item<span class="gu">આઇટમ ઉમેરો</span></button>'+
-      '<div class="card bcard">'+fld('b-lab','Labour','મજૂરી',bill.labour)+fld('b-tra','Transportation','વાહન ભાડું',bill.trans)+
-      '<div class="bl">Misc. <small>પરચુરણ</small><input type="text" id="b-misc-note" placeholder="Details · વિગત" value="'+esc(bill.miscNote)+'"><input type="text" inputmode="decimal" id="b-misc" placeholder="Amount · રકમ" value="'+esc(bill.misc)+'"></div></div>'+
+      '<div class="card bcard"><div class="c3">'+f('b-lab','Labour','મજૂરી',bill.labour)+f('b-tra','Transport','ભાડું',bill.trans)+f('b-misc','Misc.','પરચુરણ',bill.misc)+'</div>'+
+      '<input type="text" id="b-misc-note" autocapitalize="characters" autocomplete="off" placeholder="MISC. DETAILS · પરચુરણ વિગત" value="'+esc(bill.miscNote)+'"></div>'+
       '<div class="card bcard btot"><div class="bl2"><span>Grand Total <small>કુલ રકમ</small></span><b id="b-grand"></b></div><div class="bwords" id="b-words"></div></div>'+
-      '<button type="button" class="btn pri" id="b-save">Save Bill<span class="gu">બિલ સાચવો</span></button>'+
-      '<button type="button" class="btn sec" id="b-new">New Bill<span class="gu">નવું બિલ</span></button>';
+      '<div class="acts"><button type="button" class="btn pri" id="b-save">Save Bill<span class="gu">બિલ સાચવો</span></button>'+
+      '<button type="button" class="btn sec" id="b-new">New<span class="gu">નવું</span></button></div>';
     drawRows();
   }
   function r2(v){return Math.round(v*100)/100}
@@ -826,10 +916,10 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
     var c=pay.kind==='cust';
     $('#v-payment').innerHTML='<div class="seg" role="radiogroup" aria-label="Payment type"><label><input type="radio" name="ptype" value="cust"'+(c?' checked':'')+'><span>From Customer<small>ગ્રાહક પાસેથી</small></span></label><label><input type="radio" name="ptype" value="supp"'+(c?'':' checked')+'><span>To Supplier<small>સપ્લાયરને</small></span></label></div>'+
       '<div class="card bcard">'+
-      '<label class="bl">'+(c?'Customer Name':'Supplier Name')+'<select id="p-party">'+payPartyOpts()+'</select></label>'+
-      '<div class="bl">Date <small>તારીખ · DD/MM/YYYY</small><div class="dtw"><input type="text" id="p-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(pay.date)+'"><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="p-dpick" aria-label="Pick date" value="'+dmyToIso(pay.date)+'"></span></div></div>'+
-      '<label class="bl">Amount <small>રકમ</small><input type="text" inputmode="decimal" id="p-amt" placeholder="₹" autocomplete="off" value="'+esc(pay.amount)+'"></label>'+
-      '<div class="bl">Ref. Bill No. <small>બિલ નં.</small><div class="dtw"><select id="p-ref">'+payRefOpts()+'</select><button type="button" class="vbtn" id="p-view" aria-label="View bill"'+(pay.ref?'':' disabled')+'>'+EYE+'</button></div></div>'+
+      '<label class="cf">'+(c?'Customer Name · ગ્રાહક':'Supplier Name · સપ્લાયર')+'<select id="p-party">'+payPartyOpts()+'</select></label>'+
+      '<div class="r2"><div class="cf">Date · તારીખ<div class="dtw"><input type="text" id="p-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(pay.date)+'"><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="p-dpick" aria-label="Pick date" value="'+dmyToIso(pay.date)+'"></span></div></div>'+
+      '<label class="cf">Amount · રકમ<input type="text" inputmode="decimal" id="p-amt" placeholder="₹" autocomplete="off" value="'+esc(pay.amount)+'"></label></div>'+
+      '<div class="cf">Ref. Bill No. · બિલ નં.<div class="dtw"><select id="p-ref">'+payRefOpts()+'</select><button type="button" class="vbtn" id="p-view" aria-label="View bill"'+(pay.ref?'':' disabled')+'>'+EYE+'</button></div></div>'+
       '<div class="pnote" id="p-note"></div></div>'+
       '<button type="button" class="btn pri" id="p-save">Save Payment<span class="gu">ચુકવણી સાચવો</span></button>';
     payNote();
@@ -1004,7 +1094,7 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
 
   $('#itemForm').addEventListener('submit',function(ev){
     ev.preventDefault();
-    var en=$('#item-en').value.replace(/\s+/g,' ').trim(), unit=$('#item-unit').value;
+    var en=$('#item-en').value.replace(/\s+/g,' ').trim().toUpperCase(), unit=$('#item-unit').value;
     if(!en){toast('Enter item name · વસ્તુનું નામ લખો');return}
     var rate=parseFloat(String($('#item-rate').value).replace(/,/g,'').trim());
     if(isNaN(rate)||rate<0){toast('Enter rate · ભાવ લખો');return}
@@ -1045,8 +1135,8 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
   }
   $('#custForm').addEventListener('submit',function(ev){
     ev.preventDefault();
-    var en=$('#cu-en').value.replace(/\s+/g,' ').trim(), mob=$('#cu-mob').value.replace(/\D/g,''),
-        em=$('#cu-email').value.trim(), ad=$('#cu-addr').value.trim(), ci=$('#cu-city').value.trim();
+    var en=$('#cu-en').value.replace(/\s+/g,' ').trim().toUpperCase(), mob=$('#cu-mob').value.replace(/\D/g,''),
+        em=$('#cu-email').value.trim().toUpperCase(), ad=$('#cu-addr').value.trim().toUpperCase(), ci=$('#cu-city').value.trim().toUpperCase();
     if(mob.length>10&&/^(91|0)/.test(mob))mob=mob.slice(-10);
     if(!en){toast('Enter customer name');return}
     if(mob.length!==10){toast('Enter 10 digit mobile no.');return}
@@ -1087,8 +1177,8 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
   }
   $('#suppForm').addEventListener('submit',function(ev){
     ev.preventDefault();
-    var en=$('#su-en').value.replace(/\s+/g,' ').trim(), mob=$('#su-mob').value.replace(/\D/g,''),
-        em=$('#su-email').value.trim(), ad=$('#su-addr').value.trim(), ci=$('#su-city').value.trim();
+    var en=$('#su-en').value.replace(/\s+/g,' ').trim().toUpperCase(), mob=$('#su-mob').value.replace(/\D/g,''),
+        em=$('#su-email').value.trim().toUpperCase(), ad=$('#su-addr').value.trim().toUpperCase(), ci=$('#su-city').value.trim().toUpperCase();
     if(mob.length>10&&/^(91|0)/.test(mob))mob=mob.slice(-10);
     if(!en){toast('Enter supplier name');return}
     if(mob.length!==10){toast('Enter 10 digit mobile no.');return}
@@ -1124,7 +1214,7 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
   }
   function vClean(t,x){
     x=x.replace(/[.,!?;:।]+/g,'').replace(/\s{2,}/g,' ');
-    if(t==='en')x=x.replace(/\b[a-z]/g,function(c){return c.toUpperCase()});
+    if(t==='en')x=x.toUpperCase();
     return x;
   }
   function afterVoice(t){if(t==='en')onEnglish();else{guTouched=true;updateSugs()}}
@@ -1310,4 +1400,19 @@ input.rate[readonly]{background:var(--soft);border-color:transparent}
 })();
 </script>
 
-</body></html>
+<script>
+(function(){
+  function isTxt(t){return t&&t.tagName&&(t.tagName==='TEXTAREA'||(t.tagName==='INPUT'&&/^(text|tel|email|search)$/.test(t.type)))}
+  function num(t){var m=t.getAttribute('inputmode');return m==='decimal'||m==='numeric'}
+  function up(e){
+    var t=e.target;if(!isTxt(t)||e.isComposing||num(t))return;
+    var v=t.value,u=v.toUpperCase();if(v===u)return;
+    var a=null,b=null;try{a=t.selectionStart;b=t.selectionEnd}catch(x){}
+    t.value=u;
+    try{if(a!==null)t.setSelectionRange(a,b)}catch(x){}
+  }
+  document.addEventListener('input',up,true);
+  document.addEventListener('compositionend',function(e){up({target:e.target})},true);
+  document.addEventListener('focusin',function(e){var t=e.target;if(isTxt(t)&&!num(t))t.setAttribute('autocapitalize','characters')});
+})();
+</script></body></html>
