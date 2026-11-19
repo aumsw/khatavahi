@@ -23,6 +23,65 @@
 .vs{display:flex;justify-content:space-between;gap:10px;padding:6px 0}
 .vs.tot{font:700 18px var(--head);color:var(--accent);border-top:2px solid var(--line);margin-top:6px;padding-top:10px}
 .vs.due b{color:var(--danger)}
+/* Reports */
+.rpf{gap:10px;padding:12px}
+.rpf .r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rpf label.cf{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:7px 12px;border-radius:18px;background:var(--soft);color:var(--accent);font-weight:700;font-size:12.5px;border:1.5px solid transparent}
+.chip.on{background:var(--accent-fill);color:var(--on-accent)}
+.rsum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rsum div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.rsum small{color:var(--muted);font-weight:600;font-size:11px}
+.rsum b{font:700 14px var(--head);overflow-wrap:anywhere}
+.rsum .d b{color:var(--danger)}
+.rl{display:flex;flex-direction:column;gap:8px}
+.rc{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;text-align:left;width:100%}
+.rc .l1{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.rc .l1 b{font-weight:700;overflow-wrap:anywhere}
+.rc .l1 .am{font:700 15px var(--head);white-space:nowrap;font-variant-numeric:tabular-nums}
+.rc .l2{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12.5px;flex-wrap:wrap}
+.rc .l2 .dn{color:var(--danger);font-weight:700}
+.rc .l2 .ok{color:#16A34A;font-weight:700}
+.rc .pl{border-top:1px dashed var(--line);margin-top:6px;padding-top:6px;display:flex;flex-direction:column;gap:4px;font-size:12.5px}
+.rc .pl div{display:flex;justify-content:space-between;gap:10px}
+.rc .pl div span:last-child{font-weight:700;font-variant-numeric:tabular-nums}
+.rc[data-bill]{cursor:pointer}
+.rc[data-bill]:active{background:var(--soft)}
+.btip{position:fixed;z-index:40;width:min(330px,calc(100vw - 16px));max-height:calc(100vh - 16px);overflow:hidden;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 10px 30px rgba(3,14,32,.35);pointer-events:none;font-size:13px}
+.btip[hidden]{display:none}
+.brow.done{flex-direction:row;align-items:center;gap:10px;padding:10px 12px;background:var(--soft)}
+.brow.done .bd{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.brow.done .bd b{font-weight:700;overflow-wrap:anywhere}
+.brow.done .bd small{color:var(--muted);font-size:12.5px}
+.brow.done .bd-amt{font:700 15px var(--head);white-space:nowrap;font-variant-numeric:tabular-nums}
+.brow.cur{border-color:var(--accent-fill);border-width:2px}
+.b-edit,.b-ok{width:48px;flex:none;border-radius:12px;background:var(--soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
+.brow.done .b-edit,.brow.done .b-del{background:var(--surface);width:38px;height:38px;border-radius:10px}
+.b-edit svg{width:18px;height:18px;fill:currentColor}
+.b-ok{background:var(--accent-fill);color:var(--on-accent)}
+/* Home: party-wise dues popup, hover tip, Top 5 */
+.stat .sv{cursor:pointer;text-decoration:underline dotted var(--muted);text-underline-offset:5px}
+.tip{position:fixed;z-index:40;min-width:180px;max-width:260px;background:var(--bar);color:var(--on-bar);border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.45;box-shadow:0 8px 24px rgba(3,14,32,.35);pointer-events:none}
+.tip[hidden]{display:none}
+.tip b{display:block;margin-bottom:4px;font-size:12px;opacity:.8}
+.tip div{display:flex;justify-content:space-between;gap:12px}
+.tip div span:last-child{font-variant-numeric:tabular-nums;font-weight:700}
+.tip i{display:block;margin-top:4px;opacity:.7;font-style:normal}
+.topc{margin-top:14px}
+.topc h3{font-size:17px}
+.topc h3 small{display:block;font:600 12px var(--font);color:var(--accent);margin-top:2px}
+.tl{display:flex;flex-direction:column;gap:12px}
+.ti{display:grid;grid-template-columns:26px 1fr auto;gap:2px 10px;align-items:center}
+.ti .rk{width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--accent);font:700 13px var(--head);display:grid;place-items:center;grid-row:span 2}
+.ti .nm{font-weight:600;overflow-wrap:anywhere}
+.ti .nm small{color:var(--muted);font-weight:500}
+.ti .am{font:700 15px var(--head);font-variant-numeric:tabular-nums;text-align:right}
+.ti .bar{grid-column:2/4;height:6px;border-radius:3px;background:var(--soft);overflow:hidden}
+.ti .bar i{display:block;height:100%;background:var(--c,var(--accent-fill));border-radius:3px}
+.dl{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.dl small{color:var(--muted)}
+.dl>b{white-space:nowrap;font-variant-numeric:tabular-nums}
 </style></head><body>
 <title>Cyan Navy App</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -700,21 +759,66 @@ input.rate{min-height:36px;width:84px}
   window.addEventListener('online',sheetFlush);
 
   var UC='<div class="uc"><div class="ring"><svg class="i" viewBox="0 0 24 24"><path d="M22.7 19 13.6 9.9a5.4 5.4 0 00-1.3-5.6 5.4 5.4 0 00-5.2-1.4l3.2 3.2-2.8 2.8-3.2-3.2A5.4 5.4 0 004.9 11a5.4 5.4 0 005.6 1.3l9.1 9.1a1 1 0 001.4 0l1.7-1.7a1 1 0 000-1.7z"/></svg></div><b>Under Construction</b><div class="gb">નિર્માણાધીન</div><span>This section is being built and will be available soon.</span><span>આ વિભાગ તૈયાર થઈ રહ્યો છે અને જલ્દી ઉપલબ્ધ થશે.</span></div>';
-  ['reports'].forEach(function(t){$('#v-'+t).innerHTML=UC});
   /* Home summary tiles. To Be Received = total of all Outward bills, To Be Paid = total of all Inward bills (read from the Sheet).
      Advance Received / Advance Paid = payments in excess of bills, per party. Payment section is not built yet, so both stay 0 for now. */
   var HOME_KEY='cyan-navy-home-v1', HT=load(HOME_KEY,{recv:0,pay:0,arecv:0,apaid:0});
-  function renderHome(){
-    var H=[
-      {c:'s-recv',en:'To Be Received',gu:'લેવાના બાકી',v:HT.recv||0},
-      {c:'s-pay',en:'To Be Paid',gu:'ચૂકવવાના બાકી',v:HT.pay||0},
-      {c:'s-arecv',en:'Advance Received',gu:'એડવાન્સ મળ્યા',v:HT.arecv||0},
-      {c:'s-apaid',en:'Advance Paid',gu:'એડવાન્સ ચૂકવ્યા',v:HT.apaid||0}
-    ];
-    $('#v-home').innerHTML='<div class="stats">'+H.map(function(h){
-      return '<button type="button" class="stat '+h.c+'" data-add="'+h.en+'" data-gu="'+h.gu+'"><span class="sl">'+h.en+'</span><span class="sg">'+h.gu+'</span><span class="sv"><small>₹</small>'+h.v.toLocaleString('en-IN',{maximumFractionDigits:2})+'</span></button>';
-    }).join('')+'</div>';
+  /* DU = party-wise list behind each tile (largest first): [{id,name,city,amt}]. Loaded from the Sheet (type=dues). */
+  var DUES_KEY='cyan-navy-dues-v1', DU=load(DUES_KEY,{recv:[],pay:[],arecv:[],apaid:[]}), topKind='cust';
+  var TILES=[
+    {k:'recv',c:'s-recv',en:'To Be Received',gu:'લેવાના બાકી',who:'Customers who owe you',whoGu:'તમને લેવાના બાકી ગ્રાહકો',hdr:'Customer · ગ્રાહક'},
+    {k:'pay',c:'s-pay',en:'To Be Paid',gu:'ચૂકવવાના બાકી',who:'Suppliers you owe',whoGu:'તમારે ચૂકવવાના બાકી સપ્લાયર',hdr:'Supplier · સપ્લાયર'},
+    {k:'arecv',c:'s-arecv',en:'Advance Received',gu:'એડવાન્સ મળ્યા',who:'Customers who paid in advance',whoGu:'એડવાન્સ આપનાર ગ્રાહકો',hdr:'Customer · ગ્રાહક'},
+    {k:'apaid',c:'s-apaid',en:'Advance Paid',gu:'એડવાન્સ ચૂકવ્યા',who:'Suppliers you paid in advance',whoGu:'એડવાન્સ આપેલ સપ્લાયર',hdr:'Supplier · સપ્લાયર'}
+  ];
+  function tileOf(k){return TILES.filter(function(t){return t.k===k})[0]}
+  function renderTop(){
+    var cust=topKind==='cust', list=(cust?DU.recv:DU.pay)||[], top=list.slice(0,5), mx=top.length?top[0].amt:0,
+        col=cust?'#16A34A':'#DC2626';
+    return '<div class="card topc"><h3>Top 5 '+(cust?'to Receive':'to Pay')+'<small>'+(cust?'લેવાના બાકી ટોચના ૫ ગ્રાહક':'ચૂકવવાના બાકી ટોચના ૫ સપ્લાયર')+'</small></h3>'+
+      '<div class="seg" role="radiogroup" aria-label="Customer or Supplier"><label><input type="radio" name="topk" value="cust"'+(cust?' checked':'')+'><span>Customer<small>ગ્રાહક</small></span></label>'+
+      '<label><input type="radio" name="topk" value="supp"'+(cust?'':' checked')+'><span>Supplier<small>સપ્લાયર</small></span></label></div>'+
+      (top.length?'<div class="tl">'+top.map(function(x,i){
+        return '<div class="ti" style="--c:'+col+'"><span class="rk">'+(i+1)+'</span><span class="nm">'+esc(x.name)+(x.city?' <small>· '+esc(x.city)+'</small>':'')+'</span><span class="am">₹'+pn(x.amt)+'</span>'+
+          '<span class="bar"><i style="width:'+(mx>0?Math.max(4,Math.round(x.amt/mx*100)):0)+'%"></i></span></div>';
+      }).join('')+'</div>':'<div class="pnote">Nothing pending · કોઈ બાકી નથી</div>')+'</div>';
   }
+  function renderHome(){
+    $('#v-home').innerHTML='<div class="stats">'+TILES.map(function(t){
+      return '<button type="button" class="stat '+t.c+'" data-k="'+t.k+'"><span class="sl">'+t.en+'</span><span class="sg">'+t.gu+'</span><span class="sv" data-k="'+t.k+'"><small>₹</small>'+(HT[t.k]||0).toLocaleString('en-IN',{maximumFractionDigits:2})+'</span></button>';
+    }).join('')+'</div>'+renderTop();
+  }
+  /* Hover (mouse) = quick tip with top parties; click / tap = full list. */
+  function duesHtml(t){
+    var l=DU[t.k]||[], tot=HT[t.k]||0;
+    return '<div class="vh"><b>'+t.en+'</b><span>'+t.gu+'</span></div><div class="vm">'+t.who+' · '+t.whoGu+'</div>'+
+      (l.length?l.map(function(x){return '<div class="dl"><span>'+esc(x.name)+(x.city?'<small> · '+esc(x.city)+'</small>':'')+'</span><b>₹'+pn(x.amt)+'</b></div>'}).join('')+
+        '<div class="vs tot"><span>Total · કુલ</span><b>₹'+pn(tot)+'</b></div>':'<div class="pnote">Nothing here · અહીં કંઈ નથી</div>');
+  }
+  function showTip(el){
+    var t=tileOf(el.dataset.k), l=DU[t.k]||[], tip=$('#tip'), r=el.getBoundingClientRect();
+    tip.innerHTML='<b>'+t.who+'</b>'+(l.length?l.slice(0,5).map(function(x){return '<div><span>'+esc(x.name)+'</span><span>₹'+pn(x.amt)+'</span></div>'}).join('')+(l.length>5?'<i>+'+(l.length-5)+' more · click to see all</i>':'<i>Click for details</i>'):'<i>Nothing here · અહીં કંઈ નથી</i>');
+    tip.hidden=false;
+    var w=tip.offsetWidth,h=tip.offsetHeight,x=Math.min(Math.max(8,r.left),window.innerWidth-w-8),y=r.bottom+8;
+    if(y+h>window.innerHeight-8)y=Math.max(8,r.top-h-8);
+    tip.style.left=x+'px';tip.style.top=y+'px';
+  }
+  function hideTip(){var t=$('#tip');if(t)t.hidden=true}
+  (function(){
+    var tip=document.createElement('div');tip.className='tip';tip.id='tip';tip.hidden=true;document.body.appendChild(tip);
+    var vh=$('#v-home');
+    vh.addEventListener('pointerover',function(ev){
+      if(ev.pointerType!=='mouse')return;
+      var sv=ev.target.closest&&ev.target.closest('.sv');if(sv)showTip(sv);
+    });
+    vh.addEventListener('pointerout',function(ev){if(ev.target.closest&&ev.target.closest('.sv'))hideTip()});
+    vh.addEventListener('click',function(ev){
+      var st=ev.target.closest&&ev.target.closest('.stat');if(!st)return;
+      hideTip();openMdl(duesHtml(tileOf(st.dataset.k)));
+    });
+    vh.addEventListener('change',function(ev){
+      if(ev.target.name==='topk'){topKind=ev.target.value;renderHome()}
+    });
+  })();
   function sheetLoadSummary(){
     if(!SHEET_URL)return;
     if(load(QUEUE_KEY,[]).length){sheetFlush();return}
@@ -722,6 +826,11 @@ input.rate{min-height:36px;width:84px}
       if(!d||typeof d.recv!=='number')throw 0;
       if(load(QUEUE_KEY,[]).length)return;
       HT.recv=d.recv;HT.pay=d.pay;HT.arecv=d.arecv||0;HT.apaid=d.apaid||0;save(HOME_KEY,HT);renderHome();
+    }).catch(function(){});
+    fetch(SHEET_URL+'?type=dues').then(function(r){return r.json()}).then(function(d){
+      if(!d||!Array.isArray(d.recv))throw 0;
+      if(load(QUEUE_KEY,[]).length)return;
+      DU={recv:d.recv||[],pay:d.pay||[],arecv:d.arecv||[],apaid:d.apaid||[]};save(DUES_KEY,DU);renderHome();
     }).catch(function(){});
   }
   renderHome();sheetLoadSummary();
@@ -753,9 +862,19 @@ input.rate{min-height:36px;width:84px}
       return '<option value="'+x.id+'"'+(String(x.id)===String(sel)?' selected':'')+'>'+esc(x.en)+'</option>';
     }).join('');
   }
+  var PEN='<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>';
+  /* The one row whose boxes are open: the row being edited, otherwise the last row. */
+  function billActive(){return bill.edit!=null?bill.edit:bill.rows.length-1}
+  function rowOk(r){return !!r.item&&bnum(r.qty)>0}
+  function rowEmpty(r){return !r.item&&!bnum(r.qty)&&!bnum(r.rate)}
   function billRowHtml(r,i){
     var it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(it.unit):'';
-    return '<div class="brow" data-i="'+i+'"><div class="bt"><select class="b-item">'+billItemOpts(r.item)+'</select><button type="button" class="b-del" aria-label="Remove row">✕</button></div>'+
+    if(i!==billActive()){
+      /* Earlier rows are locked into one compact line; only the last row stays editable. */
+      var a=Math.round(bnum(r.rate)*bnum(r.qty)*100)/100;
+      return '<div class="brow done" data-i="'+i+'"><div class="bd"><b>'+esc(it?it.en:'—')+'</b><small>'+esc(r.qty)+' '+u+' × ₹'+esc(r.rate||0)+'</small></div><span class="bd-amt">'+binr(a)+'</span><button type="button" class="b-edit" aria-label="Edit row">'+PEN+'</button><button type="button" class="b-del" aria-label="Remove row">✕</button></div>';
+    }
+    return '<div class="brow cur" data-i="'+i+'"><div class="bt"><select class="b-item">'+billItemOpts(r.item)+'</select>'+(bill.edit!=null?'<button type="button" class="b-ok" aria-label="Done">✓</button>':'')+'<button type="button" class="b-del" aria-label="Remove row">✕</button></div>'+
       '<div class="b3"><label>Rate · ભાવ<input type="text" inputmode="decimal" class="b-rate" placeholder="'+(u?'₹/'+u:'₹')+'" value="'+esc(r.rate)+'"></label>'+
       '<label>Qty · જથ્થો<input type="text" inputmode="decimal" class="b-qty" placeholder="'+(u||'QTY')+'" value="'+esc(r.qty)+'"></label>'+
       '<div class="b-amt">Amount · રકમ<b></b></div></div></div>';
@@ -764,8 +883,8 @@ input.rate{min-height:36px;width:84px}
   function billTotals(){
     var t=0;
     $$('#v-bill .brow').forEach(function(el){
-      var r=bill.rows[+el.dataset.i], a=Math.round(bnum(r.rate)*bnum(r.qty)*100)/100;
-      t+=a;el.querySelector('.b-amt b').textContent=binr(a);
+      var r=bill.rows[+el.dataset.i], a=Math.round(bnum(r.rate)*bnum(r.qty)*100)/100, ab=el.querySelector('.b-amt b');
+      t+=a;if(ab)ab.textContent=binr(a);
     });
     t=Math.round((t+bnum(bill.labour)+bnum(bill.trans)+bnum(bill.misc))*100)/100;
     $('#b-grand').textContent=binr(t);$('#b-words').textContent=bwords(t);
@@ -773,7 +892,7 @@ input.rate{min-height:36px;width:84px}
   function refreshBill(){
     var cs=$('#b-cust');if(!cs)return;
     cs.innerHTML=billCustOpts(bill.cust);
-    $$('#v-bill .brow').forEach(function(el){el.querySelector('.b-item').innerHTML=billItemOpts(bill.rows[+el.dataset.i].item)});
+    $$('#v-bill .brow').forEach(function(el){var sel=el.querySelector('.b-item');if(sel)sel.innerHTML=billItemOpts(bill.rows[+el.dataset.i].item)});
   }
   function renderBill(){
     var out=bill.type==='out';
@@ -846,8 +965,22 @@ input.rate{min-height:36px;width:84px}
     vb.addEventListener('click',function(ev){
       if(ev.target.id==='b-dpick'){try{ev.target.showPicker()}catch(e){}return}
       var b=ev.target.closest('button');if(!b)return;
-      if(b.id==='b-add'){bill.rows.push({item:'',rate:'',qty:''});drawRows()}
-      else if(b.classList.contains('b-del')){bill.rows.splice(+b.closest('.brow').dataset.i,1);if(!bill.rows.length)bill.rows.push({item:'',rate:'',qty:''});drawRows()}
+      if(b.id==='b-add'){
+        if(!rowOk(bill.rows[billActive()])){toast('Fill item and quantity first · પહેલા આઇટમ અને જથ્થો ભરો');return}
+        bill.edit=null;bill.rows.push({item:'',rate:'',qty:''});drawRows();
+        var ns=$('#b-rows .brow.cur .b-item');if(ns)ns.focus();
+      }
+      else if(b.classList.contains('b-edit')){
+        var ei=+b.closest('.brow').dataset.i, ai=billActive(), ar=bill.rows[ai];
+        if(!rowOk(ar)&&!rowEmpty(ar)){toast('Fill item and quantity first · પહેલા આઇટમ અને જથ્થો ભરો');return}
+        if(rowEmpty(ar)&&bill.rows.length>1){bill.rows.splice(ai,1);if(ai<ei)ei--}
+        bill.edit=ei;drawRows();var q=$('#b-rows .brow.cur .b-qty');if(q)q.focus();
+      }
+      else if(b.classList.contains('b-ok')){
+        if(!rowOk(bill.rows[billActive()])){toast('Fill item and quantity first · પહેલા આઇટમ અને જથ્થો ભરો');return}
+        bill.edit=null;drawRows();
+      }
+      else if(b.classList.contains('b-del')){bill.edit=null;bill.rows.splice(+b.closest('.brow').dataset.i,1);if(!bill.rows.length)bill.rows.push({item:'',rate:'',qty:''});drawRows()}
       else if(b.id==='b-save')saveBill();
       else if(b.id==='b-new'){bill=newBill(bill.type);renderBill();toast('New bill · નવું બિલ')}
     });
@@ -1041,14 +1174,199 @@ input.rate{min-height:36px;width:84px}
     if(tab==='admin'&&(adminView==='items'||adminView==='prices'))sheetLoadItems(true);
     if(tab==='admin'&&adminView==='customer')sheetLoadCustomers(true);
     if(tab==='home')sheetLoadSummary();
+    if(tab==='reports')openReports();else if(typeof bTipHide==='function')bTipHide();
     if(tab==='payment'){if(!pay.touched)pay.date=todayStr();renderPay();sheetLoadCustomers();sheetLoadSuppliers()}
     if(tab==='bill'){if(!bill.touched)bill.date=todayStr();renderBill();sheetLoadItems();sheetLoadCustomers();sheetLoadSuppliers()}
     try{history.replaceState(null,'','#'+tab)}catch(e){}
   }
   function setTab(t){
     if(t==='admin'&&tab==='admin'&&adminView!=='menu')adminView='menu';
+    if(t==='reports'&&tab==='reports')repView='menu';
     tab=t; showView();
   }
+
+
+  /* ---------- Reports: Outward Bill, Inward Bill, Customer-wise Payment, Supplier-wise Payment ---------- */
+  var repView='menu', RP={from:'',to:'',party:'',open:{},data:{out:null,'in':null},state:{}};
+  var REPS={
+    out:{kind:'out',bills:true,en:'Outward Bill Report',gu:'આઉટવર્ડ બિલ રિપોર્ટ',party:'Customer',partyGu:'ગ્રાહક',sub:'All sales bills · બધા વેચાણ બિલ'},
+    'in':{kind:'in',bills:true,en:'Inward Bill Report',gu:'ઇનવર્ડ બિલ રિપોર્ટ',party:'Supplier',partyGu:'સપ્લાયર',sub:'All purchase bills · બધા ખરીદી બિલ'},
+    cust:{kind:'out',bills:false,en:'Customer-wise Payment',gu:'ગ્રાહક મુજબ ચુકવણી',party:'Customer',partyGu:'ગ્રાહક',got:'Received',gotGu:'મળ્યા',sub:'Billed, received and due per customer · ગ્રાહક મુજબ'},
+    supp:{kind:'in',bills:false,en:'Supplier-wise Payment',gu:'સપ્લાયર મુજબ ચુકવણી',party:'Supplier',partyGu:'સપ્લાયર',got:'Paid',gotGu:'ચૂકવ્યા',sub:'Billed, paid and due per supplier · સપ્લાયર મુજબ'}
+  };
+  var RP_ICON={
+    bill:'<svg class="i" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14l3-2 3 2 3-2 3 2 3-2 2 2V5a2 2 0 00-2-2zm-4 11H7v-2h8v2zm2-4H7V8h10v2z"/></svg>',
+    pay:'<svg class="i" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 14H4v-6h16v6zm0-10H4V8h16v0zM4 6h16v2H4V6z"/></svg>'
+  };
+  var CHEV='<svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>';
+  var BACK='<svg class="i" viewBox="0 0 24 24"><path d="M15.4 6 16.8 7.4 12.2 12l4.6 4.6-1.4 1.4-6-6z"/></svg>';
+  function repMenu(){
+    return '<h2>Reports<span class="gu">રિપોર્ટ</span></h2><div class="menu">'+['out','in','cust','supp'].map(function(k){
+      var r=REPS[k];
+      return '<button class="opt" data-rep="'+k+'"><span class="dot">'+(r.bills?RP_ICON.bill:RP_ICON.pay)+'</span><span class="t"><b>'+r.en+'</b><span class="gu">'+r.gu+'</span><small>'+r.sub+'</small></span>'+CHEV+'</button>';
+    }).join('')+'</div>';
+  }
+  function isoD(v){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(v||'');return m?new Date(+m[1],+m[2]-1,+m[3]):null}
+  function toIso(d){return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())}
+  function repInRange(dmy){
+    var f=isoD(RP.from),t=isoD(RP.to);if(!f&&!t)return true;
+    var d=parseDmy(dmy);if(!d)return false;
+    return (!f||d>=f)&&(!t||d<=t);
+  }
+  function repSortDate(a,b){
+    var x=parseDmy(a.date),y=parseDmy(b.date);x=x?x.getTime():0;y=y?y.getTime():0;
+    return y-x||String(b.billNo||'').localeCompare(String(a.billNo||''),undefined,{numeric:true});
+  }
+  /* Rows for the open report, after date / party filter. */
+  function repRows(){
+    var R=REPS[repView], D=RP.data[R.kind];if(!D)return null;
+    var bills=D.bills.filter(function(b){return repInRange(b.date)&&(!RP.party||String(b.partyId)===String(RP.party))});
+    if(R.bills)return {bills:bills.sort(repSortDate)};
+    var pays=D.pays.filter(function(x){return repInRange(x.date)&&(!RP.party||String(x.partyId)===String(RP.party))});
+    var m={};
+    function g(id,name,city){return m[id]||(m[id]={id:id,name:name,city:city||'',billed:0,got:0,due:0,pays:[]})}
+    bills.forEach(function(b){g(b.partyId,b.party,b.city).billed+=b.total});
+    pays.forEach(function(x){var o=g(x.partyId,x.party);o.got+=x.amount;o.pays.push(x)});
+    /* Due = everything still unpaid on this party's bills (all dates), so it always matches the Home tab. */
+    D.bills.forEach(function(b){if(m[b.partyId])m[b.partyId].due+=b.due});
+    var list=Object.keys(m).map(function(k){var o=m[k];o.billed=r2(o.billed);o.got=r2(o.got);o.due=r2(o.due);o.pays.sort(repSortDate);return o});
+    list.sort(function(a,b){return b.due-a.due||b.billed-a.billed});
+    return {parties:list};
+  }
+  function repPartyOpts(){
+    var R=REPS[repView], L=R.kind==='out'?customers:suppliers;
+    return '<option value="">All '+R.party.toLowerCase()+'s · બધા</option>'+L.map(function(x){
+      return '<option value="'+x.id+'"'+(String(x.id)===String(RP.party)?' selected':'')+'>'+esc(x.en)+(x.city?' · '+esc(x.city):'')+'</option>';
+    }).join('');
+  }
+  function repShell(){
+    var R=REPS[repView];
+    return '<div class="noprint"><button class="back" id="repBack">'+BACK+'Reports · રિપોર્ટ</button></div>'+
+      '<h2>'+R.en+'<span class="gu">'+R.gu+'</span></h2>'+
+      '<div class="card rpf noprint"><div class="r2"><label class="cf">From · થી<input type="date" id="rp-from" value="'+esc(RP.from)+'"></label><label class="cf">To · સુધી<input type="date" id="rp-to" value="'+esc(RP.to)+'"></label></div>'+
+      '<div class="chips"><button type="button" class="chip" data-pre="m">This month</button><button type="button" class="chip" data-pre="lm">Last month</button><button type="button" class="chip" data-pre="y">This year</button><button type="button" class="chip" data-pre="all">All · બધા</button></div>'+
+      '<select id="rp-party" aria-label="'+R.party+'">'+repPartyOpts()+'</select></div>'+
+      '<div id="rp-body"></div>';
+  }
+  function repBody(){
+    var R=REPS[repView], st=RP.state[R.kind], rows=repRows(), h='';
+    if(!rows){
+      $('#rp-body').innerHTML='<div class="pnote">'+(st==='err'?'Could not load report. · રિપોર્ટ લોડ ન થયો.':'Loading… · લોડ થઈ રહ્યું છે…')+'</div>'+(st==='err'?'<button type="button" class="btn sec" id="rp-retry">Retry · ફરી પ્રયત્ન</button>':'');
+      return;
+    }
+    var tp=RP.from||RP.to?(RP.from?dmyOf(RP.from):'Start')+' → '+(RP.to?dmyOf(RP.to):'Today'):'All dates · બધી તારીખ';
+    if(R.bills){
+      var T=0,P=0,Dd=0;rows.bills.forEach(function(b){T+=b.total;P+=b.paid;Dd+=b.due});
+      h+='<div class="rsum"><div><small>Bills · '+rows.bills.length+'</small><b>₹'+pn(r2(T))+'</b></div><div><small>Paid · ચૂકવ્યા</small><b>₹'+pn(r2(P))+'</b></div><div class="d"><small>Due · બાકી</small><b>₹'+pn(r2(Dd))+'</b></div></div>';
+      h+='<div class="pnote">'+esc(tp)+'</div><div class="rl">'+(rows.bills.length?rows.bills.map(function(b){
+        return '<div class="rc" data-bill="'+esc(b.billNo)+'"><div class="l1"><b>'+esc(b.billNo)+' <small style="font-weight:500;color:var(--muted)">· '+esc(b.date)+'</small></b><span class="am">₹'+pn(b.total)+'</span></div>'+
+          '<div class="l1"><span>'+esc(b.party)+(b.city?' <small style="color:var(--muted)">· '+esc(b.city)+'</small>':'')+'</span></div>'+
+          '<div class="l2"><span>Paid ₹'+pn(b.paid)+'</span><span class="'+(b.due>0?'dn':'ok')+'">'+(b.due>0?'Due ₹'+pn(b.due):'Cleared ✓')+'</span></div></div>';
+      }).join(''):'<div class="pnote">No bills found. · કોઈ બિલ મળ્યું નથી.</div>')+'</div>';
+    }else{
+      var B=0,G=0,Dd2=0;rows.parties.forEach(function(x){B+=x.billed;G+=x.got;Dd2+=x.due});
+      h+='<div class="rsum"><div><small>Billed · બિલ</small><b>₹'+pn(r2(B))+'</b></div><div><small>'+R.got+' · '+R.gotGu+'</small><b>₹'+pn(r2(G))+'</b></div><div class="d"><small>Due · બાકી</small><b>₹'+pn(r2(Dd2))+'</b></div></div>';
+      h+='<div class="pnote">'+esc(tp)+' · Due = all unpaid bills · બાકી = બધા બિલ</div><div class="rl">'+(rows.parties.length?rows.parties.map(function(x){
+        var op=!!RP.open[x.id];
+        return '<button type="button" class="rc" data-party="'+esc(x.id)+'"><div class="l1"><b>'+esc(x.name)+(x.city?' <small style="font-weight:500;color:var(--muted)">· '+esc(x.city)+'</small>':'')+'</b><span class="am">₹'+pn(x.due)+'</span></div>'+
+          '<div class="l2"><span>Billed ₹'+pn(x.billed)+'</span><span>'+R.got+' ₹'+pn(x.got)+'</span><span class="'+(x.due>0?'dn':'ok')+'">'+(x.due>0?'Due':'Cleared ✓')+'</span></div>'+
+          (op?'<div class="pl">'+(x.pays.length?x.pays.map(function(y){return '<div><span>'+esc(y.date)+' · '+(y.billNo?esc(y.billNo):'Advance · એડવાન્સ')+'</span><span>₹'+pn(y.amount)+'</span></div>'}).join(''):'<div><span>No payments in this period · આ સમયમાં ચુકવણી નથી</span></div>')+'</div>':'<div class="l2"><span>'+x.pays.length+' payment'+(x.pays.length===1?'':'s')+' · tap to view</span></div>')+'</button>';
+      }).join(''):'<div class="pnote">No data found. · કોઈ માહિતી મળી નથી.</div>')+'</div>';
+    }
+    $('#rp-body').innerHTML=h;
+    $$('#v-reports .chip').forEach(function(c){c.classList.toggle('on',c.dataset.pre===repPre())});
+  }
+  function dmyOf(iso){var d=isoD(iso);return d?pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+'/'+d.getFullYear():''}
+  function repPre(){
+    var n=new Date(),y=n.getFullYear(),m=n.getMonth();
+    if(!RP.from&&!RP.to)return 'all';
+    if(RP.from===toIso(new Date(y,m,1))&&RP.to===toIso(new Date(y,m+1,0)))return 'm';
+    if(RP.from===toIso(new Date(y,m-1,1))&&RP.to===toIso(new Date(y,m,0)))return 'lm';
+    if(RP.from===y+'-01-01'&&RP.to===y+'-12-31')return 'y';
+    return '';
+  }
+  function repLoad(){
+    var R=REPS[repView];if(!SHEET_URL){RP.state[R.kind]='err';repBody();return}
+    if(load(QUEUE_KEY,[]).length)sheetFlush();
+    BC={};RP.state[R.kind]='load';RP.data[R.kind]=null;repBody();
+    var want=R.kind;
+    fetch(SHEET_URL+'?type=report&kind='+want).then(function(r){return r.json()}).then(function(d){
+      if(!d||!Array.isArray(d.bills)||!Array.isArray(d.pays))throw 0;
+      RP.data[want]=d;RP.state[want]='ok';if(REPS[repView]&&REPS[repView].kind===want&&tab==='reports')repBody();
+    }).catch(function(){RP.state[want]='err';if(REPS[repView]&&REPS[repView].kind===want&&tab==='reports')repBody()});
+  }
+  function openReports(){
+    var v=$('#v-reports');
+    if(repView==='menu'){v.innerHTML=repMenu();return}
+    v.innerHTML=repShell();repLoad();
+  }
+  /* Bill details: hover (mouse) shows a floating preview, click / tap opens the full bill. Loaded on demand, then cached. */
+  var BC={}, bTipNo=null, bPt={x:0,y:0};
+  function repBillGet(no,cb){
+    var k=REPS[repView].kind, key=k+'|'+no;
+    if(BC[key])return cb(BC[key]);
+    if(!SHEET_URL)return cb(null);
+    fetch(SHEET_URL+'?type=bill&kind='+k+'&no='+encodeURIComponent(no)).then(function(r){return r.json()}).then(function(d){
+      if(!d||!d.billNo)throw 0;BC[key]=d;cb(d);
+    }).catch(function(){cb(null)});
+  }
+  function bTipPlace(){
+    var t=$('#btip');if(!t||t.hidden)return;
+    var w=t.offsetWidth,h=t.offsetHeight,x=bPt.x+16,y=bPt.y+16;
+    if(x+w>window.innerWidth-8)x=Math.max(8,bPt.x-w-16);
+    if(y+h>window.innerHeight-8)y=Math.max(8,window.innerHeight-h-8);
+    t.style.left=x+'px';t.style.top=y+'px';
+  }
+  function bTipHide(){bTipNo=null;var t=$('#btip');if(t)t.hidden=true}
+  (function(){
+    var t=document.createElement('div');t.className='btip';t.id='btip';t.hidden=true;document.body.appendChild(t);
+    var v=$('#v-reports');
+    v.addEventListener('pointerover',function(ev){
+      if(ev.pointerType!=='mouse')return;
+      var c=ev.target.closest&&ev.target.closest('[data-bill]'), no=c?c.dataset.bill:null;
+      bPt={x:ev.clientX,y:ev.clientY};
+      if(no===bTipNo)return;
+      if(!no)return bTipHide();
+      bTipNo=no;t.innerHTML='<div class="vh"><b>'+esc(no)+'</b></div><div class="vm">Loading… · લોડ થઈ રહ્યું છે…</div>';t.hidden=false;bTipPlace();
+      repBillGet(no,function(d){
+        if(bTipNo!==no)return;
+        t.innerHTML=d?billViewHtml(d):'<div class="vh"><b>'+esc(no)+'</b></div><div class="vm">Could not load this bill. · બિલ લોડ ન થયું.</div>';
+        bTipPlace();
+      });
+    });
+    v.addEventListener('pointermove',function(ev){if(bTipNo){bPt={x:ev.clientX,y:ev.clientY};bTipPlace()}});
+    v.addEventListener('pointerleave',bTipHide);
+    v.addEventListener('click',function(ev){
+      var c=ev.target.closest&&ev.target.closest('[data-bill]');if(!c)return;
+      var no=c.dataset.bill;bTipHide();
+      openMdl('<div class="vh"><b>'+esc(no)+'</b></div><div class="vm">Loading… · લોડ થઈ રહ્યું છે…</div>');
+      repBillGet(no,function(d){$('#mdl-body').innerHTML=d?billViewHtml(d):'<div class="vh"><b>'+esc(no)+'</b></div><div class="vm">Could not load this bill. · બિલ લોડ ન થયું.</div>'});
+    });
+  })();
+  (function(){
+    var v=$('#v-reports');
+    v.addEventListener('click',function(ev){
+      var b=ev.target.closest('button');if(!b)return;
+      if(b.dataset.rep){repView=b.dataset.rep;RP.party='';RP.open={};openReports();$('#main').scrollTop=0;return}
+      if(b.id==='repBack'){repView='menu';openReports();return}
+      if(b.dataset.pre){
+        var n=new Date(),y=n.getFullYear(),m=n.getMonth(),k=b.dataset.pre;
+        if(k==='all'){RP.from='';RP.to=''}
+        else if(k==='m'){RP.from=toIso(new Date(y,m,1));RP.to=toIso(new Date(y,m+1,0))}
+        else if(k==='lm'){RP.from=toIso(new Date(y,m-1,1));RP.to=toIso(new Date(y,m,0))}
+        else{RP.from=y+'-01-01';RP.to=y+'-12-31'}
+        $('#rp-from').value=RP.from;$('#rp-to').value=RP.to;repBody();return
+      }
+      if(b.dataset.party!==undefined){RP.open[b.dataset.party]=!RP.open[b.dataset.party];repBody();return}
+      if(b.id==='rp-retry')repLoad();
+    });
+    v.addEventListener('change',function(ev){
+      var t=ev.target;
+      if(t.id==='rp-from'){RP.from=t.value;repBody()}
+      else if(t.id==='rp-to'){RP.to=t.value;repBody()}
+      else if(t.id==='rp-party'){RP.party=t.value;repBody()}
+    });
+  })();
 
   /* ---------- Items ---------- */
   var items=load(ITEMS_KEY,[]), prices=load(PRICES_KEY,{}), priceEdit=null, mode='add', editId=null, delId=null, kbOpen=false;
