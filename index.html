@@ -23,6 +23,12 @@
 .vs{display:flex;justify-content:space-between;gap:10px;padding:6px 0}
 .vs.tot{font:700 18px var(--head);color:var(--accent);border-top:2px solid var(--line);margin-top:6px;padding-top:10px}
 .vs.due b{color:var(--danger)}
+.xr{padding:8px!important;gap:4px!important}
+.xr .c3{gap:6px}
+.xr .cf{font-size:9.5px;gap:2px}
+.xr .cf input{min-height:34px!important;height:34px;padding:0 8px;font-size:13px;border-radius:9px}
+.pvt{font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.pv-acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;position:sticky;bottom:-6px;background:var(--surface);padding:10px 0 2px}
 /* Reports */
 .rpf{gap:10px;padding:12px}
 .rpf .r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -836,7 +842,7 @@ input.rate{min-height:36px;width:84px}
   renderHome();sheetLoadSummary();
   /* ---------- Bill (Outward + Inward) ---------- */
   var BILL_KEY='cyan-navy-billno-v1', BILL_IN_KEY='cyan-navy-inbillno-v1';
-  function newBill(t){return {type:t||'out',cust:'',date:todayStr(),touched:false,rows:[{item:'',rate:'',qty:''}],labour:'',trans:'',misc:'',miscNote:''}}
+  function newBill(t){return {type:t||'out',cust:'',date:todayStr(),touched:false,rows:[{item:'',rate:'',qty:''}],labour:'',trans:'',misc:''}}
   var bill=newBill();
   function bnum(v){var x=parseFloat(String(v).replace(/,/g,''));return isNaN(x)?0:x}
   function binr(v){return '₹ '+v.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
@@ -898,13 +904,12 @@ input.rate{min-height:36px;width:84px}
     var out=bill.type==='out';
     function f(id,en,gu,val){return '<label class="cf">'+en+' · '+gu+'<input type="text" inputmode="decimal" id="'+id+'" placeholder="₹" autocomplete="off" value="'+esc(val)+'"></label>'}
     $('#v-bill').innerHTML='<div class="seg" role="radiogroup" aria-label="Bill type"><label><input type="radio" name="btype" value="in"'+(out?'':' checked')+'><span>Inward<small>ઇનવર્ડ</small></span></label><label><input type="radio" name="btype" value="out"'+(out?' checked':'')+'><span>Outward<small>આઉટવર્ડ</small></span></label></div>'+
-      '<div class="card bcard"><select id="b-cust" aria-label="'+(out?'Customer':'Supplier')+'">'+billCustOpts(bill.cust)+'</select>'+
-      '<div class="r2"><div class="bnoc">Bill No. · બિલ નં.<b>'+billNo()+'</b></div>'+
-      '<div class="cf">Date · તારીખ<div class="dtw"><input type="text" id="b-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(bill.date)+'"><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="b-dpick" aria-label="Pick date" value="'+dmyToIso(bill.date)+'"></span></div></div></div></div>'+
+      '<div class="card bcard"><div class="r2"><div class="bnoc">Bill No. · બિલ નં.<b>'+billNo()+'</b></div>'+
+      '<div class="cf">Date · તારીખ<div class="dtw"><input type="text" id="b-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(bill.date)+'"><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="b-dpick" aria-label="Pick date" value="'+dmyToIso(bill.date)+'"></span></div></div></div>'+
+      '<select id="b-cust" aria-label="'+(out?'Customer':'Supplier')+'">'+billCustOpts(bill.cust)+'</select></div>'+
       '<div class="bhead"><span>Items · વસ્તુઓ</span><button type="button" class="btn sec mini" id="b-add">+ Add · ઉમેરો</button></div>'+
       '<div id="b-rows" class="brows"></div>'+
-      '<div class="card bcard"><div class="c3">'+f('b-lab','Labour','મજૂરી',bill.labour)+f('b-tra','Transport','ભાડું',bill.trans)+f('b-misc','Misc.','પરચુરણ',bill.misc)+'</div>'+
-      '<input type="text" id="b-misc-note" autocapitalize="characters" autocomplete="off" placeholder="MISC. DETAILS · પરચુરણ વિગત" value="'+esc(bill.miscNote)+'"></div>'+
+      '<div class="card bcard xr"><div class="c3">'+f('b-lab','Labour','મજૂરી',bill.labour)+f('b-tra','Transport','ભાડું',bill.trans)+f('b-misc','Misc.','પરચુરણ',bill.misc)+'</div></div>'+
       '<div class="card bcard btot"><div class="bl2"><span>Grand Total <small>કુલ રકમ</small></span><b id="b-grand"></b></div><div class="bwords" id="b-words"></div></div>'+
       '<div class="acts"><button type="button" class="btn pri" id="b-save">Save Bill<span class="gu">બિલ સાચવો</span></button>'+
       '<button type="button" class="btn sec" id="b-new">New<span class="gu">નવું</span></button></div>';
@@ -913,29 +918,46 @@ input.rate{min-height:36px;width:84px}
   function r2(v){return Math.round(v*100)/100}
   function pad2(n){return String(n).padStart(2,'0')}
   /* Builds the complete bill as one JSON object and queues it for the Sheet (OUTWARD_BILL / INWARD_BILL tab). */
-  function saveBill(){
+  var bPending=null;
+  function buildBill(){
     var out=bill.type==='out', p=billParties().filter(function(x){return String(x.id)===String(bill.cust)})[0];
-    if(!p){toast(out?'Select customer · ગ્રાહક પસંદ કરો':'Select supplier · સપ્લાયર પસંદ કરો');return}
+    if(!p){toast(out?'Select customer · ગ્રાહક પસંદ કરો':'Select supplier · સપ્લાયર પસંદ કરો');return null}
     var rows=[],sub=0;
     bill.rows.forEach(function(r){
       var it=items.filter(function(x){return x.id===+r.item})[0], q=bnum(r.qty), rt=bnum(r.rate);
       if(!it||!q)return;
       var a=r2(rt*q);sub+=a;rows.push({id:it.id,name:it.en,unit:it.unit,rate:rt,qty:q,amount:a});
     });
-    if(!rows.length){toast('Add item and quantity · આઇટમ અને જથ્થો ઉમેરો');return}
+    if(!rows.length){toast('Add item and quantity · આઇટમ અને જથ્થો ઉમેરો');return null}
     var lab=bnum(bill.labour),tra=bnum(bill.trans),mis=bnum(bill.misc),total=r2(sub+lab+tra+mis);
-    if(!parseDmy(bill.date)){toast('Enter date as DD/MM/YYYY · તારીખ DD/MM/YYYY લખો');return}
+    if(!parseDmy(bill.date)){toast('Enter date as DD/MM/YYYY · તારીખ DD/MM/YYYY લખો');return null}
     var d=new Date(), no=billNo();
     var party={id:p.id,name:p.en,mobile:p.mobile||'',email:p.email||'',address:p.address||'',city:p.city||''};
     var data={billNo:no,billType:out?'Outward':'Inward',date:bill.date,savedAt:d.toISOString()};
     data[out?'customer':'supplier']=party;
     data.items=rows;data.subTotal=r2(sub);data.labour=lab;data.transportation=tra;
-    data.misc={details:bill.miscNote||'',amount:mis};data.grandTotal=total;data.amountInWords=bwords(total);
-    if(out)HT.recv=r2((HT.recv||0)+total);else HT.pay=r2((HT.pay||0)+total);save(HOME_KEY,HT);renderHome();
-    sheetSend({action:'saveBill',type:out?'out':'in',billNo:no,data:data});
+    data.misc={details:'',amount:mis};data.grandTotal=total;data.amountInWords=bwords(total);
+    return {out:out,no:no,total:total,data:data};
+  }
+  /* Save Bill first shows a preview; the bill is stored only after the user confirms. */
+  function saveBill(){
+    var B=buildBill();if(!B)return;
+    bPending=B;
+    openMdl('<div class="pvt">Bill Preview · બિલ પ્રીવ્યૂ</div>'+billViewHtml(B.data)+
+      '<div class="pv-acts"><button type="button" class="btn sec" id="bp-edit">Edit<span class="gu">સુધારો</span></button><button type="button" class="btn pri" id="bp-ok">Confirm &amp; Save<span class="gu">પુષ્ટિ કરો</span></button></div>');
+  }
+  function commitBill(B){
+    var out=B.out;
+    if(out)HT.recv=r2((HT.recv||0)+B.total);else HT.pay=r2((HT.pay||0)+B.total);save(HOME_KEY,HT);renderHome();
+    sheetSend({action:'saveBill',type:out?'out':'in',billNo:B.no,data:B.data});
     save(out?BILL_KEY:BILL_IN_KEY,(+load(out?BILL_KEY:BILL_IN_KEY,0))+1);
     bill=newBill(bill.type);renderBill();toast('Bill saved · બિલ સાચવ્યું');
   }
+  document.addEventListener('click',function(ev){
+    var b=ev.target.closest&&ev.target.closest('button');if(!b)return;
+    if(b.id==='bp-edit'){bPending=null;closeMdl()}
+    else if(b.id==='bp-ok'){var B=bPending;bPending=null;closeMdl();if(B)commitBill(B)}
+  });
   (function(){
     var vb=$('#v-bill');
     vb.addEventListener('change',function(ev){
@@ -958,7 +980,6 @@ input.rate{min-height:36px;width:84px}
       else if(t.id==='b-lab')bill.labour=t.value;
       else if(t.id==='b-tra')bill.trans=t.value;
       else if(t.id==='b-misc')bill.misc=t.value;
-      else if(t.id==='b-misc-note')bill.miscNote=t.value;
       else return;
       billTotals();
     });
