@@ -385,6 +385,81 @@ input.rate{min-height:36px;width:84px}
 .bwords{font-size:11px;line-height:1.3}
 .acts{display:grid;grid-template-columns:1.5fr 1fr;gap:8px}
 </style>
+<style id="v3">
+.pcs{background:var(--soft);border-radius:12px;padding:6px 12px;margin:8px 0}
+.pcs>div{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.pcs>div:last-child{border-bottom:0}
+.pcs span{color:var(--muted)}.pcs b{font-variant-numeric:tabular-nums}
+.pcs .y{font-weight:700}.pcs .y span{color:var(--fg)}.pcs .y b{color:var(--accent);font-size:15px}
+.pcm{font-size:13px;line-height:1.5;margin:4px 0 10px}
+
+.pks{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pkb{min-height:38px;border-radius:12px;background:var(--soft);color:var(--accent);font-weight:700;font-size:13px;border:1.5px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2}
+.pkb small{font-size:10px;font-weight:600;opacity:.8}
+.pkb.on{background:var(--accent-fill);color:var(--on-accent)}
+</style>
+<style id="v2">
+/* Bill screen: compact header + added-items label card */
+#v-bill .seg{gap:6px}
+#v-bill .seg span{min-height:28px;font-size:12px;gap:4px;border-radius:10px}
+#v-bill .seg span small{font-size:10px}
+#v-bill .bcard{padding:8px;gap:6px}
+#v-bill .bnoc{font-size:9px;gap:2px}
+#v-bill .bnoc b{min-height:30px;font-size:13px;padding:0 8px;border-radius:8px}
+#v-bill .cf{font-size:9px;gap:2px}
+#v-bill #b-date{min-height:30px;font-size:12px;padding:0 8px;border-radius:8px}
+#v-bill .dtw{gap:4px}
+#v-bill .dtp{width:30px;height:30px;border-radius:8px}
+#v-bill .dtp svg{width:16px;height:16px}
+#v-bill #b-cust{min-height:34px;font-size:13px}
+.ilist{max-height:128px;overflow-y:auto;scrollbar-width:none;gap:0!important;padding:4px 8px!important}
+.ilist::-webkit-scrollbar{display:none}
+.ilist-empty{color:var(--muted);font-size:11px;text-align:center;padding:8px 0}
+.ichip{display:grid;grid-template-columns:1fr auto 28px;grid-template-areas:"n a e" "q a e";column-gap:8px;align-items:center;padding:4px 2px;border-bottom:1px dashed var(--line);border-radius:6px}
+.ichip:last-child{border-bottom:0}
+.ichip.on{background:var(--soft)}
+.ichip .in{grid-area:n;font-size:11.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ichip .iq{grid-area:q;font-size:10.5px;color:var(--muted)}
+.ichip b{grid-area:a;font-size:12px;font-variant-numeric:tabular-nums}
+.i-edit{grid-area:e;width:28px;height:28px;border-radius:8px;background:var(--soft);color:var(--accent);display:flex;align-items:center;justify-content:center}
+.ichip.on .i-edit{background:var(--surface)}
+.i-edit svg{width:14px;height:14px;fill:currentColor}
+#b-cur{flex-direction:row;align-items:stretch;gap:8px}
+#b-cur .cin{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+#b-cur .cbt{flex:none;width:46px;display:flex;flex-direction:column;gap:6px}
+.b-plus{flex:1;min-height:46px;border-radius:12px;background:var(--accent-fill);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700}
+.b-plus svg{width:26px;height:26px;fill:currentColor}
+#b-cur .b-del{width:46px;min-height:32px;flex:none;border-radius:10px;font-size:15px}
+/* Invoice (paper look, same in light and dark theme) */
+.inv{background:#fff;color:#0B2545;border:1px solid #cfd9e3;border-radius:6px;overflow:hidden;font-size:12px}
+.inv small{display:block;font:700 9px var(--font);letter-spacing:.08em;color:#5A6B80;text-transform:uppercase;margin-bottom:2px}
+.inv-h{background:#0B2545;color:#fff;padding:12px 50px 12px 14px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border-bottom:3px solid #06B6D4}
+.inv-h .br{font:700 16px var(--head);letter-spacing:.1em}
+.inv-h .br small{color:#9FB3C8;font:500 10px var(--font);letter-spacing:.04em;margin:3px 0 0;text-transform:none}
+.inv-h .ty{font:700 11px var(--head);letter-spacing:.14em;color:#22D3EE;padding-top:3px}
+.inv-m{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #dbe5ee}
+.inv-m>div{padding:8px 14px}.inv-m>div+div{border-left:1px solid #dbe5ee}
+.inv-m b{font-size:13px}
+.inv-p{padding:8px 14px;border-bottom:1px solid #dbe5ee;background:#F6FAFC}
+.inv-p b{display:block;font-size:13px}.inv-p span{display:block;color:#5A6B80;line-height:1.4}
+.inv table{width:100%;border-collapse:collapse}
+.inv th{background:#EDF4F8;font:700 9.5px var(--font);letter-spacing:.06em;text-transform:uppercase;color:#5A6B80;padding:6px 8px;text-align:right;border-bottom:1px solid #dbe5ee}
+.inv td{padding:7px 8px;border-bottom:1px solid #e6edf3;text-align:right;font-variant-numeric:tabular-nums;vertical-align:top}
+.inv th:first-child,.inv td:first-child{text-align:center;width:24px;color:#5A6B80}
+.inv th:nth-child(2),.inv td:nth-child(2){text-align:left}
+.inv-t{margin-left:auto;width:min(260px,100%);padding:6px 14px 10px}
+.inv-t>div{display:flex;justify-content:space-between;gap:10px;padding:3px 0}
+.inv-t span{color:#5A6B80}.inv-t b{font-variant-numeric:tabular-nums}
+.inv-t .g{background:#0B2545;color:#fff;border-radius:6px;padding:8px 10px;margin-top:6px;font:700 14px var(--head)}
+.inv-t .g span{color:#fff}
+.inv-t .due b{color:#C2410C}
+.inv-w{padding:8px 14px;border-top:1px dashed #cfd9e3;line-height:1.5;font-style:italic}
+.inv-f{display:flex;justify-content:space-between;gap:12px;padding:30px 14px 10px;font-size:10.5px;color:#5A6B80}
+.inv-f>div{border-top:1px solid #9FB3C8;padding-top:4px;min-width:110px;text-align:center}
+.inv-f em{font-style:normal;font-weight:700;color:#0B2545}
+.inv-n{text-align:center;font-size:9.5px;color:#8FA0B3;padding:6px;background:#F6FAFC;border-top:1px solid #e6edf3}
+</style>
+
 <div class="app">
   <header class="bar"><div class="bar-in gut">
     <div class="brand"><div class="logo">GM</div><div class="ttl" id="ttl"></div></div>
@@ -718,11 +793,13 @@ input.rate{min-height:36px;width:84px}
   }
   function sheetFlush(){
     if(!SHEET_URL||flushing)return;
-    var q=load(QUEUE_KEY,[]);if(!q.length)return;
+    if(!load(QUEUE_KEY,[]).length)return;
     flushing=true;
+    /* The queue is re-read from storage on every step, so entries added while a send is in progress are never lost. */
     (function next(){
+      var q=load(QUEUE_KEY,[]);
       if(!q.length){flushing=false;toast('Saved to Google Sheet · શીટમાં સાચવ્યું');sheetLoadItems();sheetLoadSummary();return}
-      sheetPost(q[0]).then(function(){q.shift();save(QUEUE_KEY,q);next()})
+      sheetPost(q[0]).then(function(){var q2=load(QUEUE_KEY,[]);q2.shift();save(QUEUE_KEY,q2);next()})
         .catch(function(){flushing=false;toast('Sheet sync pending · શીટમાં પછી સાચવાશે')});
     })();
   }
@@ -842,7 +919,7 @@ input.rate{min-height:36px;width:84px}
   renderHome();sheetLoadSummary();
   /* ---------- Bill (Outward + Inward) ---------- */
   var BILL_KEY='cyan-navy-billno-v1', BILL_IN_KEY='cyan-navy-inbillno-v1';
-  function newBill(t){return {type:t||'out',cust:'',date:todayStr(),touched:false,rows:[{item:'',rate:'',qty:''}],labour:'',trans:'',misc:''}}
+  function newBill(t){return {type:t||'out',cust:'',date:todayStr(),touched:false,rows:[],cur:{item:'',rate:'',qty:''},edit:null,labour:'',trans:'',misc:''}}
   var bill=newBill();
   function bnum(v){var x=parseFloat(String(v).replace(/,/g,''));return isNaN(x)?0:x}
   function binr(v){return '₹ '+v.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
@@ -869,36 +946,47 @@ input.rate{min-height:36px;width:84px}
     }).join('');
   }
   var PEN='<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>';
-  /* The one row whose boxes are open: the row being edited, otherwise the last row. */
-  function billActive(){return bill.edit!=null?bill.edit:bill.rows.length-1}
+  var PLUS='<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>';
+  function blank(){return {item:'',rate:'',qty:''}}
   function rowOk(r){return !!r.item&&bnum(r.qty)>0}
   function rowEmpty(r){return !r.item&&!bnum(r.qty)&&!bnum(r.rate)}
-  function billRowHtml(r,i){
-    var it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(it.unit):'';
-    if(i!==billActive()){
-      /* Earlier rows are locked into one compact line; only the last row stays editable. */
-      var a=Math.round(bnum(r.rate)*bnum(r.qty)*100)/100;
-      return '<div class="brow done" data-i="'+i+'"><div class="bd"><b>'+esc(it?it.en:'—')+'</b><small>'+esc(r.qty)+' '+u+' × ₹'+esc(r.rate||0)+'</small></div><span class="bd-amt">'+binr(a)+'</span><button type="button" class="b-edit" aria-label="Edit row">'+PEN+'</button><button type="button" class="b-del" aria-label="Remove row">✕</button></div>';
-    }
-    return '<div class="brow cur" data-i="'+i+'"><div class="bt"><select class="b-item">'+billItemOpts(r.item)+'</select>'+(bill.edit!=null?'<button type="button" class="b-ok" aria-label="Done">✓</button>':'')+'<button type="button" class="b-del" aria-label="Remove row">✕</button></div>'+
+  /* Rows that make up the bill right now: added items (minus the one being edited) plus the entry row if it is valid or being edited. */
+  function liveRows(){
+    var a=bill.rows.filter(function(_,i){return i!==bill.edit});
+    if(bill.edit!=null||rowOk(bill.cur))a.push(bill.cur);
+    return a;
+  }
+  function listHtml(){
+    if(!bill.rows.length)return '<div class="ilist-empty">No items added yet · હજી વસ્તુ ઉમેરી નથી</div>';
+    return bill.rows.map(function(r,i){
+      var it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(it.unit):'', a=r2(bnum(r.rate)*bnum(r.qty));
+      return '<div class="ichip'+(bill.edit===i?' on':'')+'" data-i="'+i+'"><span class="in">'+(i+1)+'. '+esc(it?it.en:'—')+'</span><span class="iq">'+esc(r.qty)+' '+u+' × ₹'+esc(r.rate||0)+'</span><b>'+binr(a)+'</b><button type="button" class="i-edit" aria-label="Edit item">'+PEN+'</button></div>';
+    }).join('');
+  }
+  function curHtml(){
+    var r=bill.cur, it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(it.unit):'', ed=bill.edit!=null;
+    return '<div class="cin"><select class="b-item">'+billItemOpts(r.item)+'</select>'+
       '<div class="b3"><label>Rate · ભાવ<input type="text" inputmode="decimal" class="b-rate" placeholder="'+(u?'₹/'+u:'₹')+'" value="'+esc(r.rate)+'"></label>'+
       '<label>Qty · જથ્થો<input type="text" inputmode="decimal" class="b-qty" placeholder="'+(u||'QTY')+'" value="'+esc(r.qty)+'"></label>'+
-      '<div class="b-amt">Amount · રકમ<b></b></div></div></div>';
+      '<div class="b-amt">Amount · રકમ<b></b></div></div></div>'+
+      '<div class="cbt"><button type="button" class="b-plus" id="b-plus" aria-label="'+(ed?'Save item':'Add item')+'">'+(ed?'✓':PLUS)+'</button>'+(ed?'<button type="button" class="b-del" id="b-cdel" aria-label="Remove item">✕</button>':'')+'</div>';
   }
-  function drawRows(){$('#b-rows').innerHTML=bill.rows.map(billRowHtml).join('');billTotals()}
+  function drawList(){var l=$('#b-list');if(l)l.innerHTML=listHtml()}
+  function drawCur(){var c=$('#b-cur');if(c)c.innerHTML=curHtml()}
+  function drawAll(){drawList();drawCur();billTotals()}
   function billTotals(){
     var t=0;
-    $$('#v-bill .brow').forEach(function(el){
-      var r=bill.rows[+el.dataset.i], a=Math.round(bnum(r.rate)*bnum(r.qty)*100)/100, ab=el.querySelector('.b-amt b');
-      t+=a;if(ab)ab.textContent=binr(a);
-    });
+    liveRows().forEach(function(r){t+=r2(bnum(r.rate)*bnum(r.qty))});
+    var ab=$('#b-cur .b-amt b');if(ab)ab.textContent=binr(r2(bnum(bill.cur.rate)*bnum(bill.cur.qty)));
     t=Math.round((t+bnum(bill.labour)+bnum(bill.trans)+bnum(bill.misc))*100)/100;
-    $('#b-grand').textContent=binr(t);$('#b-words').textContent=bwords(t);
+    var g=$('#b-grand');if(!g)return;
+    g.textContent=binr(t);$('#b-words').textContent=bwords(t);
   }
   function refreshBill(){
     var cs=$('#b-cust');if(!cs)return;
     cs.innerHTML=billCustOpts(bill.cust);
-    $$('#v-bill .brow').forEach(function(el){var sel=el.querySelector('.b-item');if(sel)sel.innerHTML=billItemOpts(bill.rows[+el.dataset.i].item)});
+    var sel=$('#b-cur .b-item');if(sel)sel.innerHTML=billItemOpts(bill.cur.item);
+    drawList();
   }
   function renderBill(){
     var out=bill.type==='out';
@@ -907,15 +995,15 @@ input.rate{min-height:36px;width:84px}
       '<div class="card bcard"><div class="r2"><div class="bnoc">Bill No. · બિલ નં.<b>'+billNo()+'</b></div>'+
       '<div class="cf">Date · તારીખ<div class="dtw"><input type="text" id="b-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(bill.date)+'"><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="b-dpick" aria-label="Pick date" value="'+dmyToIso(bill.date)+'"></span></div></div></div>'+
       '<select id="b-cust" aria-label="'+(out?'Customer':'Supplier')+'">'+billCustOpts(bill.cust)+'</select></div>'+
-      '<div class="bhead"><span>Items · વસ્તુઓ</span><button type="button" class="btn sec mini" id="b-add">+ Add · ઉમેરો</button></div>'+
-      '<div id="b-rows" class="brows"></div>'+
+      '<div class="card bcard ilist" id="b-list"></div>'+
+      '<div class="brow cur" id="b-cur"></div>'+
       '<div class="card bcard xr"><div class="c3">'+f('b-lab','Labour','મજૂરી',bill.labour)+f('b-tra','Transport','ભાડું',bill.trans)+f('b-misc','Misc.','પરચુરણ',bill.misc)+'</div></div>'+
       '<div class="card bcard btot"><div class="bl2"><span>Grand Total <small>કુલ રકમ</small></span><b id="b-grand"></b></div><div class="bwords" id="b-words"></div></div>'+
       '<div class="acts"><button type="button" class="btn pri" id="b-save">Save Bill<span class="gu">બિલ સાચવો</span></button>'+
       '<button type="button" class="btn sec" id="b-new">New<span class="gu">નવું</span></button></div>';
-    drawRows();
+    drawAll();
   }
-  function r2(v){return Math.round(v*100)/100}
+    function r2(v){return Math.round(v*100)/100}
   function pad2(n){return String(n).padStart(2,'0')}
   /* Builds the complete bill as one JSON object and queues it for the Sheet (OUTWARD_BILL / INWARD_BILL tab). */
   var bPending=null;
@@ -923,7 +1011,7 @@ input.rate{min-height:36px;width:84px}
     var out=bill.type==='out', p=billParties().filter(function(x){return String(x.id)===String(bill.cust)})[0];
     if(!p){toast(out?'Select customer · ગ્રાહક પસંદ કરો':'Select supplier · સપ્લાયર પસંદ કરો');return null}
     var rows=[],sub=0;
-    bill.rows.forEach(function(r){
+    liveRows().forEach(function(r){
       var it=items.filter(function(x){return x.id===+r.item})[0], q=bnum(r.qty), rt=bnum(r.rate);
       if(!it||!q)return;
       var a=r2(rt*q);sub+=a;rows.push({id:it.id,name:it.en,unit:it.unit,rate:rt,qty:q,amount:a});
@@ -940,18 +1028,53 @@ input.rate{min-height:36px;width:84px}
     return {out:out,no:no,total:total,data:data};
   }
   /* Save Bill first shows a preview; the bill is stored only after the user confirms. */
+  /* Advance already held for this party (Advance Received for a customer, Advance Paid for a supplier). */
+  function getAdvance(B,cb){
+    var key=B.out?'arecv':'apaid', pid=String((B.data.customer||B.data.supplier).id);
+    function pick(){var o=(DU[key]||[]).filter(function(x){return String(x.id)===pid})[0];return o?Math.max(+o.amt||0,0):0}
+    if(!SHEET_URL)return cb(pick());
+    if(load(QUEUE_KEY,[]).length){sheetFlush();return cb(pick())}
+    fetch(SHEET_URL+'?type=dues').then(function(r){return r.json()}).then(function(d){
+      if(d&&Array.isArray(d.recv)){DU={recv:d.recv||[],pay:d.pay||[],arecv:d.arecv||[],apaid:d.apaid||[]};save(DUES_KEY,DU)}
+      cb(pick());
+    }).catch(function(){cb(pick())});
+  }
+  var bBusy=false;
   function saveBill(){
-    var B=buildBill();if(!B)return;
+    if(bBusy)return;
+    var B0=buildBill();if(!B0)return;
+    bBusy=true;
+    getAdvance(B0,function(adv){
+      bBusy=false;
+      B0.adv=r2(Math.min(adv,B0.total));
+      showBillPreview(B0);
+    });
+  }
+  function showBillPreview(B){
     bPending=B;
-    openMdl('<div class="pvt">Bill Preview · બિલ પ્રીવ્યૂ</div>'+billViewHtml(B.data)+
+    var vd=B.data;
+    if(B.adv>0){vd={};for(var k in B.data)vd[k]=B.data[k];vd.paid=B.adv;vd.paidLabel='Advance adjusted · એડવાન્સ સામે'}
+    openMdl('<div class="pvt">Bill Preview · બિલ પ્રીવ્યૂ</div>'+billViewHtml(vd)+
+      (B.adv>0?'<div class="pcm">Advance ₹'+pn(B.adv)+' will be set against this bill automatically.'+(B.total>B.adv?' Balance due: <b>₹'+pn(r2(B.total-B.adv))+'</b>.':' The bill will be fully cleared.')+(B.adv>B.total?'':'')+'</div>':'')+
       '<div class="pv-acts"><button type="button" class="btn sec" id="bp-edit">Edit<span class="gu">સુધારો</span></button><button type="button" class="btn pri" id="bp-ok">Confirm &amp; Save<span class="gu">પુષ્ટિ કરો</span></button></div>');
   }
   function commitBill(B){
     var out=B.out;
-    if(out)HT.recv=r2((HT.recv||0)+B.total);else HT.pay=r2((HT.pay||0)+B.total);save(HOME_KEY,HT);renderHome();
+    var adv=B.adv||0;
+    if(out)HT.recv=r2((HT.recv||0)+B.total-adv);else HT.pay=r2((HT.pay||0)+B.total-adv);
+    if(adv>0){if(out)HT.arecv=Math.max(0,r2((HT.arecv||0)-adv));else HT.apaid=Math.max(0,r2((HT.apaid||0)-adv))}
+    save(HOME_KEY,HT);renderHome();
     sheetSend({action:'saveBill',type:out?'out':'in',billNo:B.no,data:B.data});
+    if(adv>0){
+      /* Advance is used up: one entry puts the money against the new bill, one takes the same amount out of Advance (negative, no bill no.). */
+      var pt=B.data.customer||B.data.supplier, ts=Date.now(), kind=out?'cust':'supp', dt=B.data.date;
+      var base={action:'savePayment',kind:kind,date:dt,paymentDate:dt,dateIso:dmyToIso(dt),savedAt:new Date().toISOString(),partyId:pt.id,partyName:pt.name};
+      function mk(id,bn,amt){var o={};for(var k in base)o[k]=base[k];o.id=String(id);o.billNo=bn;o.amount=amt;o.note='Advance adjusted against '+B.no;return o}
+      sheetSend(mk(ts,B.no,adv));
+      sheetSend(mk(ts+1,'',-adv));
+    }
     save(out?BILL_KEY:BILL_IN_KEY,(+load(out?BILL_KEY:BILL_IN_KEY,0))+1);
-    bill=newBill(bill.type);renderBill();toast('Bill saved · બિલ સાચવ્યું');
+    bill=newBill(bill.type);renderBill();toast(adv>0?'Bill saved · Advance ₹'+pn(adv)+' adjusted · બિલ સાચવ્યું':'Bill saved · બિલ સાચવ્યું');
   }
   document.addEventListener('click',function(ev){
     var b=ev.target.closest&&ev.target.closest('button');if(!b)return;
@@ -969,14 +1092,16 @@ input.rate{min-height:36px;width:84px}
         if(m){bill.date=m[3]+'/'+m[2]+'/'+m[1];bill.touched=true;$('#b-date').value=bill.date}
       }
       else if(t.classList.contains('b-item')){
-        var r=bill.rows[+t.closest('.brow').dataset.i], it=items.filter(function(x){return x.id===+t.value})[0];
-        r.item=t.value;r.rate=it&&prices[it.id]!=null?String(prices[it.id]):'';drawRows();
+        var it=items.filter(function(x){return x.id===+t.value})[0];
+        bill.cur.item=t.value;bill.cur.rate=it&&prices[it.id]!=null?String(prices[it.id]):'';
+        drawCur();billTotals();var q=$('#b-cur .b-qty');if(q)q.focus();
       }
     });
     vb.addEventListener('input',function(ev){
-      var t=ev.target, c=t.classList, row=t.closest('.brow');
+      var t=ev.target, c=t.classList;
       if(t.id==='b-date'){t.value=fmtDmyInput(t.value);bill.date=t.value;bill.touched=true;var iso=dmyToIso(t.value);if(iso)$('#b-dpick').value=iso;return}
-      if(row){var r=bill.rows[+row.dataset.i];if(c.contains('b-rate'))r.rate=t.value;else if(c.contains('b-qty'))r.qty=t.value;else return}
+      if(c.contains('b-rate'))bill.cur.rate=t.value;
+      else if(c.contains('b-qty'))bill.cur.qty=t.value;
       else if(t.id==='b-lab')bill.labour=t.value;
       else if(t.id==='b-tra')bill.trans=t.value;
       else if(t.id==='b-misc')bill.misc=t.value;
@@ -986,22 +1111,23 @@ input.rate{min-height:36px;width:84px}
     vb.addEventListener('click',function(ev){
       if(ev.target.id==='b-dpick'){try{ev.target.showPicker()}catch(e){}return}
       var b=ev.target.closest('button');if(!b)return;
-      if(b.id==='b-add'){
-        if(!rowOk(bill.rows[billActive()])){toast('Fill item and quantity first · પહેલા આઇટમ અને જથ્થો ભરો');return}
-        bill.edit=null;bill.rows.push({item:'',rate:'',qty:''});drawRows();
-        var ns=$('#b-rows .brow.cur .b-item');if(ns)ns.focus();
+      if(b.id==='b-plus'){
+        if(!rowOk(bill.cur)){toast('Fill item and quantity first · પહેલા આઇટમ અને જથ્થો ભરો');return}
+        if(bill.edit!=null){bill.rows[bill.edit]=bill.cur;bill.edit=null}else bill.rows.push(bill.cur);
+        bill.cur=blank();drawAll();
+        var l=$('#b-list');if(l)l.scrollTop=l.scrollHeight;
+        var ns=$('#b-cur .b-item');if(ns)ns.focus();
       }
-      else if(b.classList.contains('b-edit')){
-        var ei=+b.closest('.brow').dataset.i, ai=billActive(), ar=bill.rows[ai];
-        if(!rowOk(ar)&&!rowEmpty(ar)){toast('Fill item and quantity first · પહેલા આઇટમ અને જથ્થો ભરો');return}
-        if(rowEmpty(ar)&&bill.rows.length>1){bill.rows.splice(ai,1);if(ai<ei)ei--}
-        bill.edit=ei;drawRows();var q=$('#b-rows .brow.cur .b-qty');if(q)q.focus();
+      else if(b.id==='b-cdel'){
+        if(bill.edit!=null)bill.rows.splice(bill.edit,1);
+        bill.edit=null;bill.cur=blank();drawAll();
       }
-      else if(b.classList.contains('b-ok')){
-        if(!rowOk(bill.rows[billActive()])){toast('Fill item and quantity first · પહેલા આઇટમ અને જથ્થો ભરો');return}
-        bill.edit=null;drawRows();
+      else if(b.classList.contains('i-edit')){
+        var ei=+b.closest('.ichip').dataset.i;
+        if(bill.edit==null&&!rowEmpty(bill.cur)){toast('Press + to add current item first · પહેલા + દબાવો');return}
+        bill.edit=ei;bill.cur={item:bill.rows[ei].item,rate:bill.rows[ei].rate,qty:bill.rows[ei].qty};
+        drawAll();var q=$('#b-cur .b-qty');if(q)q.focus();
       }
-      else if(b.classList.contains('b-del')){bill.edit=null;bill.rows.splice(+b.closest('.brow').dataset.i,1);if(!bill.rows.length)bill.rows.push({item:'',rate:'',qty:''});drawRows()}
       else if(b.id==='b-save')saveBill();
       else if(b.id==='b-new'){bill=newBill(bill.type);renderBill();toast('New bill · નવું બિલ')}
     });
@@ -1033,7 +1159,7 @@ input.rate{min-height:36px;width:84px}
   }
   function payRefOpts(){
     return '<option value="">'+(payLoading?'Loading bills…':'No bill · Advance')+'</option>'+payBills.map(function(b){
-      return '<option value="'+esc(b.billNo)+'"'+(b.billNo===pay.ref?' selected':'')+'>'+esc(b.billNo)+' · ₹'+pn(b.total)+' · Due ₹'+pn(b.due)+'</option>';
+      return '<option value="'+esc(b.billNo)+'"'+(b.billNo===pay.ref?' selected':'')+'>'+esc(b.billNo)+' · ₹'+pn(b.total)+(b.paid>0?' · Paid ₹'+pn(b.paid):'')+' · Due ₹'+pn(b.due)+'</option>';
     }).join('');
   }
   function refreshPayParty(){var el=$('#p-party');if(el)el.innerHTML=payPartyOpts()}
@@ -1050,7 +1176,7 @@ input.rate{min-height:36px;width:84px}
     if(!pay.ref){n.textContent=(a?'₹'+pn(a)+' ':'Amount ')+'will be saved as '+adv+' (no bill selected).';return}
     var b=payBills.filter(function(x){return x.billNo===pay.ref})[0];
     if(!b){n.textContent='';return}
-    n.textContent=a>b.due?'₹'+pn(r2(a-b.due))+' is more than the due ₹'+pn(b.due)+'. The extra will be kept as '+adv+'.':'Due on this bill: ₹'+pn(b.due);
+    n.textContent=a>b.due?'₹'+pn(r2(a-b.due))+' is more than the due ₹'+pn(b.due)+'. The extra will be kept as '+adv+'.':'Bill ₹'+pn(b.total)+(b.paid>0?' · Paid ₹'+pn(b.paid):'')+' · Due ₹'+pn(b.due)+(a&&a<b.due?'. Remaining ₹'+pn(r2(b.due-a))+' will stay due.':'');
   }
   function loadPayBills(){
     payBills=[];pay.ref='';
@@ -1060,7 +1186,7 @@ input.rate{min-height:36px;width:84px}
     fetch(SHEET_URL+'?type=bills&kind='+payBillKind()+'&party='+encodeURIComponent(pay.party)).then(function(r){return r.json()}).then(function(rows){
       if(payBillsFor!==want)return;
       if(!Array.isArray(rows))throw 0;
-      payBills=rows.map(function(b){return {billNo:b.billNo,date:b.date,total:b.total,paid:b.paid,due:r2(b.total-b.paid)}});
+      payBills=rows.map(function(b){return {billNo:b.billNo,date:b.date,total:b.total,paid:b.paid,due:r2(b.total-b.paid)}}).filter(function(b){return b.due>0});
       payLoading=false;refreshPayRef();
     }).catch(function(){if(payBillsFor!==want)return;payLoading=false;refreshPayRef();toast('Could not load bills · બિલ લોડ ન થયા')});
   }
@@ -1084,18 +1210,25 @@ input.rate{min-height:36px;width:84px}
   function billViewHtml(d){
     var pt=d.customer||d.supplier||{}, out=!!d.customer;
     var addr=[pt.address,pt.city].filter(Boolean).join(', ');
-    var h='<div class="vh"><span>'+(out?'Outward':'Inward')+' Bill</span><b>'+esc(d.billNo)+'</b></div><div class="vm">Date: '+esc(d.date||'')+'</div>'+
-      '<div class="vp"><b>'+esc(pt.name||'')+'</b>'+(pt.mobile?'<br>'+esc(pt.mobile):'')+(addr?'<br>'+esc(addr):'')+'</div>';
-    (d.items||[]).forEach(function(it){
-      h+='<div class="vr"><div><b>'+esc(it.name)+'</b><small>'+pn(it.qty)+' '+esc(it.unit)+' × ₹'+pn(it.rate)+'</small></div><b>₹'+pn(it.amount)+'</b></div>';
-    });
-    function ln(t,v){return v?'<div class="vs"><span>'+t+'</span><b>₹'+pn(v)+'</b></div>':''}
-    h+=ln('Labour',d.labour)+ln('Transportation',d.transportation)+ln('Misc.'+(d.misc&&d.misc.details?' ('+esc(d.misc.details)+')':''),d.misc&&d.misc.amount);
-    h+='<div class="vs tot"><span>Grand Total</span><b>₹'+pn(d.grandTotal||0)+'</b></div><div class="bwords">'+esc(d.amountInWords||'')+'</div>';
-    if(typeof d.paid==='number')h+='<div class="vs" style="margin-top:8px"><span>Paid so far</span><b>₹'+pn(d.paid)+'</b></div><div class="vs due"><span>Due</span><b>₹'+pn(r2((d.grandTotal||0)-d.paid))+'</b></div>';
+    var its=d.items||[];
+    var rows=its.map(function(it,i){
+      return '<tr><td>'+(i+1)+'</td><td><b>'+esc(it.name)+'</b></td><td>'+pn(+it.qty||0)+' '+esc(it.unit||'')+'</td><td>'+pn(+it.rate||0)+'</td><td><b>'+pn(+it.amount||0)+'</b></td></tr>';
+    }).join('');
+    var sub=d.subTotal!=null?+d.subTotal:its.reduce(function(a,x){return a+(+x.amount||0)},0);
+    function ln(t,v){return v?'<div><span>'+t+'</span><b>₹ '+pn(+v)+'</b></div>':''}
+    var h='<div class="inv"><div class="inv-h"><div class="br">CYAN NAVY<small>'+(out?'Sales Invoice · વેચાણ બિલ':'Purchase Bill · ખરીદ બિલ')+'</small></div><div class="ty">'+(out?'OUTWARD':'INWARD')+'</div></div>'+
+      '<div class="inv-m"><div><small>Bill No. · બિલ નં.</small><b>'+esc(d.billNo)+'</b></div><div><small>Date · તારીખ</small><b>'+esc(d.date||'')+'</b></div></div>'+
+      '<div class="inv-p"><small>'+(out?'Bill To · ગ્રાહક':'Supplier · સપ્લાયર')+'</small><b>'+esc(pt.name||'')+'</b>'+(pt.mobile?'<span>'+esc(pt.mobile)+'</span>':'')+(addr?'<span>'+esc(addr)+'</span>':'')+'</div>'+
+      '<table><thead><tr><th>#</th><th>Item</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+      '<div class="inv-t"><div><span>Sub Total</span><b>₹ '+pn(sub)+'</b></div>'+ln('Labour · મજૂરી',d.labour)+ln('Transportation · ભાડું',d.transportation)+ln('Misc.'+(d.misc&&d.misc.details?' ('+esc(d.misc.details)+')':''),d.misc&&d.misc.amount)+
+      '<div class="g"><span>Grand Total</span><b>₹ '+pn(+d.grandTotal||0)+'</b></div>';
+    if(typeof d.paid==='number')h+='<div><span>'+esc(d.paidLabel||'Paid so far')+'</span><b>₹ '+pn(d.paid)+'</b></div><div class="due"><span>Balance Due</span><b>₹ '+pn(r2((d.grandTotal||0)-d.paid))+'</b></div>';
+    h+='</div><div class="inv-w"><small>Amount in words</small>'+esc(d.amountInWords||'')+'</div>'+
+      '<div class="inv-f"><div>'+(out?'Receiver’s Sign':'Supplier’s Sign')+'</div><div>Authorised Signatory<br><em>For CYAN NAVY</em></div></div>'+
+      '<div class="inv-n">This is a computer generated bill.</div></div>';
     return h;
   }
-  function viewBill(){
+    function viewBill(){
     if(!pay.ref||!SHEET_URL)return;
     var no=pay.ref;
     openMdl('<div class="vh"><b>'+esc(no)+'</b></div><div class="vm">Loading…</div>');
@@ -1110,16 +1243,45 @@ input.rate{min-height:36px;width:84px}
     if(!parseDmy(pay.date)){toast('Enter date as DD/MM/YYYY · તારીખ DD/MM/YYYY લખો');return}
     var amt=r2(bnum(pay.amount));
     if(!(amt>0)){toast('Enter amount · રકમ લખો');return}
-    sheetSend({action:'savePayment',id:String(Date.now()),kind:pay.kind,date:pay.date,partyId:p.id,partyName:p.en,billNo:pay.ref||'',amount:amt});
+    var b0=payBills.filter(function(x){return x.billNo===pay.ref})[0];
+    if(b0&&amt!==r2(b0.due)){payConfirm(p,amt,b0);return}
+    commitPay(p,amt);
+  }
+  /* Amount differs from the bill's due: show what will happen and ask for confirmation first. */
+  var pPending=null;
+  function payConfirm(p,amt,b){
+    var c=pay.kind==='cust', due=Math.max(r2(b.due),0), adv=c?'Advance Received':'Advance Paid', more=amt>due, h;
+    pPending={p:p,amt:amt};
+    h='<div class="pvt">Confirm Payment · ચુકવણી ખાતરી</div><div class="pcs">'+
+      '<div><span>Bill '+esc(b.billNo)+' amount · બિલ રકમ</span><b>₹ '+pn(b.total)+'</b></div>'+
+      (b.paid>0?'<div><span>Already paid · પહેલા ચૂકવ્યા</span><b>₹ '+pn(b.paid)+'</b></div>':'')+
+      '<div><span>Due on bill · બાકી</span><b>₹ '+pn(due)+'</b></div>'+
+      '<div class="y"><span>You are paying · તમે ચૂકવો છો</span><b>₹ '+pn(amt)+'</b></div></div>';
+    if(more)h+='<div class="pcm">'+(due>0?'₹'+pn(due)+' will be set against bill '+esc(b.billNo)+' and the extra <b>₹'+pn(r2(amt-due))+'</b> will be saved as '+adv+'. (2 entries)':'This bill is already cleared. The full <b>₹'+pn(amt)+'</b> will be saved as '+adv+'.')+'</div>';
+    else h+='<div class="pcm">₹'+pn(amt)+' will be set against bill '+esc(b.billNo)+'. Remaining <b>₹'+pn(r2(due-amt))+'</b> will stay due and will show when you select this bill next time.</div>';
+    h+='<div class="pv-acts"><button type="button" class="btn sec" id="pp-no">Edit<span class="gu">સુધારો</span></button><button type="button" class="btn pri" id="pp-ok">Confirm &amp; Save<span class="gu">પુષ્ટિ કરો</span></button></div>';
+    openMdl(h);
+  }
+  document.addEventListener('click',function(ev){
+    var b=ev.target.closest&&ev.target.closest('button');if(!b)return;
+    if(b.id==='pp-no'){pPending=null;closeMdl()}
+    else if(b.id==='pp-ok'){var P=pPending;pPending=null;closeMdl();if(P)commitPay(P.p,P.amt)}
+  });
+  function commitPay(p,amt){
+    var c=pay.kind==='cust';
     var b=payBills.filter(function(x){return x.billNo===pay.ref})[0];
-    var applied=b?Math.min(amt,Math.max(b.due,0)):0, extra=r2(amt-applied);
+    var applied=b?r2(Math.min(amt,Math.max(b.due,0))):0, extra=r2(amt-applied), ts=Date.now();
+    /* Only the due part is set against the bill; anything above it is saved as a separate Advance entry. */
+    if(applied>0)sheetSend({action:'savePayment',id:String(ts),kind:pay.kind,date:pay.date,paymentDate:pay.date,dateIso:dmyToIso(pay.date),savedAt:new Date().toISOString(),partyId:p.id,partyName:p.en,billNo:pay.ref,amount:applied});
+    if(extra>0)sheetSend({action:'savePayment',id:String(ts+1),kind:pay.kind,date:pay.date,paymentDate:pay.date,dateIso:dmyToIso(pay.date),savedAt:new Date().toISOString(),partyId:p.id,partyName:p.en,billNo:'',amount:extra});
+    var msg=applied>0&&extra>0?'Bill ₹'+pn(applied)+' + Advance ₹'+pn(extra)+' saved · ચુકવણી સાચવી':(applied===0?(c?'Saved as Advance Received · એડવાન્સ મળ્યા':'Saved as Advance Paid · એડવાન્સ ચૂકવ્યા'):'Payment saved · ચુકવણી સાચવી');
     if(c){HT.recv=Math.max(0,r2((HT.recv||0)-applied));HT.arecv=r2((HT.arecv||0)+extra)}
     else{HT.pay=Math.max(0,r2((HT.pay||0)-applied));HT.apaid=r2((HT.apaid||0)+extra)}
     save(HOME_KEY,HT);renderHome();
-    if(b){b.paid=r2(b.paid+amt);b.due=r2(b.total-b.paid)}
+    if(b){b.paid=r2(b.paid+applied);b.due=r2(b.total-b.paid);payBills=payBills.filter(function(x){return x.due>0})}
     pay.amount='';pay.ref='';pay.date=todayStr();pay.touched=false;
     renderPay();
-    toast((pay.ref===''&&!b?(c?'Saved as Advance Received · એડવાન્સ મળ્યા':'Saved as Advance Paid · એડવાન્સ ચૂકવ્યા'):'Payment saved · ચુકવણી સાચવી'));
+    toast(msg);
   }
   (function(){
     var vp=$('#v-payment');
@@ -1208,11 +1370,14 @@ input.rate{min-height:36px;width:84px}
 
 
   /* ---------- Reports: Outward Bill, Inward Bill, Customer-wise Payment, Supplier-wise Payment ---------- */
-  var repView='menu', RP={from:'',to:'',party:'',open:{},data:{out:null,'in':null},state:{}};
+  var repView='menu', RP={from:'',to:'',party:'',pk:'out',open:{},data:{out:null,'in':null},state:{}};
   var REPS={
     out:{kind:'out',bills:true,en:'Outward Bill Report',gu:'આઉટવર્ડ બિલ રિપોર્ટ',party:'Customer',partyGu:'ગ્રાહક',sub:'All sales bills · બધા વેચાણ બિલ'},
     'in':{kind:'in',bills:true,en:'Inward Bill Report',gu:'ઇનવર્ડ બિલ રિપોર્ટ',party:'Supplier',partyGu:'સપ્લાયર',sub:'All purchase bills · બધા ખરીદી બિલ'},
     cust:{kind:'out',bills:false,en:'Customer-wise Payment',gu:'ગ્રાહક મુજબ ચુકવણી',party:'Customer',partyGu:'ગ્રાહક',got:'Received',gotGu:'મળ્યા',sub:'Billed, received and due per customer · ગ્રાહક મુજબ'},
+    dpay:{bills:false,daily:true,en:'Payment Report',gu:'ચુકવણી રિપોર્ટ',sub:'Date-wise payments · તારીખ મુજબ ચુકવણી',
+      get kind(){return RP.pk},get party(){return RP.pk==='out'?'Customer':'Supplier'},get partyGu(){return RP.pk==='out'?'ગ્રાહક':'સપ્લાયર'},
+      get got(){return RP.pk==='out'?'Received':'Paid'},get gotGu(){return RP.pk==='out'?'મળ્યા':'ચૂકવ્યા'}},
     supp:{kind:'in',bills:false,en:'Supplier-wise Payment',gu:'સપ્લાયર મુજબ ચુકવણી',party:'Supplier',partyGu:'સપ્લાયર',got:'Paid',gotGu:'ચૂકવ્યા',sub:'Billed, paid and due per supplier · સપ્લાયર મુજબ'}
   };
   var RP_ICON={
@@ -1222,7 +1387,7 @@ input.rate{min-height:36px;width:84px}
   var CHEV='<svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>';
   var BACK='<svg class="i" viewBox="0 0 24 24"><path d="M15.4 6 16.8 7.4 12.2 12l4.6 4.6-1.4 1.4-6-6z"/></svg>';
   function repMenu(){
-    return '<h2>Reports<span class="gu">રિપોર્ટ</span></h2><div class="menu">'+['out','in','cust','supp'].map(function(k){
+    return '<h2>Reports<span class="gu">રિપોર્ટ</span></h2><div class="menu">'+['out','in','cust','supp','dpay'].map(function(k){
       var r=REPS[k];
       return '<button class="opt" data-rep="'+k+'"><span class="dot">'+(r.bills?RP_ICON.bill:RP_ICON.pay)+'</span><span class="t"><b>'+r.en+'</b><span class="gu">'+r.gu+'</span><small>'+r.sub+'</small></span>'+CHEV+'</button>';
     }).join('')+'</div>';
@@ -1243,6 +1408,13 @@ input.rate{min-height:36px;width:84px}
     var R=REPS[repView], D=RP.data[R.kind];if(!D)return null;
     var bills=D.bills.filter(function(b){return repInRange(b.date)&&(!RP.party||String(b.partyId)===String(RP.party))});
     if(R.bills)return {bills:bills.sort(repSortDate)};
+    if(R.daily){
+      var dm={};
+      D.pays.filter(function(x){return repInRange(x.date)&&(!RP.party||String(x.partyId)===String(RP.party))}).forEach(function(x){
+        var o=dm[x.date]||(dm[x.date]={date:x.date,total:0,pays:[]});o.total+=x.amount;o.pays.push(x);
+      });
+      return {days:Object.keys(dm).map(function(k){return dm[k]}).sort(repSortDate)};
+    }
     var pays=D.pays.filter(function(x){return repInRange(x.date)&&(!RP.party||String(x.partyId)===String(RP.party))});
     var m={};
     function g(id,name,city){return m[id]||(m[id]={id:id,name:name,city:city||'',billed:0,got:0,due:0,pays:[]})}
@@ -1264,6 +1436,7 @@ input.rate{min-height:36px;width:84px}
     var R=REPS[repView];
     return '<div class="noprint"><button class="back" id="repBack">'+BACK+'Reports · રિપોર્ટ</button></div>'+
       '<h2>'+R.en+'<span class="gu">'+R.gu+'</span></h2>'+
+      (R.daily?'<div class="pks noprint"><button type="button" class="pkb'+(RP.pk==='out'?' on':'')+'" data-pk="out">Received · મળ્યા<small>Customers</small></button><button type="button" class="pkb'+(RP.pk==='in'?' on':'')+'" data-pk="in">Paid · ચૂકવ્યા<small>Suppliers</small></button></div>':'')+
       '<div class="card rpf noprint"><div class="r2"><label class="cf">From · થી<input type="date" id="rp-from" value="'+esc(RP.from)+'"></label><label class="cf">To · સુધી<input type="date" id="rp-to" value="'+esc(RP.to)+'"></label></div>'+
       '<div class="chips"><button type="button" class="chip" data-pre="m">This month</button><button type="button" class="chip" data-pre="lm">Last month</button><button type="button" class="chip" data-pre="y">This year</button><button type="button" class="chip" data-pre="all">All · બધા</button></div>'+
       '<select id="rp-party" aria-label="'+R.party+'">'+repPartyOpts()+'</select></div>'+
@@ -1276,7 +1449,16 @@ input.rate{min-height:36px;width:84px}
       return;
     }
     var tp=RP.from||RP.to?(RP.from?dmyOf(RP.from):'Start')+' → '+(RP.to?dmyOf(RP.to):'Today'):'All dates · બધી તારીખ';
-    if(R.bills){
+    if(R.daily){
+      var TT=0,AB=0,AD=0,N=0;
+      rows.days.forEach(function(d){d.pays.forEach(function(y){TT+=y.amount;N++;if(y.billNo)AB+=y.amount;else AD+=y.amount})});
+      h+='<div class="rsum"><div><small>'+R.got+' · '+R.gotGu+'</small><b>₹'+pn(r2(TT))+'</b></div><div><small>Against bills · બિલ સામે</small><b>₹'+pn(r2(AB))+'</b></div><div><small>Advance · એડવાન્સ</small><b>₹'+pn(r2(AD))+'</b></div></div>';
+      h+='<div class="pnote">'+esc(tp)+' · '+N+' payment'+(N===1?'':'s')+'</div><div class="rl">'+(rows.days.length?rows.days.map(function(d){
+        return '<div class="rc"><div class="l1"><b>'+esc(d.date)+'</b><span class="am">₹'+pn(r2(d.total))+'</span></div><div class="pl">'+d.pays.map(function(y){
+          return '<div><span>'+esc(y.party||'')+' · '+(y.billNo?esc(y.billNo):'Advance · એડવાન્સ')+'</span><span>₹'+pn(y.amount)+'</span></div>';
+        }).join('')+'</div></div>';
+      }).join(''):'<div class="pnote">No payments found. · કોઈ ચુકવણી મળી નથી.</div>')+'</div>';
+    }else if(R.bills){
       var T=0,P=0,Dd=0;rows.bills.forEach(function(b){T+=b.total;P+=b.paid;Dd+=b.due});
       h+='<div class="rsum"><div><small>Bills · '+rows.bills.length+'</small><b>₹'+pn(r2(T))+'</b></div><div><small>Paid · ચૂકવ્યા</small><b>₹'+pn(r2(P))+'</b></div><div class="d"><small>Due · બાકી</small><b>₹'+pn(r2(Dd))+'</b></div></div>';
       h+='<div class="pnote">'+esc(tp)+'</div><div class="rl">'+(rows.bills.length?rows.bills.map(function(b){
@@ -1317,9 +1499,7 @@ input.rate{min-height:36px;width:84px}
     }).catch(function(){RP.state[want]='err';if(REPS[repView]&&REPS[repView].kind===want&&tab==='reports')repBody()});
   }
   function openReports(){
-    var v=$('#v-reports');
-    if(repView==='menu'){v.innerHTML=repMenu();return}
-    v.innerHTML=repShell();repLoad();
+    $('#v-reports').innerHTML=UC;
   }
   /* Bill details: hover (mouse) shows a floating preview, click / tap opens the full bill. Loaded on demand, then cached. */
   var BC={}, bTipNo=null, bPt={x:0,y:0};
@@ -1368,6 +1548,7 @@ input.rate{min-height:36px;width:84px}
     var v=$('#v-reports');
     v.addEventListener('click',function(ev){
       var b=ev.target.closest('button');if(!b)return;
+      if(b.dataset.pk){RP.pk=b.dataset.pk;RP.party='';RP.open={};openReports();return}
       if(b.dataset.rep){repView=b.dataset.rep;RP.party='';RP.open={};openReports();$('#main').scrollTop=0;return}
       if(b.id==='repBack'){repView='menu';openReports();return}
       if(b.dataset.pre){
