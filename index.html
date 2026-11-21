@@ -88,6 +88,78 @@
 .dl{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
 .dl small{color:var(--muted)}
 .dl>b{white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* Payment: multi-bill picker */
+.rbx{position:relative}
+.rbt{width:100%;min-height:38px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);padding:6px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;font-size:13px;font-weight:600;text-transform:none;letter-spacing:0}
+.rbt:disabled{opacity:.55;cursor:not-allowed}
+.rbt .ph{color:var(--muted);font-weight:500}
+.rbt .ar{flex:none;color:var(--accent);font-size:11px}
+.rbl{display:flex;flex-direction:column;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);max-height:230px;overflow:auto;margin-top:4px}
+.rbl[hidden]{display:none}
+.rbo{display:flex;align-items:center;gap:10px;padding:9px 10px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13px;text-transform:none;letter-spacing:0;color:inherit}
+.rbo:active{background:var(--soft)}
+.rbo.on{background:var(--soft)}
+.rbo .ck{flex:none;width:20px;height:20px;border-radius:6px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;background:var(--bg)}
+.rbo.on .ck{background:var(--accent);border-color:var(--accent)}
+.rbo .rt{flex:1;min-width:0;line-height:1.35}
+.rbo .rt small{display:block;color:var(--muted);font-weight:500;font-size:11px}
+.rbo .rv{flex:none;width:30px;height:30px;border-radius:8px;border:1.5px solid var(--line);background:var(--soft);color:var(--accent);display:flex;align-items:center;justify-content:center}
+.rbo .rv svg{width:17px;height:17px;fill:currentColor}
+.rbn{padding:9px 10px;color:var(--muted);font-size:12px}
+.rbf{display:flex;gap:8px;padding:8px;position:sticky;bottom:0;background:var(--surface)}
+.rbf button{flex:1;min-height:34px;border-radius:9px;border:1.5px solid var(--line);background:var(--soft);font-size:12px;font-weight:700;text-transform:none}
+.rbf button.pr{background:var(--accent);border-color:var(--accent);color:#fff}
+.pdis{transition:opacity .15s}
+.pdis.off{opacity:.5}
+.pdis input:disabled{cursor:not-allowed}
+
+/* Balance Sheet */
+.bsc{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.bsc .h{display:flex;justify-content:space-between;align-items:baseline;padding:7px 12px;background:var(--soft);color:var(--accent);font-weight:800;font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+.bsc .h .gu{font-size:11px;text-transform:none;letter-spacing:0}
+.bsr{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 12px;border-top:1px solid var(--line);font-size:13px;line-height:1.25}
+.bsr small{display:block;color:var(--muted);font-size:10.5px;font-weight:500}
+.bsr b{font:700 14px var(--head);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bsr.neg b{color:var(--danger)}
+.bsr.big{padding:14px 12px;font-size:14px}
+.bsr.big b{font-size:18px}
+.bsr.tot{background:var(--soft);font-weight:800}
+.bsr.tot b{font-size:15px}
+.bsok{font-size:12px;font-weight:700;color:#16A34A;text-align:center}
+.bsnt{font-size:11px;line-height:1.4;color:var(--muted);text-align:center}
+.bsbar{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11.5px;color:var(--muted)}
+.bsbar button{padding:5px 10px;border-radius:14px;background:var(--soft);color:var(--accent);font-weight:700;font-size:12px}
+
+/* Balance Sheet: Debit / Credit */
+.bsg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bsg .gh{display:flex;flex-direction:column;align-items:center;padding:8px 6px;border-radius:12px;font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent-fill);color:var(--on-accent)}
+.bsg .gh .gu{font-size:12px;text-transform:none;letter-spacing:0}
+.bsx{display:flex;flex-direction:column;gap:3px;text-align:left;padding:12px 10px;border-radius:14px;background:var(--surface);border:1px solid var(--line);min-width:0;width:100%}
+.bsx:active{background:var(--soft)}
+.bsx .t{font-weight:700;font-size:13px;line-height:1.25}
+.bsx .gu{display:block;color:var(--muted);font-size:11.5px;font-weight:500;line-height:1.25}
+.bsx b{font:800 19px var(--head);font-variant-numeric:tabular-nums;margin-top:6px;overflow-wrap:anywhere;color:var(--accent);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}
+.bsx.neg b{color:var(--danger)}
+.bsx small{color:var(--muted);font-size:10.5px;line-height:1.3}
+.bsd-t{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:8px 0;border-bottom:2px solid var(--line);font-weight:800}
+.bsd-g{border-bottom:1px solid var(--line);padding:8px 0}
+.bsd-g .p{display:flex;justify-content:space-between;gap:10px;font-weight:700;font-size:14px}
+.bsd-g .p span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}
+.bsd-g .l{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted);padding:2px 0 0 10px}
+.bsd-g .l span:last-child{white-space:nowrap;font-weight:700;font-variant-numeric:tabular-nums}
+
+.bstot{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bstot>div{display:flex;flex-direction:column;gap:2px;padding:10px;border-radius:12px;background:var(--soft);border:1.5px solid var(--line)}
+.bstot small{color:var(--muted);font-weight:700;font-size:11px}
+.bstot b{font:800 17px var(--head);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.bsdiff{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border-radius:14px;color:#fff;font-weight:800}
+.bsdiff .t{display:flex;flex-direction:column;font-size:15px;line-height:1.25}
+.bsdiff .t .gu{font-size:12px;font-weight:600;opacity:.92}
+.bsdiff b{font:800 22px var(--head);font-variant-numeric:tabular-nums;white-space:nowrap}
+.bsdiff.g{background:#16A34A}
+.bsdiff.r{background:#DC2626}
+.bsdiff.z{background:var(--muted)}
 </style></head><body>
 <title>Khatavahi</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -1434,7 +1506,7 @@ input.rate{min-height:36px;width:84px}
   /* From Customer = money received (bill kind 'out'); To Supplier = money paid (bill kind 'in').
      Payment with a Ref. Bill No. is set against that bill; without one it is kept as Advance Received / Advance Paid. */
   function todayStr(){var d=new Date();return pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+'/'+d.getFullYear()}
-  function newPay(k){return {kind:k||'cust',party:'',date:todayStr(),amount:'',ref:'',touched:false}}
+  function newPay(k){return {kind:k||'cust',party:'',date:todayStr(),amount:'',mode:'',refs:[],open:false,touched:false}}
   var pay=newPay(), payBills=[], payBillsFor='', payLoading=false;
   function pn(v){return v.toLocaleString('en-IN',{maximumFractionDigits:2})}
   function payParties(){return pay.kind==='cust'?customers:suppliers}
@@ -1454,29 +1526,57 @@ input.rate{min-height:36px;width:84px}
       return '<option value="'+x.id+'"'+(String(x.id)===String(pay.party)?' selected':'')+'>'+esc(x.en)+(x.city?' · '+esc(x.city):'')+'</option>';
     }).join('');
   }
-  function payRefOpts(){
-    return '<option value="">'+(payLoading?'Loading bills…':'No bill · Advance')+'</option>'+payBills.map(function(b){
-      return '<option value="'+esc(b.billNo)+'"'+(b.billNo===pay.ref?' selected':'')+'>'+esc(b.billNo)+' · ₹'+pn(b.total)+(b.paid>0?' · Paid ₹'+pn(b.paid):'')+' · Due ₹'+pn(b.due)+'</option>';
+  function payEnabled(){return pay.mode==='adv'||(pay.mode==='bill'&&pay.refs.length>0)}
+  function paySel(){return payBills.filter(function(b){return pay.refs.indexOf(b.billNo)>-1})}
+  function paySelDue(){return r2(paySel().reduce(function(a,b){return a+Math.max(b.due,0)},0))}
+  function payAutoAmt(){var d=pay.mode==='bill'?paySelDue():0;pay.amount=d>0?String(d):''}
+  /* Pay the selected bills in list order; whatever is left over becomes Advance. */
+  function payAlloc(amt){var rem=amt,al=[];paySel().forEach(function(b){var d=Math.max(b.due,0);if(rem<=0||d<=0)return;var x=r2(Math.min(rem,d));al.push({b:b,amt:x});rem=r2(rem-x)});return {al:al,extra:rem}}
+  function payRefSum(){
+    if(!pay.party)return '<span class="ph">Select '+(pay.kind==='cust'?'customer':'supplier')+' first · પહેલા પાર્ટી પસંદ કરો</span><span class="ar">▼</span>';
+    if(pay.mode==='adv')return '<span>No Bill · Advance</span><span class="ar">▼</span>';
+    if(pay.mode==='bill'&&pay.refs.length){var l=paySel().map(function(b){return b.billNo});return '<span>'+esc(l.join(', '))+(l.length>1?' · '+l.length+' bills':'')+'</span><span class="ar">▼</span>'}
+    return '<span class="ph">Select bill / No Bill · બિલ પસંદ કરો</span><span class="ar">▼</span>';
+  }
+  function payRefList(){
+    var h='<div class="rbo'+(pay.mode==='adv'?' on':'')+'" data-adv="1" role="checkbox" aria-checked="'+(pay.mode==='adv')+'"><span class="ck">'+(pay.mode==='adv'?'✓':'')+'</span><span class="rt"><b>No Bill · Advance</b><small>બિલ વગર એડવાન્સ</small></span></div>';
+    if(payLoading)h+='<div class="rbn">Loading bills… · બિલ લોડ થાય છે…</div>';
+    else if(!payBills.length)h+='<div class="rbn">No pending bills · કોઈ બાકી બિલ નથી</div>';
+    h+=payBills.map(function(b){
+      var on=pay.refs.indexOf(b.billNo)>-1;
+      return '<div class="rbo'+(on?' on':'')+'" data-bn="'+esc(b.billNo)+'" role="checkbox" aria-checked="'+on+'"><span class="ck">'+(on?'✓':'')+'</span><span class="rt"><b>'+esc(b.billNo)+'</b>'+(b.date?' · '+esc(b.date):'')+' · ₹'+pn(b.total)+'<small>'+(b.paid>0?'Paid ₹'+pn(b.paid)+' · ':'')+'Due ₹'+pn(b.due)+'</small></span><button type="button" class="rv" data-view="'+esc(b.billNo)+'" aria-label="View bill">'+EYE+'</button></div>';
     }).join('');
+    var all=payBills.length&&pay.refs.length===payBills.length;
+    h+='<div class="rbf">'+(payBills.length?'<button type="button" id="p-rall">'+(all?'Clear · દૂર કરો':'Select all · બધા')+'</button>':'')+'<button type="button" class="pr" id="p-rdone">Done · થઈ ગયું</button></div>';
+    return h;
   }
   function refreshPayParty(){var el=$('#p-party');if(el)el.innerHTML=payPartyOpts()}
+  function payEnable(){
+    var on=payEnabled();
+    ['p-date','p-dpick','p-amt'].forEach(function(id){var e=$('#'+id);if(e)e.disabled=!on});
+    var w=$('#p-dta');if(w)w.classList.toggle('off',!on);
+    var a=$('#p-amt');if(a&&a.value!==pay.amount)a.value=pay.amount;
+  }
   function refreshPayRef(){
-    var el=$('#p-ref');if(!el)return;
-    el.innerHTML=payRefOpts();
-    $('#p-view').disabled=!pay.ref;
-    payNote();
+    var l=$('#p-rl');if(!l)return;
+    l.innerHTML=payRefList();l.hidden=!(pay.open&&pay.party);
+    var s=$('#p-rsum');if(s)s.innerHTML=payRefSum();
+    var bt=$('#p-rbtn');if(bt)bt.disabled=!pay.party;
+    payEnable();payNote();
   }
   function payNote(){
     var n=$('#p-note');if(!n)return;
     var a=bnum(pay.amount),c=pay.kind==='cust',adv=c?'Advance Received':'Advance Paid';
     if(!pay.party){n.textContent='';return}
-    if(!pay.ref){n.textContent=(a?'₹'+pn(a)+' ':'Amount ')+'will be saved as '+adv+' (no bill selected).';return}
-    var b=payBills.filter(function(x){return x.billNo===pay.ref})[0];
-    if(!b){n.textContent='';return}
-    n.textContent=a>b.due?'₹'+pn(r2(a-b.due))+' is more than the due ₹'+pn(b.due)+'. The extra will be kept as '+adv+'.':'Bill ₹'+pn(b.total)+(b.paid>0?' · Paid ₹'+pn(b.paid):'')+' · Due ₹'+pn(b.due)+(a&&a<b.due?'. Remaining ₹'+pn(r2(b.due-a))+' will stay due.':'');
+    if(!pay.mode){n.textContent='Select a bill or "No Bill" to enter date and amount · તારીખ અને રકમ માટે બિલ પસંદ કરો';return}
+    if(pay.mode==='adv'){n.textContent=(a?'₹'+pn(a)+' ':'Amount ')+'will be saved as '+adv+' (no bill selected).';return}
+    var sel=paySel();if(!sel.length){n.textContent='';return}
+    var due=paySelDue(),tot=r2(sel.reduce(function(x,b){return x+b.total},0)),pd=r2(sel.reduce(function(x,b){return x+b.paid},0));
+    n.textContent=(sel.length>1?sel.length+' bills · ':'')+'Bill ₹'+pn(tot)+(pd>0?' · Paid ₹'+pn(pd):'')+' · Due ₹'+pn(due)+
+      (a>due?'. ₹'+pn(r2(a-due))+' is more than the due. The extra will be kept as '+adv+'.':(a&&a<due?'. Remaining ₹'+pn(r2(due-a))+' will stay due.':''));
   }
   function loadPayBills(){
-    payBills=[];pay.ref='';
+    payBills=[];pay.refs=[];pay.mode='';pay.amount='';pay.open=false;
     if(!pay.party||!SHEET_URL){payLoading=false;refreshPayRef();return}
     if(load(QUEUE_KEY,[]).length)sheetFlush();
     var want=pay.kind+'|'+pay.party;payBillsFor=want;payLoading=true;refreshPayRef();
@@ -1484,19 +1584,20 @@ input.rate{min-height:36px;width:84px}
       if(payBillsFor!==want)return;
       if(!Array.isArray(rows))throw 0;
       payBills=rows.map(function(b){return {billNo:b.billNo,date:b.date,total:b.total,paid:b.paid,due:r2(b.total-b.paid)}}).filter(function(b){return b.due>0});
+      if(pay.pre){var pb=payBills.filter(function(b){return b.billNo===pay.pre})[0];pay.pre='';if(pb){pay.refs=[pb.billNo];pay.mode='bill';payAutoAmt()}else toast('This bill is already paid · આ બિલ ચૂકવાઈ ગયું છે')}
       payLoading=false;refreshPayRef();
     }).catch(function(){if(payBillsFor!==want)return;payLoading=false;refreshPayRef();toast('Could not load bills · બિલ લોડ ન થયા')});
   }
   var CAL='<svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg>';
   var EYE='<svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z"/></svg>';
   function renderPay(){
-    var c=pay.kind==='cust';
+    var c=pay.kind==='cust',on=payEnabled();
     $('#v-payment').innerHTML='<div class="seg" role="radiogroup" aria-label="Payment type"><label><input type="radio" name="ptype" value="cust"'+(c?' checked':'')+'><span>From Customer<small>ગ્રાહક પાસેથી</small></span></label><label><input type="radio" name="ptype" value="supp"'+(c?'':' checked')+'><span>To Supplier<small>સપ્લાયરને</small></span></label></div>'+
       '<div class="card bcard">'+
       '<label class="cf">'+(c?'Customer Name · ગ્રાહક':'Supplier Name · સપ્લાયર')+'<select id="p-party">'+payPartyOpts()+'</select></label>'+
-      '<div class="r2"><div class="cf">Date · તારીખ<div class="dtw"><input type="text" id="p-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(pay.date)+'"><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="p-dpick" aria-label="Pick date" value="'+dmyToIso(pay.date)+'"></span></div></div>'+
-      '<label class="cf">Amount · રકમ<input type="text" inputmode="decimal" id="p-amt" placeholder="₹" autocomplete="off" value="'+esc(pay.amount)+'"></label></div>'+
-      '<div class="cf">Ref. Bill No. · બિલ નં.<div class="dtw"><select id="p-ref">'+payRefOpts()+'</select><button type="button" class="vbtn" id="p-view" aria-label="View bill"'+(pay.ref?'':' disabled')+'>'+EYE+'</button></div></div>'+
+      '<div class="cf">Ref. Bill No. · બિલ નં. <span style="text-transform:none;font-weight:500">(one or more · એક કે વધુ)</span><div class="rbx"><button type="button" class="rbt" id="p-rbtn"'+(pay.party?'':' disabled')+'><span id="p-rsum" style="display:contents">'+payRefSum()+'</span></button><div class="rbl" id="p-rl"'+(pay.open&&pay.party?'':' hidden')+'>'+payRefList()+'</div></div></div>'+
+      '<div class="r2 pdis'+(on?'':' off')+'" id="p-dta"><div class="cf">Date · તારીખ<div class="dtw"><input type="text" id="p-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(pay.date)+'"'+(on?'':' disabled')+'><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="p-dpick" aria-label="Pick date" value="'+dmyToIso(pay.date)+'"'+(on?'':' disabled')+'></span></div></div>'+
+      '<label class="cf">Amount · રકમ<input type="text" inputmode="decimal" id="p-amt" placeholder="₹" autocomplete="off" value="'+esc(pay.amount)+'"'+(on?'':' disabled')+'></label></div>'+
       '<div class="pnote" id="p-note"></div></div>'+
       '<button type="button" class="btn pri" id="p-save">Save Payment<span class="gu">ચુકવણી સાચવો</span></button>';
     payNote();
@@ -1525,9 +1626,8 @@ input.rate{min-height:36px;width:84px}
       '<div class="inv-n">This is a computer generated bill.</div></div>';
     return h;
   }
-    function viewBill(){
-    if(!pay.ref||!SHEET_URL)return;
-    var no=pay.ref;
+  function viewBill(no){
+    if(!no||!SHEET_URL)return;
     openMdl('<div class="vh"><b>'+esc(no)+'</b></div><div class="vm">Loading…</div>');
     fetch(SHEET_URL+'?type=bill&kind='+payBillKind()+'&no='+encodeURIComponent(no)).then(function(r){return r.json()}).then(function(d){
       if(!d||!d.billNo)throw 0;
@@ -1537,25 +1637,24 @@ input.rate{min-height:36px;width:84px}
   function savePay(){
     var c=pay.kind==='cust', p=payParties().filter(function(x){return String(x.id)===String(pay.party)})[0];
     if(!p){toast(c?'Select customer · ગ્રાહક પસંદ કરો':'Select supplier · સપ્લાયર પસંદ કરો');return}
+    if(!payEnabled()){toast('Select bill or No Bill first · પહેલા બિલ પસંદ કરો');return}
     if(!parseDmy(pay.date)){toast('Enter date as DD/MM/YYYY · તારીખ DD/MM/YYYY લખો');return}
     var amt=r2(bnum(pay.amount));
     if(!(amt>0)){toast('Enter amount · રકમ લખો');return}
-    var b0=payBills.filter(function(x){return x.billNo===pay.ref})[0];
-    if(b0&&amt!==r2(b0.due)){payConfirm(p,amt,b0);return}
+    if(pay.mode==='bill'&&amt!==paySelDue()){payConfirm(p,amt);return}
     commitPay(p,amt);
   }
-  /* Amount differs from the bill's due: show what will happen and ask for confirmation first. */
+  /* Amount differs from the selected bills' due: show what will happen and ask for confirmation first. */
   var pPending=null;
-  function payConfirm(p,amt,b){
-    var c=pay.kind==='cust', due=Math.max(r2(b.due),0), adv=c?'Advance Received':'Advance Paid', more=amt>due, h;
+  function payConfirm(p,amt){
+    var c=pay.kind==='cust', adv=c?'Advance Received':'Advance Paid', A=payAlloc(amt), due=paySelDue(), h;
     pPending={p:p,amt:amt};
     h='<div class="pvt">Confirm Payment · ચુકવણી ખાતરી</div><div class="pcs">'+
-      '<div><span>Bill '+esc(b.billNo)+' amount · બિલ રકમ</span><b>₹ '+pn(b.total)+'</b></div>'+
-      (b.paid>0?'<div><span>Already paid · પહેલા ચૂકવ્યા</span><b>₹ '+pn(b.paid)+'</b></div>':'')+
-      '<div><span>Due on bill · બાકી</span><b>₹ '+pn(due)+'</b></div>'+
+      paySel().map(function(b){var x=A.al.filter(function(y){return y.b===b})[0];return '<div><span>Bill '+esc(b.billNo)+' · Due ₹'+pn(Math.max(b.due,0))+'</span><b>'+(x?'₹ '+pn(x.amt):'—')+'</b></div>'}).join('')+
+      '<div><span>Total due · કુલ બાકી</span><b>₹ '+pn(due)+'</b></div>'+
       '<div class="y"><span>You are paying · તમે ચૂકવો છો</span><b>₹ '+pn(amt)+'</b></div></div>';
-    if(more)h+='<div class="pcm">'+(due>0?'₹'+pn(due)+' will be set against bill '+esc(b.billNo)+' and the extra <b>₹'+pn(r2(amt-due))+'</b> will be saved as '+adv+'. (2 entries)':'This bill is already cleared. The full <b>₹'+pn(amt)+'</b> will be saved as '+adv+'.')+'</div>';
-    else h+='<div class="pcm">₹'+pn(amt)+' will be set against bill '+esc(b.billNo)+'. Remaining <b>₹'+pn(r2(due-amt))+'</b> will stay due and will show when you select this bill next time.</div>';
+    if(A.extra>0)h+='<div class="pcm">Selected bills will be cleared and the extra <b>₹'+pn(A.extra)+'</b> will be saved as '+adv+'.</div>';
+    else h+='<div class="pcm">₹'+pn(amt)+' will be set against the selected bills (oldest first). Remaining <b>₹'+pn(r2(due-amt))+'</b> will stay due and will show when you select these bills next time.</div>';
     h+='<div class="pv-acts"><button type="button" class="btn sec" id="pp-no">Edit<span class="gu">સુધારો</span></button><button type="button" class="btn pri" id="pp-ok">Confirm &amp; Save<span class="gu">પુષ્ટિ કરો</span></button></div>';
     openMdl(h);
   }
@@ -1565,18 +1664,18 @@ input.rate{min-height:36px;width:84px}
     else if(b.id==='pp-ok'){var P=pPending;pPending=null;closeMdl();if(P)commitPay(P.p,P.amt)}
   });
   function commitPay(p,amt){
-    var c=pay.kind==='cust';
-    var b=payBills.filter(function(x){return x.billNo===pay.ref})[0];
-    var applied=b?r2(Math.min(amt,Math.max(b.due,0))):0, extra=r2(amt-applied), ts=Date.now();
-    /* Only the due part is set against the bill; anything above it is saved as a separate Advance entry. */
-    if(applied>0)sheetSend({action:'savePayment',id:String(ts),kind:pay.kind,date:pay.date,paymentDate:pay.date,dateIso:dmyToIso(pay.date),savedAt:new Date().toISOString(),partyId:p.id,partyName:p.en,billNo:pay.ref,amount:applied});
-    if(extra>0)sheetSend({action:'savePayment',id:String(ts+1),kind:pay.kind,date:pay.date,paymentDate:pay.date,dateIso:dmyToIso(pay.date),savedAt:new Date().toISOString(),partyId:p.id,partyName:p.en,billNo:'',amount:extra});
-    var msg=applied>0&&extra>0?'Bill ₹'+pn(applied)+' + Advance ₹'+pn(extra)+' saved · ચુકવણી સાચવી':(applied===0?(c?'Saved as Advance Received · એડવાન્સ મળ્યા':'Saved as Advance Paid · એડવાન્સ ચૂકવ્યા'):'Payment saved · ચુકવણી સાચવી');
+    var c=pay.kind==='cust', A=payAlloc(amt), ts=Date.now(), i=0, applied=r2(amt-A.extra), extra=A.extra;
+    function send(bn,a){sheetSend({action:'savePayment',id:String(ts+(i++)),kind:pay.kind,date:pay.date,paymentDate:pay.date,dateIso:dmyToIso(pay.date),savedAt:new Date().toISOString(),partyId:p.id,partyName:p.en,billNo:bn,amount:a})}
+    /* Each bill gets only its due part; anything above the total due is saved as a separate Advance entry. */
+    A.al.forEach(function(x){send(x.b.billNo,x.amt)});
+    if(extra>0)send('',extra);
+    var msg=applied>0&&extra>0?'Bills ₹'+pn(applied)+' + Advance ₹'+pn(extra)+' saved · ચુકવણી સાચવી':(applied===0?(c?'Saved as Advance Received · એડવાન્સ મળ્યા':'Saved as Advance Paid · એડવાન્સ ચૂકવ્યા'):'Payment saved · ચુકવણી સાચવી');
     if(c){HT.recv=Math.max(0,r2((HT.recv||0)-applied));HT.arecv=r2((HT.arecv||0)+extra)}
     else{HT.pay=Math.max(0,r2((HT.pay||0)-applied));HT.apaid=r2((HT.apaid||0)+extra)}
     save(HOME_KEY,HT);renderHome();
-    if(b){b.paid=r2(b.paid+applied);b.due=r2(b.total-b.paid);payBills=payBills.filter(function(x){return x.due>0})}
-    pay.amount='';pay.ref='';pay.date=todayStr();pay.touched=false;
+    A.al.forEach(function(x){x.b.paid=r2(x.b.paid+x.amt);x.b.due=r2(x.b.total-x.b.paid)});
+    payBills=payBills.filter(function(x){return x.due>0});
+    pay.amount='';pay.refs=[];pay.mode='';pay.open=false;pay.date=todayStr();pay.touched=false;
     renderPay();
     toast(msg);
   }
@@ -1584,9 +1683,8 @@ input.rate{min-height:36px;width:84px}
     var vp=$('#v-payment');
     vp.addEventListener('change',function(ev){
       var t=ev.target;
-      if(t.name==='ptype'){pay.kind=t.value;pay.party='';pay.ref='';payBills=[];payLoading=false;renderPay()}
+      if(t.name==='ptype'){pay.kind=t.value;pay.party='';pay.refs=[];pay.mode='';pay.amount='';pay.open=false;payBills=[];payLoading=false;renderPay()}
       else if(t.id==='p-party'){pay.party=t.value;loadPayBills()}
-      else if(t.id==='p-ref'){pay.ref=t.value;$('#p-view').disabled=!pay.ref;payNote()}
       else if(t.id==='p-dpick'){
         var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(t.value);
         if(m){pay.date=m[3]+'/'+m[2]+'/'+m[1];pay.touched=true;$('#p-date').value=pay.date}
@@ -1602,9 +1700,27 @@ input.rate{min-height:36px;width:84px}
     vp.addEventListener('click',function(ev){
       var t=ev.target;
       if(t.id==='p-dpick'){try{t.showPicker()}catch(e){}return}
+      var v=t.closest('[data-view]');if(v){ev.stopPropagation();viewBill(v.getAttribute('data-view'));return}
+      var o=t.closest('[data-adv]');
+      if(o){pay.refs=[];pay.mode=pay.mode==='adv'?'':'adv';payAutoAmt();if(pay.mode==='adv')pay.open=false;refreshPayRef();if(pay.mode==='adv'){var a=$('#p-amt');if(a)a.focus()}return}
+      o=t.closest('[data-bn]');
+      if(o){
+        var no=o.getAttribute('data-bn'),k=pay.refs.indexOf(no);
+        if(pay.mode==='adv')pay.refs=[];
+        if(k>-1)pay.refs.splice(k,1);else pay.refs.push(no);
+        pay.mode=pay.refs.length?'bill':'';payAutoAmt();refreshPayRef();return;
+      }
       var b=t.closest('button');if(!b)return;
-      if(b.id==='p-view')viewBill();
+      if(b.id==='p-rbtn'){pay.open=!pay.open;refreshPayRef()}
+      else if(b.id==='p-rall'){
+        pay.refs=pay.refs.length===payBills.length?[]:payBills.map(function(x){return x.billNo});
+        pay.mode=pay.refs.length?'bill':'';payAutoAmt();refreshPayRef();
+      }
+      else if(b.id==='p-rdone'){pay.open=false;refreshPayRef();if(payEnabled()){var a=$('#p-amt');if(a)a.focus()}}
       else if(b.id==='p-save')savePay();
+    });
+    document.addEventListener('click',function(ev){
+      if(pay.open&&!(ev.target.closest&&(ev.target.closest('.rbx')||ev.target.closest('#mdl')))){pay.open=false;refreshPayRef()}
     });
     $('#mdl-x').addEventListener('click',closeMdl);
     $('#mdl').addEventListener('click',function(ev){if(ev.target.id==='mdl')closeMdl()});
@@ -1708,8 +1824,10 @@ input.rate{min-height:36px;width:84px}
     if(t==='admin'&&tab!=='admin'){
       if(!adminOk){askPass(function(){adminOk=true;setTab('admin')});return}
     }else if(t!=='admin')adminOk=false;
-    if(t==='admin'&&tab==='admin'&&adminView!=='menu')adminView='menu';
-    if(t==='reports'&&tab==='reports')repView='menu';
+    /* Every tap on a bottom tab opens that tab's main screen: sub-screens, popups and open pickers are closed. */
+    if(t==='admin'){adminView='menu';priceEdit=null}
+    if(t==='reports')repView='menu';
+    try{pPending=null;if(typeof bPending!=='undefined')bPending=null;closeMdl();pay.open=false}catch(e){}
     tab=t; showView();
   }
 
@@ -1726,6 +1844,7 @@ input.rate{min-height:36px;width:84px}
     supp:{kind:'in',bills:false,en:'Supplier-wise Payment',gu:'સપ્લાયર મુજબ ચુકવણી',party:'Supplier',partyGu:'સપ્લાયર',got:'Paid',gotGu:'ચૂકવ્યા',sub:'Billed, paid and due per supplier · સપ્લાયર મુજબ'}
   };
   var RP_ICON={
+    bs:'<svg class="i" viewBox="0 0 24 24"><path d="M3 3h2v18H3V3zm4 10h2v8H7v-8zm4-6h2v14h-2V7zm4 4h2v10h-2V11zm4-8h2v18h-2V3z"/></svg>',
     bill:'<svg class="i" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14l3-2 3 2 3-2 3 2 3-2 2 2V5a2 2 0 00-2-2zm-4 11H7v-2h8v2zm2-4H7V8h10v2z"/></svg>',
     pay:'<svg class="i" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 14H4v-6h16v6zm0-10H4V8h16v0zM4 6h16v2H4V6z"/></svg>'
   };
@@ -1848,8 +1967,8 @@ input.rate{min-height:36px;width:84px}
   function dbParties(){return DB.kind==='out'?customers:suppliers}
   function dbMenu(){
     return '<h2>Reports<span class="gu">રિપોર્ટ</span></h2><div class="menu">'+
-      [['out','Outward Bills','આઉટવર્ડ બિલ','Display all sales bills · બધા વેચાણ બિલ જુઓ'],['in','Inward Bills','ઇનવર્ડ બિલ','Display all purchase bills · બધા ખરીદી બિલ જુઓ']].map(function(r){
-        return '<button class="opt" data-rep="'+r[0]+'"><span class="dot">'+RP_ICON.bill+'</span><span class="t"><b>'+r[1]+'</b><span class="gu">'+r[2]+'</span><small>'+r[3]+'</small></span>'+CHEV+'</button>';
+      [['out','Outward Bills','આઉટવર્ડ બિલ','Display all sales bills · બધા વેચાણ બિલ જુઓ'],['in','Inward Bills','ઇનવર્ડ બિલ','Display all purchase bills · બધા ખરીદી બિલ જુઓ'],['bs','Account of Debit and Credit','જમા અને ઉધાર નો હિસાબ','Customers and suppliers on one screen · ગ્રાહક અને સપ્લાયર એક સ્ક્રીનમાં']].map(function(r){
+        return '<button class="opt" data-rep="'+r[0]+'"><span class="dot">'+(r[0]==='bs'?RP_ICON.bs:RP_ICON.bill)+'</span><span class="t"><b>'+r[1]+'</b><span class="gu">'+r[2]+'</span><small>'+r[3]+'</small></span>'+CHEV+'</button>';
       }).join('')+'</div>';
   }
   function dbShell(){
@@ -1928,8 +2047,21 @@ input.rate{min-height:36px;width:84px}
     else h+=ps.map(function(y){return '<div class="dl"><span>'+esc(y.date)+'<small> · '+(out?'Received · મળ્યા':'Paid · ચૂકવ્યા')+'</small></span><b>₹'+pn(+y.amount||0)+'</b></div>'}).join('');
     h+='<div class="vs"><span>Total '+(out?'Received · કુલ મળ્યા':'Paid · કુલ ચૂકવ્યા')+'</span><b>₹'+pn(tot)+'</b></div>';
     h+=due>0?'<div class="vs due"><span>Balance Due · બાકી</span><b>₹'+pn(due)+'</b></div>':'<div class="vs ok"><span>Payment complete · ચુકવણી પૂર્ણ</span><b>✓</b></div>';
+    if(due>0&&b&&b.partyId!=null&&b.partyId!=='')h+='<div style="margin-top:12px"><button type="button" class="btn pri" data-gopay="'+esc(no)+'" data-gk="'+(out?'out':'in')+'" data-gp="'+esc(b.partyId)+'">'+(out?'Receive Payment':'Make Payment')+'<span class="gu">'+(out?'ચુકવણી મેળવો':'ચુકવણી કરો')+'</span></button></div>';
     return h+'</div>';
   }
+  /* Payment button on a bill: opens the Payment tab with this bill, its customer / supplier and the due amount already filled. */
+  function payFromBill(kind,party,no){
+    closeMdl();
+    pay=newPay(kind==='out'?'cust':'supp');pay.party=String(party);pay.pre=no;
+    payBills=[];payLoading=false;
+    setTab('payment');
+    loadPayBills();
+  }
+  document.addEventListener('click',function(ev){
+    var g=ev.target.closest&&ev.target.closest('[data-gopay]');
+    if(g)payFromBill(g.getAttribute('data-gk'),g.getAttribute('data-gp'),g.getAttribute('data-gopay'));
+  });
   function dbOpenBill(no){
     var D=RP.data[DB.kind],b=D&&D.bills.filter(function(x){return x.billNo===no})[0];
     openMdl('<div class="vh"><b>'+esc(no)+'</b></div><div class="vm">Loading… · લોડ થઈ રહ્યું છે…</div>');
@@ -1940,8 +2072,102 @@ input.rate{min-height:36px;width:84px}
       $('#mdl-body').innerHTML=billViewHtml(vd)+dbPayHtml(no,b);
     });
   }
+  /* ---------- Balance Sheet (whole business, one screen) ----------
+     Built from every Outward / Inward bill and every payment in the Sheet:
+     Assets      = Cash & Bank (received - paid) + Customers owe us (due on Outward bills) + Advance paid to suppliers
+     Liabilities = We owe suppliers (due on Inward bills) + Advance received from customers
+     Net Profit  = Assets - Liabilities = Sales - Purchases (stock and expenses are not tracked in the app). */
+  var BSS={err:false,at:null};
+  function bsShell(){
+    return '<div class="noprint"><button class="back" id="repBack">'+BACK+'Reports · રિપોર્ટ</button></div>'+
+      '<h2>Account of Debit and Credit<span class="gu">જમા અને ઉધાર નો હિસાબ</span></h2><div id="bs-body"></div>';
+  }
+  function bsSide(D){
+    var tot=0,paid=0,adv=0,np={};
+    D.bills.forEach(function(b){var t=+b.total||0,p=+b.paid||0;tot+=t;paid+=p;if(r2(t-p)>0)np[b.partyId]=1});
+    D.pays.forEach(function(x){if(!x.billNo)adv+=+x.amount||0});
+    return {total:r2(tot),paid:r2(paid),due:r2(tot-paid),adv:r2(adv),parties:Object.keys(np).length,bills:D.bills.length};
+  }
+  function bsCalc(){
+    var o=RP.data.out,i=RP.data['in'];if(!o||!i)return null;
+    var C=bsSide(o),S=bsSide(i);
+    var cash=r2(C.paid+C.adv-S.paid-S.adv);
+    var assets=r2(cash+C.due+S.adv), liab=r2(S.due+C.adv), profit=r2(assets-liab);
+    return {C:C,S:S,cash:cash,assets:assets,liab:liab,profit:profit,sales:C.total,purch:S.total,ok:Math.abs(profit-r2(C.total-S.total))<0.01};
+  }
+  function bsAmt(v){return (v<0?'−':'')+'₹'+pn(Math.abs(v))}
+  function bsRow(en,gu,v,cls){return '<div class="bsr'+(cls?' '+cls:'')+(v<0?' neg':'')+'"><span>'+en+(gu?'<small>'+gu+'</small>':'')+'</span><b>'+bsAmt(v)+'</b></div>'}
+  function bsBody(){
+    var el=$('#bs-body');if(!el)return;
+    var X=bsCalc();
+    if(!X){
+      el.innerHTML='<div class="pnote" style="display:block">'+(BSS.err?'Could not load this account. · હિસાબ લોડ ન થયો.':'Loading… · લોડ થઈ રહ્યું છે…')+'</div>'+(BSS.err?'<button type="button" class="btn sec" id="bs-refresh">Retry · ફરી પ્રયત્ન</button>':'');
+      return;
+    }
+    var d=BSS.at||new Date();
+    el.style.cssText='display:flex;flex-direction:column;gap:8px';
+    var dT=r2(X.S.due+X.C.adv), cT=r2(X.C.due+X.S.adv), df=r2(cT-dT);
+    function cell(k,en,gu,v,np){
+      return '<button type="button" class="bsx'+(v<0?' neg':'')+'" data-bsd="'+k+'"><span class="t">'+en+'</span><span class="gu">'+gu+'</span><b>'+bsAmt(v)+'</b><small>'+(np!=null?np+' party · ':'')+'Tap for details · વિગત જુઓ</small></button>';
+    }
+    el.innerHTML=
+      '<div class="bsg">'+
+        '<div class="gh">Debit<span class="gu">ઉધાર</span></div><div class="gh">Credit<span class="gu">જમા</span></div>'+
+        cell('py','To pay to suppliers','સપ્લાયરને ચૂકવવાના',X.S.due,X.S.parties)+
+        cell('rc','To receive from customers','ગ્રાહક પાસેથી લેવાના',X.C.due,X.C.parties)+
+        cell('ar','Advance received from customers','ગ્રાહક પાસેથી મળેલ એડવાન્સ',X.C.adv)+
+        cell('ap','Advance paid to suppliers','સપ્લાયરને આપેલ એડવાન્સ',X.S.adv)+
+      '</div>'+
+      '<div class="bstot"><div><small>Total Debit · કુલ ઉધાર</small><b>'+bsAmt(dT)+'</b></div><div><small>Total Credit · કુલ જમા</small><b>'+bsAmt(cT)+'</b></div></div>'+
+      '<div class="bsdiff '+(df>0?'g':df<0?'r':'z')+'"><span class="t">'+(df>0?'To be received':df<0?'To be paid':'Settled')+'<span class="gu">'+(df>0?'લેવાના બાકી':df<0?'ચૂકવવાના બાકી':'બરાબર · કંઈ બાકી નથી')+'</span></span><b>'+bsAmt(Math.abs(df))+'</b></div>'+
+      '<div class="bsbar"><span>As on '+pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad2(d.getHours())+':'+pad2(d.getMinutes())+(BSS.err?' · <span style="color:var(--danger)">refresh failed</span>':'')+'</span><button type="button" id="bs-refresh">⟳ Refresh · તાજું કરો</button></div>';
+  }
+  /* Tap an amount: party-wise details in a popup (bills for "to pay / to receive", dated entries for advances). */
+  var BSD={
+    py:{en:'To pay to suppliers',gu:'સપ્લાયરને ચૂકવવાના',k:'in',bills:true},
+    rc:{en:'To receive from customers',gu:'ગ્રાહક પાસેથી લેવાના',k:'out',bills:true},
+    ar:{en:'Advance received from customers',gu:'ગ્રાહક પાસેથી મળેલ એડવાન્સ',k:'out',bills:false},
+    ap:{en:'Advance paid to suppliers',gu:'સપ્લાયરને આપેલ એડવાન્સ',k:'in',bills:false}
+  };
+  function bsDetail(key){
+    var R=BSD[key],D=RP.data[R.k];if(!R||!D)return;
+    var m={},tot=0;
+    function g(id,name,city){return m[id]||(m[id]={name:name||'',city:city||'',total:0,lines:[]})}
+    if(R.bills){
+      D.bills.forEach(function(b){var due=r2((+b.total||0)-(+b.paid||0));if(due<=0)return;var o=g(b.partyId,b.party,b.city);o.total+=due;o.lines.push([esc(b.billNo)+(b.date?' · '+esc(b.date):'')+' · ₹'+pn(+b.total||0)+(+b.paid>0?' (Paid ₹'+pn(+b.paid)+')':''),due])});
+    }else{
+      D.pays.forEach(function(x){var a=+x.amount||0;if(x.billNo||!a)return;var o=g(x.partyId,x.party);o.total+=a;o.lines.push([esc(x.date||'')+' · '+(a<0?'Adjusted against bill · બિલ સામે સરભર':'Advance · એડવાન્સ'),a])});
+    }
+    var list=Object.keys(m).map(function(k){var o=m[k];o.total=r2(o.total);return o}).filter(function(o){return o.total!==0}).sort(function(a,b){return b.total-a.total});
+    list.forEach(function(o){tot+=o.total});
+    openMdl('<div class="pvt">'+R.en+' · '+R.gu+'</div><div class="bsd-t"><span>Total · કુલ</span><span>'+bsAmt(r2(tot))+'</span></div>'+
+      (list.length?list.map(function(o){
+        return '<div class="bsd-g"><div class="p"><span>'+esc(o.name)+(o.city?' <small style="font-weight:500;color:var(--muted)">· '+esc(o.city)+'</small>':'')+'</span><span>'+bsAmt(o.total)+'</span></div>'+
+          o.lines.map(function(l){return '<div class="l"><span>'+l[0]+'</span><span>'+bsAmt(r2(l[1]))+'</span></div>'}).join('')+'</div>';
+      }).join(''):'<div class="pnote" style="display:block;padding:10px 0">Nothing found. · કંઈ મળ્યું નથી.</div>'));
+  }
+  (function(){
+    $('#v-reports').addEventListener('click',function(ev){
+      var b=ev.target.closest&&ev.target.closest('[data-bsd]');if(b)bsDetail(b.getAttribute('data-bsd'));
+    });
+  })();
+  function bsLoad(){
+    if(!SHEET_URL){BSS.err=true;bsBody();return}
+    if(load(QUEUE_KEY,[]).length)sheetFlush();
+    BSS.err=false;bsBody();
+    var left=2;
+    ['out','in'].forEach(function(k){
+      fetch(SHEET_URL+'?type=report&kind='+k).then(function(r){return r.json()}).then(function(d){
+        if(!d||!Array.isArray(d.bills)||!Array.isArray(d.pays))throw 0;
+        BC={};RP.data[k]=d;RP.state[k]='ok';
+      }).catch(function(){BSS.err=true}).then(function(){
+        if(--left===0){if(!BSS.err)BSS.at=new Date();if(repView==='bs'&&tab==='reports')bsBody()}
+      });
+    });
+  }
   function openReports(){
     var v=$('#v-reports');
+    if(repView==='bs'){DB.kind='';v.innerHTML=bsShell();bsBody();bsLoad();return}
     if(repView==='out'||repView==='in'){
       if(DB.kind!==repView){DB={kind:repView,from:'',to:'',no:'',party:'',pq:''}}
       v.innerHTML=dbShell();dbBody();dbLoad();
@@ -2038,6 +2264,7 @@ input.rate{min-height:36px;width:84px}
       }
       if(b.dataset.party!==undefined){RP.open[b.dataset.party]=!RP.open[b.dataset.party];repBody();return}
       if(b.id==='rp-retry')repLoad();
+      if(b.id==='bs-refresh'){bsLoad();return}
     });
     v.addEventListener('change',function(ev){
       var t=ev.target;
