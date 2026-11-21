@@ -385,6 +385,41 @@ input.rate{min-height:36px;width:84px}
 .bwords{font-size:11px;line-height:1.3}
 .acts{display:grid;grid-template-columns:1.5fr 1fr;gap:8px}
 </style>
+<style id="v4">
+/* Header back arrow */
+.lhs{display:flex;align-items:center;gap:6px;min-width:0}
+#backBtn[hidden]{display:none}
+#backBtn{margin-left:-8px;background:rgba(255,255,255,.12)}
+#backBtn svg{width:22px;height:22px;fill:currentColor}
+.bar.sub .logo{display:none}
+.view>.back{display:none}
+/* Admin menu */
+.menu .opt{position:relative}
+.menu .opt .cnt{flex:none;min-width:26px;height:22px;padding:0 8px;border-radius:11px;background:var(--soft);color:var(--accent);font:700 12px var(--font);display:grid;place-items:center}
+.menu .opt .cnt[hidden]{display:none}
+.opt .t small{line-height:1.35}
+.card h3 .gu{font:600 13px var(--font);color:var(--muted);margin-left:8px}
+.phint{font-size:12px;line-height:1.5;color:var(--muted)}
+.phint b{color:var(--fg)}
+.phint .gu{display:block;color:var(--accent);font-weight:600}
+.cmp .card h3{font-size:16px}
+.cmp .prompt .gu{display:block}
+/* Items table: customer / supplier rates */
+#v-items .th,#v-items .tr{grid-template-columns:1fr 132px}
+/* Price list: two rates per item */
+.pr2{display:grid;grid-template-columns:1fr auto;gap:8px 10px;align-items:center;padding:10px 12px;border-top:1px solid var(--line)}
+.pr2:first-child{border-top:0}
+.pr2 .n{min-width:0}
+.pr2 .n b{display:block;font-weight:600;overflow-wrap:anywhere;text-transform:uppercase}
+.pr2 .n .u{display:inline-block;margin-top:4px;background:var(--soft);color:var(--accent);font-weight:700;font-size:11px;padding:2px 9px;border-radius:10px}
+.pr2 .ed{width:36px;height:36px}
+.pr2 .rr{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pr2 .rl{display:flex;flex-direction:column;gap:3px;min-width:0}
+.pr2 .rl small{font:700 10px var(--font);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pr2 .rl small .gu{text-transform:none;letter-spacing:0;margin-left:4px;color:var(--accent);font-weight:600}
+.pr2 .rb{display:flex;align-items:center;gap:6px}
+.pr2 input.rate{width:100%;min-width:0;min-height:38px;font-size:15px}
+</style>
 <style id="v3">
 .pcs{background:var(--soft);border-radius:12px;padding:6px 12px;margin:8px 0}
 .pcs>div{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:13px}
@@ -459,10 +494,84 @@ input.rate{min-height:36px;width:84px}
 .inv-f em{font-style:normal;font-weight:700;color:#0B2545}
 .inv-n{text-align:center;font-size:9.5px;color:#8FA0B3;padding:6px;background:#F6FAFC;border-top:1px solid #e6edf3}
 </style>
+<style id="v5">
+/* Added items: 2 items per row (divided in the middle), each cell = name + qty/amount + edit icon; list scrolls when long */
+#b-list.ilist{display:grid;grid-template-columns:1fr 1fr;align-content:start;max-height:190px;padding:2px 8px!important;gap:0!important}
+#b-list .ilist-empty{grid-column:1/-1}
+#b-list .ichip{display:grid;grid-template-columns:minmax(0,1fr) 24px;grid-template-areas:"n e" "q e";column-gap:6px;row-gap:0;align-items:center;padding:4px 6px;min-height:38px;border-bottom:1px dashed var(--line);border-radius:0}
+#b-list .ichip:nth-child(odd){border-right:1px solid var(--line);padding-left:0}
+#b-list .ichip:nth-child(even){padding-right:0}
+#b-list .ichip.last{border-bottom:0}
+#b-list .ichip.on{background:var(--soft);border-radius:8px}
+#b-list .ichip .in{grid-area:n;font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#b-list .ichip .iq{grid-area:q;font-size:11px;color:var(--muted);white-space:nowrap}
+#b-list .ichip .iq b{color:var(--fg);font-size:11.5px}
+#b-list .i-edit{grid-area:e;width:24px;height:24px;border-radius:7px}
+#b-list .i-edit svg{width:12px;height:12px}
+/* Generate Bill popup: charges */
+.gb-ch{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.gf{display:flex;flex-direction:column;gap:3px;min-width:0;font:700 10px var(--font);letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.gf .gu{display:block;text-transform:none;letter-spacing:0;color:var(--accent);font-weight:600}
+.gf input{min-height:38px;font-size:14px;padding:0 8px;border-radius:10px;font-weight:600;color:var(--fg)}
+</style>
+<style id="v6">
+/* one line per item: 1. APPLE (1KG) = Rs. 170 */
+#b-list .ichip{grid-template-columns:minmax(0,1fr) 24px;grid-template-areas:none;min-height:32px;padding:3px 6px}
+#b-list .ichip:nth-child(odd){padding-left:0}#b-list .ichip:nth-child(even){padding-right:0}
+#b-list .ichip .ln{display:flex;align-items:baseline;gap:3px;min-width:0;font-size:11px;white-space:nowrap}
+#b-list .ichip .in,#b-list .ichip .iq,#b-list .ichip .i-edit{grid-area:auto}
+#b-list .ichip .in{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:11px}
+#b-list .ichip .iq{flex:none;font-size:10.5px;color:var(--fg)}
+#b-list .ichip .iq b{font-size:10.5px}
+/* Generate Bill popup */
+.gs-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-bottom:8px}
+.gs-h b{font:700 15px var(--head);color:var(--accent)}.gs-h span{color:var(--muted);font-size:12px}.gs-h .gp{flex:1 1 100%;color:var(--fg);font-weight:600;text-transform:uppercase}
+.gs{border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:220px}
+.gs table{width:100%;border-collapse:collapse;font-size:12px}
+.gs th{background:var(--soft);color:var(--muted);font:700 10px var(--font);letter-spacing:.04em;text-transform:uppercase;padding:6px 8px;text-align:right;position:sticky;top:0}
+.gs th small{display:block;text-transform:none;letter-spacing:0;font-weight:600;color:var(--accent)}
+.gs td{padding:6px 8px;border-top:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+.gs th:first-child,.gs td:first-child{text-align:center;width:22px}
+.gs th:nth-child(2),.gs td:nth-child(2){text-align:left;font-weight:600}
+.gt{margin-top:10px;background:var(--soft);border-radius:12px;padding:10px 12px}
+.gt1{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+.gt2{display:flex;justify-content:space-between;align-items:baseline;margin-top:4px;font:700 15px var(--head)}
+.gt2 small{font:600 11px var(--font);color:var(--muted);margin-left:4px}
+.gt2 b{color:var(--accent);font-size:20px}
+.gt3{margin-top:4px;color:var(--muted);font-size:11.5px}
+/* Final bill actions: 5 buttons in one row */
+.pvt.ok{color:var(--accent)}
+.inv-acts{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px;position:sticky;bottom:-6px;background:var(--surface);padding:8px 0 2px}
+.fa{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:56px;padding:4px 2px;border-radius:12px;background:var(--soft);color:var(--accent);font:700 10px var(--font);text-align:center}
+.fa svg{width:22px;height:22px;fill:currentColor}
+.fa.pri{background:var(--accent-fill);color:var(--on-accent)}
+.fa.dim{opacity:.5}
+@media print{
+  @page{size:A4;margin:10mm}
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important}
+  .app,.toast,.tip,.btip,.mdl-x,.inv-acts,.pvt{display:none!important}
+  .mdl{position:static!important;background:none!important;display:block!important}
+  .mdl[hidden]{display:none!important}
+  .mdl-in{max-width:none!important;max-height:none!important;overflow:visible!important;padding:0!important;border-radius:0!important;background:#fff!important}
+  .inv{font-size:13px;border-color:#9FB3C8}
+  .inv,.inv *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .inv-h{padding-right:14px}
+}
+</style>
+<style id="v7">
+.fa{min-height:64px;line-height:1.15}
+.fa span{display:block}
+.fa .gu{font-size:9px;font-weight:600;opacity:.9}
+.inv-w .guw{font-style:normal;font-weight:600;margin-top:2px}
+.gt3{line-height:1.5}
+</style>
+
+
 
 <div class="app">
-  <header class="bar"><div class="bar-in gut">
-    <div class="brand"><div class="logo">GM</div><div class="ttl" id="ttl"></div></div>
+  <header class="bar" id="bar"><div class="bar-in gut">
+    <div class="lhs"><button class="icon-btn" id="backBtn" hidden aria-label="Back / પાછળ"><svg class="i" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+    <div class="brand"><div class="logo">GM</div><div class="ttl" id="ttl"></div></div></div>
     <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme / લાઇટ કે ડાર્ક થીમ બદલો"><svg class="i" viewBox="0 0 24 24"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 16V5a7 7 0 010 14z"/></svg></button>
   </div></header>
 
@@ -474,21 +583,24 @@ input.rate{min-height:36px;width:84px}
     <section class="view" id="v-reports" hidden></section>
 
     <section class="view" id="v-admin" hidden>
-      <h2>Add new<span class="gu">નવું ઉમેરો</span></h2>
+      <h2>Masters<span class="gu">માસ્ટર ડેટા</span></h2>
       <div class="menu">
         <button class="opt" data-open="items">
           <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M20 6h-3V4a2 2 0 00-2-2H9a2 2 0 00-2 2v2H4a2 2 0 00-2 2v11a2 2 0 002 2h16a2 2 0 002-2V8a2 2 0 00-2-2zM9 4h6v2H9V4zm7 9h-3v3h-2v-3H8v-2h3V8h2v3h3v2z"/></svg></span>
-          <span class="t"><b>Add Items</b><span class="gu">આઇટમ ઉમેરો</span><small>Create a new item · નવી આઇટમ બનાવો</small></span>
+          <span class="t"><b>Items</b><span class="gu">આઇટમ</span><small>Add, edit or delete items · આઇટમ ઉમેરો, સુધારો, કાઢો</small></span>
+          <span class="cnt" data-cnt="items" hidden></span>
           <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
         </button>
         <button class="opt" data-open="customer">
           <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M15 12a4 4 0 100-8 4 4 0 000 8zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span>
-          <span class="t"><b>Customer</b><small>Add, edit or delete customers</small></span>
+          <span class="t"><b>Customer</b><span class="gu">ગ્રાહક</span><small>Add, edit or delete customers · ગ્રાહક ઉમેરો, સુધારો, કાઢો</small></span>
+          <span class="cnt" data-cnt="customer" hidden></span>
           <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
         </button>
         <button class="opt" data-open="supplier">
           <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M20 8h-3V4H3a2 2 0 00-2 2v11h2a3 3 0 006 0h6a3 3 0 006 0h2v-5l-3-4zM6 18.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm13.5-9 1.96 2.5H17V9.5h2.5zM18 18.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg></span>
-          <span class="t"><b>Supplier</b><small>Add, edit or delete suppliers</small></span>
+          <span class="t"><b>Supplier</b><span class="gu">સપ્લાયર</span><small>Add, edit or delete suppliers · સપ્લાયર ઉમેરો, સુધારો, કાઢો</small></span>
+          <span class="cnt" data-cnt="supplier" hidden></span>
           <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
         </button>
       </div>
@@ -496,7 +608,8 @@ input.rate{min-height:36px;width:84px}
       <div class="menu">
         <button class="opt" data-open="prices">
           <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M13.66 7a4 4 0 00-3.43-2H18V3H6v2h3.17a2.5 2.5 0 012.33 1.5H6v2h5.83c-.42 1.24-1.6 2-2.83 2H6v2h2.5L15 21h2.5l-6.7-8.2c2.25-.2 4-1.6 4.5-3.8H18V7h-4.34z"/></svg></span>
-          <span class="t"><b>Price List</b><span class="gu">ભાવ પત્રક</span><small>Set the rate of each item · દરેક વસ્તુનો ભાવ નક્કી કરો</small></span>
+          <span class="t"><b>Price List</b><span class="gu">ભાવ પત્રક</span><small>Customer rate &amp; supplier rate · ગ્રાહક અને સપ્લાયર ભાવ</small></span>
+          <span class="cnt" data-cnt="prices" hidden></span>
           <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
         </button>
       </div>
@@ -521,16 +634,23 @@ input.rate{min-height:36px;width:84px}
             <div class="sub">વસ્તુનું નામ (અંગ્રેજી)</div>
             <input type="text" id="item-en" autocapitalize="characters" enterkeyhint="next">
           </div>
-                    <div class="row2"><div class="fld">
+          <div class="fld">
             <label for="item-unit">Unit</label>
             <div class="sub">એકમ</div>
             <select id="item-unit"></select>
           </div>
-          <div class="fld">
-            <label for="item-rate" id="rateLbl">Rate for 1 KG</label>
-            <div class="sub" id="rateSub">1 કિલો નો ભાવ</div>
-            <input type="text" id="item-rate" inputmode="decimal" placeholder="₹">
-          </div></div>
+          <div class="row2">
+            <div class="fld">
+              <label for="item-rate" id="rateLbl">Customer rate</label>
+              <div class="sub" id="rateSub">ગ્રાહક ભાવ</div>
+              <input type="text" id="item-rate" inputmode="decimal" placeholder="₹">
+            </div>
+            <div class="fld">
+              <label for="item-srate" id="srateLbl">Supplier rate</label>
+              <div class="sub" id="srateSub">સપ્લાયર ભાવ</div>
+              <input type="text" id="item-srate" inputmode="decimal" placeholder="₹">
+            </div>
+          </div>
           <div class="actions">
             <button type="submit" class="btn pri">Save<span class="gu">સાચવો</span></button>
             <button type="button" class="btn sec" id="cancelBtn">Cancel<span class="gu">રદ કરો</span></button>
@@ -547,83 +667,85 @@ input.rate{min-height:36px;width:84px}
       </div>
 
       <div class="tbl">
-        <div class="th"><div>Item<small>વસ્તુ</small></div><div>Rate / Unit<small>ભાવ / એકમ</small></div></div>
+        <div class="th"><div>Item<small>વસ્તુ</small></div><div>Cust. / Supp.<small>ગ્રાહક / સપ્લાયર</small></div></div>
         <div id="itemRows"></div>
       </div>
     </section>
 
     <section class="view cmp" id="v-customer" hidden>
-      <button class="back" id="custBack"><svg class="i" viewBox="0 0 24 24"><path d="M15.4 6 16.8 7.4 12.2 12l4.6 4.6-1.4 1.4-6-6z"/></svg>Admin</button>
+      <button class="back" id="custBack"><svg class="i" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Admin · એડમિન</button>
       <div class="modes" id="cuModes">
-        <button class="mode" data-cmode="add" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>Add Customer</button>
-        <button class="mode" data-cmode="edit" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>Edit Customer</button>
-        <button class="mode" data-cmode="delete" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>Delete Customer</button>
+        <button class="mode" data-cmode="add" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>Add<span class="gu">ઉમેરો</span></button>
+        <button class="mode" data-cmode="edit" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>Edit<span class="gu">સુધારો</span></button>
+        <button class="mode" data-cmode="delete" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>Delete<span class="gu">કાઢો</span></button>
       </div>
       <div class="card">
+        <h3 id="cuTitle">Add Customer<span class="gu">ગ્રાહક ઉમેરો</span></h3>
         <div class="prompt" id="cuPrompt" hidden></div>
         <form id="custForm" autocomplete="off" style="display:flex;flex-direction:column;gap:10px">
-          <div class="fld"><label for="cu-en">Customer Name</label>
+          <div class="fld"><label for="cu-en">Customer Name<span class="gu">ગ્રાહકનું નામ</span></label>
             <input type="text" id="cu-en" autocapitalize="characters" enterkeyhint="next"></div>
           <div class="row2">
-            <div class="fld"><label for="cu-mob">Mobile No.</label>
+            <div class="fld"><label for="cu-mob">Mobile No.<span class="gu">મોબાઇલ નં.</span></label>
               <input type="tel" id="cu-mob" inputmode="numeric" maxlength="14"></div>
-            <div class="fld"><label for="cu-city">City</label>
+            <div class="fld"><label for="cu-city">City<span class="gu">શહેર</span></label>
               <input type="text" id="cu-city" autocapitalize="characters"></div>
           </div>
-          <div class="fld"><label for="cu-email">E-Mail Address</label>
+          <div class="fld"><label for="cu-email">E-Mail Address<span class="gu">ઈ-મેલ</span></label>
             <input type="email" id="cu-email" inputmode="email" autocapitalize="characters"></div>
-          <div class="fld"><label for="cu-addr">Address</label>
+          <div class="fld"><label for="cu-addr">Address<span class="gu">સરનામું</span></label>
             <textarea id="cu-addr" rows="2"></textarea></div>
           <div class="actions">
-            <button type="submit" class="btn pri">Save</button>
-            <button type="button" class="btn sec" id="cuCancel">Cancel</button>
+            <button type="submit" class="btn pri">Save<span class="gu">સાચવો</span></button>
+            <button type="button" class="btn sec" id="cuCancel">Cancel<span class="gu">રદ કરો</span></button>
           </div>
         </form>
-        <div class="confirm" id="cuConfirm" hidden><b id="cuConfirmTxt"></b><div class="actions"><button type="button" class="btn dng" id="cuYes">Delete</button><button type="button" class="btn sec" id="cuNo">Cancel</button></div></div>
+        <div class="confirm" id="cuConfirm" hidden><b id="cuConfirmTxt"></b><div class="actions"><button type="button" class="btn dng" id="cuYes">Delete<span class="gu">કાઢો</span></button><button type="button" class="btn sec" id="cuNo">Cancel<span class="gu">રદ કરો</span></button></div></div>
       </div>
-      <div class="tbl" id="cuTbl" hidden><div class="th"><div>Customer</div><div>Mobile</div></div><div id="cuRows"></div></div>
+      <div class="tbl" id="cuTbl" hidden><div class="th"><div>Customer<small>ગ્રાહક</small></div><div>Mobile<small>મોબાઇલ</small></div></div><div id="cuRows"></div></div>
     </section>
 
     <section class="view cmp" id="v-supplier" hidden>
-      <button class="back" id="suppBack"><svg class="i" viewBox="0 0 24 24"><path d="M15.4 6 16.8 7.4 12.2 12l4.6 4.6-1.4 1.4-6-6z"/></svg>Admin</button>
+      <button class="back" id="suppBack"><svg class="i" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Admin · એડમિન</button>
       <div class="modes" id="suModes">
-        <button class="mode" data-smode="add" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>Add Supplier</button>
-        <button class="mode" data-smode="edit" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>Edit Supplier</button>
-        <button class="mode" data-smode="delete" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>Delete Supplier</button>
+        <button class="mode" data-smode="add" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>Add<span class="gu">ઉમેરો</span></button>
+        <button class="mode" data-smode="edit" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>Edit<span class="gu">સુધારો</span></button>
+        <button class="mode" data-smode="delete" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>Delete<span class="gu">કાઢો</span></button>
       </div>
       <div class="card">
+        <h3 id="suTitle">Add Supplier<span class="gu">સપ્લાયર ઉમેરો</span></h3>
         <div class="prompt" id="suPrompt" hidden></div>
         <form id="suppForm" autocomplete="off" style="display:flex;flex-direction:column;gap:10px">
-          <div class="fld"><label for="su-en">Supplier Name</label>
+          <div class="fld"><label for="su-en">Supplier Name<span class="gu">સપ્લાયરનું નામ</span></label>
             <input type="text" id="su-en" autocapitalize="characters" enterkeyhint="next"></div>
           <div class="row2">
-            <div class="fld"><label for="su-mob">Mobile No.</label>
+            <div class="fld"><label for="su-mob">Mobile No.<span class="gu">મોબાઇલ નં.</span></label>
               <input type="tel" id="su-mob" inputmode="numeric" maxlength="14"></div>
-            <div class="fld"><label for="su-city">City</label>
+            <div class="fld"><label for="su-city">City<span class="gu">શહેર</span></label>
               <input type="text" id="su-city" autocapitalize="characters"></div>
           </div>
-          <div class="fld"><label for="su-email">E-Mail Address</label>
+          <div class="fld"><label for="su-email">E-Mail Address<span class="gu">ઈ-મેલ</span></label>
             <input type="email" id="su-email" inputmode="email" autocapitalize="characters"></div>
-          <div class="fld"><label for="su-addr">Address</label>
+          <div class="fld"><label for="su-addr">Address<span class="gu">સરનામું</span></label>
             <textarea id="su-addr" rows="2"></textarea></div>
           <div class="actions">
-            <button type="submit" class="btn pri">Save</button>
-            <button type="button" class="btn sec" id="suCancel">Cancel</button>
+            <button type="submit" class="btn pri">Save<span class="gu">સાચવો</span></button>
+            <button type="button" class="btn sec" id="suCancel">Cancel<span class="gu">રદ કરો</span></button>
           </div>
         </form>
-        <div class="confirm" id="suConfirm" hidden><b id="suConfirmTxt"></b><div class="actions"><button type="button" class="btn dng" id="suYes">Delete</button><button type="button" class="btn sec" id="suNo">Cancel</button></div></div>
+        <div class="confirm" id="suConfirm" hidden><b id="suConfirmTxt"></b><div class="actions"><button type="button" class="btn dng" id="suYes">Delete<span class="gu">કાઢો</span></button><button type="button" class="btn sec" id="suNo">Cancel<span class="gu">રદ કરો</span></button></div></div>
       </div>
-      <div class="tbl" id="suTbl" hidden><div class="th"><div>Supplier</div><div>Mobile</div></div><div id="suRows"></div></div>
+      <div class="tbl" id="suTbl" hidden><div class="th"><div>Supplier<small>સપ્લાયર</small></div><div>Mobile<small>મોબાઇલ</small></div></div><div id="suRows"></div></div>
     </section>
 
     <section class="view" id="v-prices" hidden>
-      <button class="back" id="pricesBack"><svg class="i" viewBox="0 0 24 24"><path d="M15.4 6 16.8 7.4 12.2 12l4.6 4.6-1.4 1.4-6-6z"/></svg>Admin · એડમિન</button>
+      <button class="back" id="pricesBack"><svg class="i" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Admin · એડમિન</button>
       <div class="card">
-        <h3>Price List / ભાવ પત્રક</h3>
-        
+        <h3>Price List<span class="gu">ભાવ પત્રક</span></h3>
+        <div class="phint"><b>Customer rate</b> is used in Outward bills · <b>Supplier rate</b> is used in Inward bills.<span class="gu">ગ્રાહક ભાવ આઉટવર્ડ બિલમાં અને સપ્લાયર ભાવ ઇનવર્ડ બિલમાં વપરાય છે.</span></div>
       </div>
       <div class="tbl">
-        <div class="th"><div>Item<small>વસ્તુ</small></div><div style="text-align:right">Rate ₹<small>ભાવ ₹</small></div></div>
+        <div class="th"><div>Item<small>વસ્તુ</small></div><div style="text-align:right">Rates ₹<small>ભાવ ₹</small></div></div>
         <div id="priceRows"></div>
       </div>
     </section>
@@ -643,8 +765,9 @@ input.rate{min-height:36px;width:84px}
 
 <script>
 (function(){
+  var ADMIN_T={items:['Items','આઇટમ'],customer:['Customer','ગ્રાહક'],supplier:['Supplier','સપ્લાયર'],prices:['Price List','ભાવ પત્રક']};
   var TITLES={home:['Home','હોમ'],payment:['Payment','ચુકવણી'],bill:['Bill','બિલ'],reports:['Reports','રિપોર્ટ'],admin:['Admin','એડમિન']};
-  var THEME='cyan-navy-theme', ITEMS_KEY='cyan-navy-items-v1', PRICES_KEY='cyan-navy-prices-v1';
+  var THEME='cyan-navy-theme', ITEMS_KEY='cyan-navy-items-v1', PRICES_KEY='cyan-navy-prices-v1', SPRICES_KEY='cyan-navy-sprices-v1';
   /* GOOGLE SHEET: paste your Apps Script Web App URL between the quotes (ends with /exec). Leave empty to save only on this device. */
   var SHEET_URL='https://script.google.com/macros/s/AKfycby-VWnBj_Vjm2OrVG8T7JsLRCuuTmrB6DKl_ykTitiodjoQfU_7sZzgQ8e6A-tEt0zj/exec';
   var QUEUE_KEY='cyan-navy-sheet-queue-v1', SYNC_KEY='cyan-navy-items-synced-v1', PSYNC_KEY='cyan-navy-prices-synced-v1', CSYNC_KEY='cyan-navy-customers-synced-v1';
@@ -805,12 +928,13 @@ input.rate{min-height:36px;width:84px}
   }
   function norm(x){return String(x||'').replace(/\s+/g,' ').trim().toLowerCase()}
   /* The Sheet is the master list of items: load it so every item shows on every device. */
+  var sheetSupportsS=false; /* set to true after the Apps Script returns a supplier-rate column */
   function sheetLoadItems(loud){
     if(!SHEET_URL)return;
     if(load(QUEUE_KEY,[]).length){sheetFlush();return}
     fetch(SHEET_URL+'?type=items').then(function(r){return r.json()}).then(function(rows){
       if(!Array.isArray(rows))throw 0;if(load(QUEUE_KEY,[]).length)return;
-      var remote=rows.map(function(r){return {id:+r.id,en:r.en,gu:r.gu,unit:r.unit,rate:r.rate}});
+      var remote=rows.map(function(r){return {id:+r.id,en:r.en,gu:r.gu,unit:r.unit,rate:r.rate,srate:r.srate!==undefined?r.srate:r.supplierRate}});
       if(!load(SYNC_KEY,false)){
         var ids={},names={};
         remote.forEach(function(r){ids[r.id]=1;names[norm(r.en)]=1});
@@ -820,11 +944,14 @@ input.rate{min-height:36px;width:84px}
       var firstP=!load(PSYNC_KEY,false);
       remote.forEach(function(r){
         var has=r.rate!==undefined&&r.rate!==null&&String(r.rate).trim()!==''&&!isNaN(+r.rate);
+        var hasS=r.srate!==undefined&&r.srate!==null&&String(r.srate).trim()!==''&&!isNaN(+r.srate);
+        if(hasS)sprices[r.id]=+r.srate;
+        else if(sprices[r.id]!=null&&sheetSupportsS)sheetSend({action:'setRate',id:r.id,rate:prices[r.id],srate:sprices[r.id],supplierRate:sprices[r.id]});
         if(has)prices[r.id]=+r.rate;
         else if(firstP&&prices[r.id]!=null)sheetSend({action:'setRate',id:r.id,rate:prices[r.id]});
         else delete prices[r.id];
       });
-      save(PRICES_KEY,prices);save(PSYNC_KEY,true);
+      save(PRICES_KEY,prices);save(SPRICES_KEY,sprices);save(PSYNC_KEY,true);
       items=remote.map(function(r){return {id:r.id,en:r.en,gu:r.gu,unit:r.unit}});
       persist();renderItems();if(priceEdit===null)renderPrices();if(tab==='bill')refreshBill();if(tab==='payment')refreshPayParty();
     }).catch(function(){if(loud)toast('Could not load from Google Sheet · શીટમાંથી લોડ ન થયું')});
@@ -833,10 +960,10 @@ input.rate{min-height:36px;width:84px}
     if(!SHEET_URL)return;
     var q=load(QUEUE_KEY,[]);q.push(rec);save(QUEUE_KEY,q);sheetFlush();
   }
-  function sheetAdd(it,rate){
+  function sheetAdd(it,rate,srate){
     if(!SHEET_URL)return;
     var q=load(QUEUE_KEY,[]);
-    q.push({action:'add',id:it.id,en:it.en,gu:it.gu,unit:it.unit,rate:rate});
+    q.push({action:'add',id:it.id,en:it.en,gu:it.gu,unit:it.unit,rate:rate,srate:srate,supplierRate:srate});
     save(QUEUE_KEY,q);sheetFlush();
   }
   window.addEventListener('online',sheetFlush);
@@ -933,7 +1060,48 @@ input.rate{min-height:36px;width:84px}
     if(r)out.push(three(r));
     return 'Rupees '+(out.join(' ')||'Zero')+(p?' and '+two(p)+' Paise':'')+' Only';
   }
-  function billNo(){var o=bill.type==='out';return (o?'OUT-':'IN-')+String((+load(o?BILL_KEY:BILL_IN_KEY,0))+1).padStart(4,'0')}
+  /* Bill numbers continue from the latest bill in the Google Sheet (and any bill still waiting to be sent). */
+  var billSeq={out:null,'in':null};
+  function seqNum(no){var m=/(\d+)\s*$/.exec(String(no||''));return m?+m[1]:0}
+  function queuedMax(kind){var m=0;load(QUEUE_KEY,[]).forEach(function(r){if(r&&r.action==='saveBill'&&r.type===kind)m=Math.max(m,seqNum(r.billNo))});return m}
+  function nextSeq(kind){
+    var base=billSeq[kind]!=null?billSeq[kind]:(+load(kind==='out'?BILL_KEY:BILL_IN_KEY,0));
+    return Math.max(base,queuedMax(kind))+1;
+  }
+  function fmtNo(kind,n){return (kind==='out'?'OUT-':'IN-')+String(n).padStart(4,'0')}
+  /* Amount in words in Gujarati (Indian system: હજાર, લાખ, કરોડ) */
+  var GU0=['શૂન્ય','એક','બે','ત્રણ','ચાર','પાંચ','છ','સાત','આઠ','નવ','દસ','અગિયાર','બાર','તેર','ચૌદ','પંદર','સોળ','સત્તર','અઢાર','ઓગણીસ','વીસ','એકવીસ','બાવીસ','તેવીસ','ચોવીસ','પચ્ચીસ','છવ્વીસ','સત્તાવીસ','અઠ્ઠાવીસ','ઓગણત્રીસ','ત્રીસ','એકત્રીસ','બત્રીસ','તેત્રીસ','ચોત્રીસ','પાંત્રીસ','છત્રીસ','સાડત્રીસ','આડત્રીસ','ઓગણચાલીસ','ચાલીસ','એકતાલીસ','બેતાલીસ','ત્રેતાલીસ','ચુમ્માલીસ','પિસ્તાલીસ','છેતાલીસ','સુડતાલીસ','અડતાલીસ','ઓગણપચાસ','પચાસ','એકાવન','બાવન','ત્રેપન','ચોપન','પંચાવન','છપ્પન','સત્તાવન','અઠ્ઠાવન','ઓગણસાઠ','સાઠ','એકસઠ','બાસઠ','ત્રેસઠ','ચોસઠ','પાંસઠ','છાસઠ','સડસઠ','અડસઠ','ઓગણોતેર','સિત્તેર','એકોતેર','બોતેર','તોતેર','ચુમોતેર','પંચોતેર','છોતેર','સિત્યોતેર','ઇઠ્યોતેર','ઓગણએંસી','એંસી','એક્યાસી','બ્યાસી','ત્રાસી','ચોર્યાસી','પંચાસી','છ્યાસી','સિત્યાસી','અઠ્યાસી','નેવ્યાસી','નેવું','એકાણું','બાણું','ત્રાણું','ચોરાણું','પંચાણું','છન્નું','સત્તાણું','અઠ્ઠાણું','નવ્વાણું'];
+  var GUH=['','એકસો','બસો','ત્રણસો','ચારસો','પાંચસો','છસો','સાતસો','આઠસો','નવસો'];
+  function guWords(amount){
+    var c=Math.round((+amount||0)*100), r=Math.floor(c/100), p=c%100;
+    function conv(n){
+      if(n===0)return GU0[0];
+      var parts=[],cr=Math.floor(n/10000000);n%=10000000;
+      var lk=Math.floor(n/100000);n%=100000;
+      var th=Math.floor(n/1000);n%=1000;
+      var h=Math.floor(n/100),t=n%100;
+      if(cr)parts.push(conv(cr)+' કરોડ');
+      if(lk)parts.push(conv(lk)+' લાખ');
+      if(th)parts.push(conv(th)+' હજાર');
+      if(h)parts.push(GUH[h]);
+      if(t)parts.push(GU0[t]);
+      return parts.join(' ');
+    }
+    if(r===0&&p>0)return conv(p)+' પૈસા માત્ર';
+    return 'રૂપિયા '+conv(r)+(p?' અને '+conv(p)+' પૈસા':'')+' માત્ર';
+  }
+  function billNo(){return fmtNo(bill.type,nextSeq(bill.type))}
+  function syncSeq(kind,cb){
+    function done(){if(cb)cb()}
+    if(!SHEET_URL)return done();
+    var ctl=window.AbortController?new AbortController():null, to=setTimeout(function(){if(ctl)ctl.abort()},6000);
+    fetch(SHEET_URL+'?type=report&kind='+kind,ctl?{signal:ctl.signal}:{}).then(function(r){return r.json()}).then(function(d){
+      if(!d||!Array.isArray(d.bills))throw 0;
+      var m=0;d.bills.forEach(function(b){m=Math.max(m,seqNum(b.billNo))});
+      billSeq[kind]=m;save(kind==='out'?BILL_KEY:BILL_IN_KEY,m);
+    }).catch(function(){}).then(function(){clearTimeout(to);done()});
+  }
+  function showBillNo(){var e=$('#v-bill .bnoc b');if(e&&tab==='bill')e.textContent=billNo()}
   function billParties(){return bill.type==='out'?customers:suppliers}
   function billCustOpts(sel){
     return '<option value="">Select '+(bill.type==='out'?'customer':'supplier')+'</option>'+billParties().map(function(x){
@@ -947,6 +1115,19 @@ input.rate{min-height:36px;width:84px}
   }
   var PEN='<svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>';
   var PLUS='<svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>';
+  /* Outward bill uses the customer rate, Inward bill uses the supplier rate. */
+  function billRate(id){var m=bill.type==='out'?prices:sprices;return m[id]!=null?String(m[id]):''}
+  /* Same item at the same rate is added up into one line. */
+  function mergeRows(list){
+    var out=[];
+    list.forEach(function(r){
+      var m=null;
+      if(r.item&&bnum(r.qty)>0)out.forEach(function(o){if(!m&&o.item===r.item&&bnum(o.rate)===bnum(r.rate))m=o});
+      if(m)m.qty=String(Math.round((bnum(m.qty)+bnum(r.qty))*1000)/1000);
+      else out.push({item:r.item,rate:r.rate,qty:r.qty});
+    });
+    return out;
+  }
   function blank(){return {item:'',rate:'',qty:''}}
   function rowOk(r){return !!r.item&&bnum(r.qty)>0}
   function rowEmpty(r){return !r.item&&!bnum(r.qty)&&!bnum(r.rate)}
@@ -958,12 +1139,13 @@ input.rate{min-height:36px;width:84px}
   }
   function listHtml(){
     if(!bill.rows.length)return '<div class="ilist-empty">No items added yet · હજી વસ્તુ ઉમેરી નથી</div>';
+    var n=bill.rows.length, lastFrom=n-(n%2===0?2:1);
     return bill.rows.map(function(r,i){
-      var it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(it.unit):'', a=r2(bnum(r.rate)*bnum(r.qty));
-      return '<div class="ichip'+(bill.edit===i?' on':'')+'" data-i="'+i+'"><span class="in">'+(i+1)+'. '+esc(it?it.en:'—')+'</span><span class="iq">'+esc(r.qty)+' '+u+' × ₹'+esc(r.rate||0)+'</span><b>'+binr(a)+'</b><button type="button" class="i-edit" aria-label="Edit item">'+PEN+'</button></div>';
+      var it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(unitShort(it.unit)):'', a=r2(bnum(r.rate)*bnum(r.qty));
+      return '<div class="ichip'+(bill.edit===i?' on':'')+(i>=lastFrom?' last':'')+'" data-i="'+i+'"><span class="ln"><span class="in">'+(i+1)+'. '+esc(it?it.en:'—')+'</span><span class="iq">('+esc(r.qty)+u+') = <b>Rs. '+pn(a)+'</b></span></span><button type="button" class="i-edit" aria-label="Edit item">'+PEN+'</button></div>';
     }).join('');
   }
-  function curHtml(){
+    function curHtml(){
     var r=bill.cur, it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(it.unit):'', ed=bill.edit!=null;
     return '<div class="cin"><select class="b-item">'+billItemOpts(r.item)+'</select>'+
       '<div class="b3"><label>Rate · ભાવ<input type="text" inputmode="decimal" class="b-rate" placeholder="'+(u?'₹/'+u:'₹')+'" value="'+esc(r.rate)+'"></label>'+
@@ -997,11 +1179,11 @@ input.rate{min-height:36px;width:84px}
       '<select id="b-cust" aria-label="'+(out?'Customer':'Supplier')+'">'+billCustOpts(bill.cust)+'</select></div>'+
       '<div class="card bcard ilist" id="b-list"></div>'+
       '<div class="brow cur" id="b-cur"></div>'+
-      '<div class="card bcard xr"><div class="c3">'+f('b-lab','Labour','મજૂરી',bill.labour)+f('b-tra','Transport','ભાડું',bill.trans)+f('b-misc','Misc.','પરચુરણ',bill.misc)+'</div></div>'+
       '<div class="card bcard btot"><div class="bl2"><span>Grand Total <small>કુલ રકમ</small></span><b id="b-grand"></b></div><div class="bwords" id="b-words"></div></div>'+
-      '<div class="acts"><button type="button" class="btn pri" id="b-save">Save Bill<span class="gu">બિલ સાચવો</span></button>'+
+      '<div class="acts"><button type="button" class="btn pri" id="b-save">Generate Bill<span class="gu">બિલ બનાવો</span></button>'+
       '<button type="button" class="btn sec" id="b-new">New<span class="gu">નવું</span></button></div>';
     drawAll();
+    syncSeq(bill.type,showBillNo);
   }
     function r2(v){return Math.round(v*100)/100}
   function pad2(n){return String(n).padStart(2,'0')}
@@ -1011,7 +1193,7 @@ input.rate{min-height:36px;width:84px}
     var out=bill.type==='out', p=billParties().filter(function(x){return String(x.id)===String(bill.cust)})[0];
     if(!p){toast(out?'Select customer · ગ્રાહક પસંદ કરો':'Select supplier · સપ્લાયર પસંદ કરો');return null}
     var rows=[],sub=0;
-    liveRows().forEach(function(r){
+    mergeRows(liveRows()).forEach(function(r){
       var it=items.filter(function(x){return x.id===+r.item})[0], q=bnum(r.qty), rt=bnum(r.rate);
       if(!it||!q)return;
       var a=r2(rt*q);sub+=a;rows.push({id:it.id,name:it.en,unit:it.unit,rate:rt,qty:q,amount:a});
@@ -1039,25 +1221,90 @@ input.rate{min-height:36px;width:84px}
       cb(pick());
     }).catch(function(){cb(pick())});
   }
+  function genRecalc(B){
+    var lab=bnum(bill.labour),tra=bnum(bill.trans),mis=bnum(bill.misc),total=r2(B.data.subTotal+lab+tra+mis);
+    B.data.labour=lab;B.data.transportation=tra;B.data.misc={details:'',amount:mis};
+    B.data.grandTotal=total;B.data.amountInWords=bwords(total);B.total=total;B.adv=r2(Math.min(B.advAvail||0,total));
+  }
+  function genInvHtml(B){
+    var vd=B.data;
+    if(B.adv>0){vd={};for(var k in B.data)vd[k]=B.data[k];vd.paid=B.adv;vd.paidLabel='Advance adjusted · એડવાન્સ સામે'}
+    return billViewHtml(vd);
+  }
+  function genSumHtml(B){
+    var d=B.data, pt=d.customer||d.supplier||{};
+    var rows=d.items.map(function(it,i){return '<tr><td>'+(i+1)+'</td><td>'+esc(it.name)+'</td><td>'+pn(it.qty)+' '+esc(unitShort(it.unit))+'</td><td>'+pn(it.rate)+'</td><td>'+pn(it.amount)+'</td></tr>'}).join('');
+    return '<div class="gs-h"><b>'+esc(d.billNo)+'</b><span>'+esc(d.date)+'</span><span class="gp">'+esc(pt.name||'')+'</span></div>'+
+      '<div class="gs"><table><thead><tr><th>#</th><th>Item<small>વસ્તુ</small></th><th>Qty<small>જથ્થો</small></th><th>Rate<small>ભાવ</small></th><th>Amount<small>રકમ</small></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  }
+  function genTotHtml(B){
+    return '<div class="gt"><div class="gt1"><span>Items Total · વસ્તુ કુલ</span><b>₹ '+pn(B.data.subTotal)+'</b></div>'+
+      '<div class="gt2"><span>Grand Total <small>કુલ રકમ</small></span><b>₹ '+pn(B.total)+'</b></div><div class="gt3">'+esc(B.data.amountInWords)+'<br>'+guWords(B.total)+'</div></div>';
+  }
+  function genNote(B){
+    return B.adv>0?'<div class="pcm">Advance ₹'+pn(B.adv)+' will be set against this bill automatically.'+(B.total>B.adv?' Balance due: <b>₹'+pn(r2(B.total-B.adv))+'</b>.':' The bill will be fully cleared.')+'</div>':'';
+  }
+  document.addEventListener('input',function(ev){
+    var t=ev.target,id=t&&t.id;
+    if(id!=='gb-tra'&&id!=='gb-lab'&&id!=='gb-misc')return;
+    if(id==='gb-tra')bill.trans=t.value;else if(id==='gb-lab')bill.labour=t.value;else bill.misc=t.value;
+    var B=bPending;if(!B)return;
+    genRecalc(B);$('#gb-tot').innerHTML=genTotHtml(B);$('#gb-note').innerHTML=genNote(B);billTotals();
+  });
   var bBusy=false;
   function saveBill(){
     if(bBusy)return;
     var B0=buildBill();if(!B0)return;
     bBusy=true;
-    getAdvance(B0,function(adv){
-      bBusy=false;
-      B0.adv=r2(Math.min(adv,B0.total));
-      showBillPreview(B0);
+    var kind=B0.out?'out':'in';
+    syncSeq(kind,function(){
+      var no=fmtNo(kind,nextSeq(kind));B0.no=no;B0.data.billNo=no;showBillNo();
+      getAdvance(B0,function(adv){
+        bBusy=false;
+        B0.advAvail=adv;genRecalc(B0);
+        showBillPreview(B0);
+      });
     });
   }
   function showBillPreview(B){
     bPending=B;
-    var vd=B.data;
-    if(B.adv>0){vd={};for(var k in B.data)vd[k]=B.data[k];vd.paid=B.adv;vd.paidLabel='Advance adjusted · એડવાન્સ સામે'}
-    openMdl('<div class="pvt">Bill Preview · બિલ પ્રીવ્યૂ</div>'+billViewHtml(vd)+
-      (B.adv>0?'<div class="pcm">Advance ₹'+pn(B.adv)+' will be set against this bill automatically.'+(B.total>B.adv?' Balance due: <b>₹'+pn(r2(B.total-B.adv))+'</b>.':' The bill will be fully cleared.')+(B.adv>B.total?'':'')+'</div>':'')+
-      '<div class="pv-acts"><button type="button" class="btn sec" id="bp-edit">Edit<span class="gu">સુધારો</span></button><button type="button" class="btn pri" id="bp-ok">Confirm &amp; Save<span class="gu">પુષ્ટિ કરો</span></button></div>');
+    function fld(id,en,gu,val){return '<label class="gf">'+en+'<span class="gu">'+gu+'</span><input type="text" inputmode="decimal" id="'+id+'" placeholder="₹" autocomplete="off" value="'+esc(val)+'"></label>'}
+    openMdl('<div class="pvt">Generate Bill · બિલ બનાવો</div>'+genSumHtml(B)+
+      '<div class="gb-ch">'+fld('gb-tra','Transportation','ભાડું',bill.trans)+fld('gb-lab','Labour','મજૂરી',bill.labour)+fld('gb-misc','Other Charges','અન્ય ખર્ચ',bill.misc)+'</div>'+
+      '<div id="gb-tot">'+genTotHtml(B)+'</div><div id="gb-note">'+genNote(B)+'</div>'+
+      '<div class="pv-acts"><button type="button" class="btn sec" id="bp-edit">Edit<span class="gu">સુધારો</span></button><button type="button" class="btn pri" id="bp-ok">Save<span class="gu">સાચવો</span></button></div>');
   }
+  /* After Save: the finished bill in professional format, with Save PDF / Print / Email / WhatsApp / Done in one row. */
+  var IC={
+    pdf:'<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 13h8v2H8v-2zm0 4h5v2H8v-2z"/></svg>',
+    print:'<svg viewBox="0 0 24 24"><path d="M19 8H5a3 3 0 00-3 3v6h4v4h12v-4h4v-6a3 3 0 00-3-3zm-3 11H8v-5h8v5zm3-7a1 1 0 110-2 1 1 0 010 2zM18 3H6v4h12V3z"/></svg>',
+    mail:'<svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>',
+    wa:'<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm5.2 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.4-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.8-.1 1.4z"/></svg>',
+    done:'<svg viewBox="0 0 24 24"><path d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V7l-4-4zm-5 16a3 3 0 110-6 3 3 0 010 6zm3-10H5V5h10v4z"/></svg>'
+  };
+  var finalNo='';
+  function showFinalBill(B){
+    finalNo=B.no;
+    openMdl('<div class="pvt ok">✓ Bill saved · બિલ સાચવ્યું</div><div id="inv-print">'+genInvHtml(B)+'</div>'+
+      '<div class="inv-acts">'+
+      '<button type="button" class="fa pri" id="fb-pdf">'+IC.pdf+'<span>Generate PDF</span><span class="gu">પીડીએફ બનાવો</span></button>'+
+      '<button type="button" class="fa pri" id="fb-print">'+IC.print+'<span>Print</span><span class="gu">પ્રિન્ટ</span></button>'+
+      '<button type="button" class="fa dim" id="fb-mail">'+IC.mail+'<span>Email</span><span class="gu">ઈમેલ</span></button>'+
+      '<button type="button" class="fa dim" id="fb-wa">'+IC.wa+'<span>WhatsApp</span><span class="gu">વોટ્સએપ</span></button>'+
+      '<button type="button" class="fa" id="fb-done">'+IC.done+'<span>Save</span><span class="gu">સાચવો</span></button></div>');
+  }
+  function printBill(asPdf){
+    var old=document.title;document.title=finalNo||old;
+    if(asPdf)toast('Choose “Save as PDF” in the print window · “Save as PDF” પસંદ કરો');
+    setTimeout(function(){try{window.print()}catch(e){}setTimeout(function(){document.title=old},800)},asPdf?700:50);
+  }
+  document.addEventListener('click',function(ev){
+    var b=ev.target.closest&&ev.target.closest('button');if(!b)return;
+    if(b.id==='fb-pdf')printBill(true);
+    else if(b.id==='fb-print')printBill(false);
+    else if(b.id==='fb-mail'||b.id==='fb-wa')toast('Coming soon · જલ્દી આવશે');
+    else if(b.id==='fb-done')closeMdl();
+  });
   function commitBill(B){
     var out=B.out;
     var adv=B.adv||0;
@@ -1073,13 +1320,13 @@ input.rate{min-height:36px;width:84px}
       sheetSend(mk(ts,B.no,adv));
       sheetSend(mk(ts+1,'',-adv));
     }
-    save(out?BILL_KEY:BILL_IN_KEY,(+load(out?BILL_KEY:BILL_IN_KEY,0))+1);
+    var nn=seqNum(B.no);billSeq[out?'out':'in']=nn;save(out?BILL_KEY:BILL_IN_KEY,nn);
     bill=newBill(bill.type);renderBill();toast(adv>0?'Bill saved · Advance ₹'+pn(adv)+' adjusted · બિલ સાચવ્યું':'Bill saved · બિલ સાચવ્યું');
   }
   document.addEventListener('click',function(ev){
     var b=ev.target.closest&&ev.target.closest('button');if(!b)return;
     if(b.id==='bp-edit'){bPending=null;closeMdl()}
-    else if(b.id==='bp-ok'){var B=bPending;bPending=null;closeMdl();if(B)commitBill(B)}
+    else if(b.id==='bp-ok'){var B=bPending;bPending=null;closeMdl();if(B){commitBill(B);showFinalBill(B)}}
   });
   (function(){
     var vb=$('#v-bill');
@@ -1093,7 +1340,7 @@ input.rate{min-height:36px;width:84px}
       }
       else if(t.classList.contains('b-item')){
         var it=items.filter(function(x){return x.id===+t.value})[0];
-        bill.cur.item=t.value;bill.cur.rate=it&&prices[it.id]!=null?String(prices[it.id]):'';
+        bill.cur.item=t.value;bill.cur.rate=it?billRate(it.id):'';
         drawCur();billTotals();var q=$('#b-cur .b-qty');if(q)q.focus();
       }
     });
@@ -1114,7 +1361,7 @@ input.rate{min-height:36px;width:84px}
       if(b.id==='b-plus'){
         if(!rowOk(bill.cur)){toast('Fill item and quantity first · પહેલા આઇટમ અને જથ્થો ભરો');return}
         if(bill.edit!=null){bill.rows[bill.edit]=bill.cur;bill.edit=null}else bill.rows.push(bill.cur);
-        bill.cur=blank();drawAll();
+        bill.rows=mergeRows(bill.rows);bill.cur=blank();drawAll();
         var l=$('#b-list');if(l)l.scrollTop=l.scrollHeight;
         var ns=$('#b-cur .b-item');if(ns)ns.focus();
       }
@@ -1220,10 +1467,10 @@ input.rate{min-height:36px;width:84px}
       '<div class="inv-m"><div><small>Bill No. · બિલ નં.</small><b>'+esc(d.billNo)+'</b></div><div><small>Date · તારીખ</small><b>'+esc(d.date||'')+'</b></div></div>'+
       '<div class="inv-p"><small>'+(out?'Bill To · ગ્રાહક':'Supplier · સપ્લાયર')+'</small><b>'+esc(pt.name||'')+'</b>'+(pt.mobile?'<span>'+esc(pt.mobile)+'</span>':'')+(addr?'<span>'+esc(addr)+'</span>':'')+'</div>'+
       '<table><thead><tr><th>#</th><th>Item</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>'+rows+'</tbody></table>'+
-      '<div class="inv-t"><div><span>Sub Total</span><b>₹ '+pn(sub)+'</b></div>'+ln('Labour · મજૂરી',d.labour)+ln('Transportation · ભાડું',d.transportation)+ln('Misc.'+(d.misc&&d.misc.details?' ('+esc(d.misc.details)+')':''),d.misc&&d.misc.amount)+
+      '<div class="inv-t"><div><span>Sub Total</span><b>₹ '+pn(sub)+'</b></div>'+ln('Labour · મજૂરી',d.labour)+ln('Transportation · ભાડું',d.transportation)+ln('Other Charges · અન્ય ખર્ચ',d.misc&&d.misc.amount)+
       '<div class="g"><span>Grand Total</span><b>₹ '+pn(+d.grandTotal||0)+'</b></div>';
     if(typeof d.paid==='number')h+='<div><span>'+esc(d.paidLabel||'Paid so far')+'</span><b>₹ '+pn(d.paid)+'</b></div><div class="due"><span>Balance Due</span><b>₹ '+pn(r2((d.grandTotal||0)-d.paid))+'</b></div>';
-    h+='</div><div class="inv-w"><small>Amount in words</small>'+esc(d.amountInWords||'')+'</div>'+
+    h+='</div><div class="inv-w"><small>Amount in words · રકમ શબ્દોમાં</small>'+esc(d.amountInWords||'')+'<div class="guw">'+guWords(d.grandTotal)+'</div></div>'+
       '<div class="inv-f"><div>'+(out?'Receiver’s Sign':'Supplier’s Sign')+'</div><div>Authorised Signatory<br><em>For CYAN NAVY</em></div></div>'+
       '<div class="inv-n">This is a computer generated bill.</div></div>';
     return h;
@@ -1352,7 +1599,10 @@ input.rate{min-height:36px;width:84px}
     var id='v-'+tab; if(tab==='admin')id=adminView==='items'?'v-items':adminView==='customer'?'v-customer':adminView==='supplier'?'v-supplier':adminView==='prices'?'v-prices':'v-admin';
     $$('.view').forEach(function(v){v.hidden=v.id!==id});
     $$('.tab').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===tab?'true':'false')});
-    $('#ttl').innerHTML=TITLES[tab][0]+'<span class="gu">'+TITLES[tab][1]+'</span>';
+    var tt0=tab==='admin'&&ADMIN_T[adminView]?ADMIN_T[adminView]:TITLES[tab];
+    $('#ttl').innerHTML=tt0[0]+'<span class="gu">'+tt0[1]+'</span>';
+    $('#backBtn').hidden=(tab==='home');$('#bar').classList.toggle('sub',tab!=='home');
+    if(tab==='admin'&&adminView==='menu')adminCounts();
     $('#main').scrollTop=0;
     if(tab==='admin'&&(adminView==='items'||adminView==='prices'))sheetLoadItems(true);
     if(tab==='admin'&&adminView==='customer')sheetLoadCustomers(true);
@@ -1361,6 +1611,15 @@ input.rate{min-height:36px;width:84px}
     if(tab==='payment'){if(!pay.touched)pay.date=todayStr();renderPay();sheetLoadCustomers();sheetLoadSuppliers()}
     if(tab==='bill'){if(!bill.touched)bill.date=todayStr();renderBill();sheetLoadItems();sheetLoadCustomers();sheetLoadSuppliers()}
     try{history.replaceState(null,'','#'+tab)}catch(e){}
+  }
+  function adminCounts(){
+    var c={items:items.length,customer:customers.length,supplier:suppliers.length};
+    $$('.cnt[data-cnt]').forEach(function(e){var n=c[e.dataset.cnt];e.hidden=n===undefined;if(n!==undefined)e.textContent=n});
+  }
+  /* Header back arrow: from an Admin sub-screen go to the Admin menu, from anywhere else go Home. */
+  function goBack(){
+    if(tab==='admin'&&adminView!=='menu'){adminView='menu';priceEdit=null;return showView()}
+    setTab('home');
   }
   function setTab(t){
     if(t==='admin'&&tab==='admin'&&adminView!=='menu')adminView='menu';
@@ -1571,7 +1830,7 @@ input.rate{min-height:36px;width:84px}
   })();
 
   /* ---------- Items ---------- */
-  var items=load(ITEMS_KEY,[]), prices=load(PRICES_KEY,{}), priceEdit=null, mode='add', editId=null, delId=null, kbOpen=false;
+  var items=load(ITEMS_KEY,[]), prices=load(PRICES_KEY,{}), sprices=load(SPRICES_KEY,{}), priceEdit=null, mode='add', editId=null, delId=null, kbOpen=false;
   function persist(){save(ITEMS_KEY,items)}
   $('#item-unit').innerHTML=UNITS.map(function(u){return '<option value="'+u[0]+'">'+u[0]+' / '+u[1]+'</option>'}).join('');
   function unitShort(u){return u==='Litre'?'Ltr.':u}
@@ -1582,8 +1841,10 @@ input.rate{min-height:36px;width:84px}
 
   function rateLabel(){
     var u=$('#item-unit').value||'KG';
-    $('#rateLbl').textContent='Rate for 1 '+unitShort(u);
-    $('#rateSub').textContent='1 '+unitGu(u)+' નો ભાવ';
+    $('#rateLbl').textContent='Customer rate · 1 '+unitShort(u);
+    $('#rateSub').textContent='ગ્રાહક ભાવ · 1 '+unitGu(u);
+    $('#srateLbl').textContent='Supplier rate · 1 '+unitShort(u);
+    $('#srateSub').textContent='સપ્લાયર ભાવ · 1 '+unitGu(u);
   }
   $('#item-unit').addEventListener('change',rateLabel);
   function renderItems(){
@@ -1599,7 +1860,7 @@ input.rate{min-height:36px;width:84px}
     if(it)$('#confirmTxt').textContent='Delete “'+it.en+'”? / કાઢી નાખવું?';
     var rows=items.map(function(x){
       var cls='tr'+(x.id===editId||x.id===delId?' sel':'');
-      var inner='<div class="n"><b>'+esc(x.en)+'</b></div><div class="u">'+(prices[x.id]!=null?'₹'+prices[x.id].toLocaleString('en-IN')+'/'+esc(unitShort(x.unit)):esc(unitShort(x.unit)))+'<span>'+esc(unitGu(x.unit))+'</span></div>';
+      var inner='<div class="n"><b>'+esc(x.en)+'</b></div><div class="u">'+(prices[x.id]!=null?'₹'+prices[x.id].toLocaleString('en-IN'):'–')+' / '+(sprices[x.id]!=null?'₹'+sprices[x.id].toLocaleString('en-IN'):'–')+'<span>1 '+esc(unitShort(x.unit))+' · '+esc(unitGu(x.unit))+'</span></div>';
       if(mode==='add')return '<div class="'+cls+'">'+inner+'</div>';
       return '<button type="button" class="'+cls+'" data-row="'+x.id+'">'+inner+'</button>';
     }).join('');
@@ -1607,7 +1868,7 @@ input.rate{min-height:36px;width:84px}
   }
 
   function resetForm(){
-    $('#item-en').value='';$('#item-rate').value='';$('#item-unit').selectedIndex=0;
+    $('#item-en').value='';$('#item-rate').value='';$('#item-srate').value='';$('#item-unit').selectedIndex=0;
     editId=null;
   }
   function setMode(m){mode=m;editId=null;delId=null;resetForm();renderItems()}
@@ -1617,19 +1878,21 @@ input.rate{min-height:36px;width:84px}
     var en=$('#item-en').value.replace(/\s+/g,' ').trim().toUpperCase(), unit=$('#item-unit').value;
     if(!en){toast('Enter item name · વસ્તુનું નામ લખો');return}
     var rate=parseFloat(String($('#item-rate').value).replace(/,/g,'').trim());
-    if(isNaN(rate)||rate<0){toast('Enter rate · ભાવ લખો');return}
-    rate=Math.round(rate*100)/100;
+    if(isNaN(rate)||rate<0){toast('Enter customer rate · ગ્રાહક ભાવ લખો');return}
+    var srate=parseFloat(String($('#item-srate').value).replace(/,/g,'').trim());
+    if(isNaN(srate)||srate<0){toast('Enter supplier rate · સપ્લાયર ભાવ લખો');return}
+    rate=Math.round(rate*100)/100;srate=Math.round(srate*100)/100;
     var dup=items.some(function(x){return x.id!==editId&&norm(x.en)===norm(en)});
     if(dup){toast('Item already exists · વસ્તુ પહેલેથી છે');return}
     if(mode==='edit'&&editId!==null){
       items.forEach(function(x){if(x.id===editId){x.en=en;x.unit=unit}});
-      prices[editId]=rate;save(PRICES_KEY,prices);
-      sheetSend({action:'editItem',id:editId,en:en,gu:(items.filter(function(x){return x.id===editId})[0]||{}).gu||'',unit:unit,rate:rate});
+      prices[editId]=rate;sprices[editId]=srate;save(PRICES_KEY,prices);save(SPRICES_KEY,sprices);
+      sheetSend({action:'editItem',id:editId,en:en,gu:(items.filter(function(x){return x.id===editId})[0]||{}).gu||'',unit:unit,rate:rate,srate:srate,supplierRate:srate});
       toast('Item updated · વસ્તુ સુધારી');
       persist();resetForm();renderItems();return;
     }
-    var ni={id:Date.now(),en:en,gu:'',unit:unit};items.push(ni);prices[ni.id]=rate;save(PRICES_KEY,prices);
-    persist();toast('Item saved · વસ્તુ સાચવી');resetForm();renderItems();sheetAdd(ni,rate);
+    var ni={id:Date.now(),en:en,gu:'',unit:unit};items.push(ni);prices[ni.id]=rate;sprices[ni.id]=srate;save(PRICES_KEY,prices);save(SPRICES_KEY,sprices);
+    persist();toast('Item saved · વસ્તુ સાચવી');resetForm();renderItems();sheetAdd(ni,rate,srate);
   });
 
   /* ---------- Add Customer ---------- */
@@ -1644,33 +1907,34 @@ input.rate{min-height:36px;width:84px}
     $('#custForm').hidden=!showForm;
     $('#cuTbl').hidden=cuMode==='add';
     var pr=$('#cuPrompt'),it=customers.filter(function(x){return x.id===cuDelId})[0];
-    if(!showForm&&!it){pr.hidden=false;pr.innerHTML=cuMode==='edit'?'Tap a customer in the list below to edit.':'Tap a customer in the list below to delete.'}else pr.hidden=true;
+    if(!showForm&&!it){pr.hidden=false;pr.innerHTML=(cuMode==='edit'?'Tap a customer in the list below to edit.<span class="gu">સુધારવા માટે નીચેની યાદીમાંથી ગ્રાહક પસંદ કરો.</span>':'Tap a customer in the list below to delete.<span class="gu">કાઢવા માટે નીચેની યાદીમાંથી ગ્રાહક પસંદ કરો.</span>')}else pr.hidden=true;
+    $('#cuTitle').innerHTML=(cuMode==='edit'?'Edit Customer<span class="gu">ગ્રાહક સુધારો</span>':cuMode==='delete'?'Delete Customer<span class="gu">ગ્રાહક કાઢો</span>':'Add Customer<span class="gu">ગ્રાહક ઉમેરો</span>');
     $('#cuConfirm').hidden=!(cuMode==='delete'&&it);
-    if(it)$('#cuConfirmTxt').textContent='Delete “'+it.en+'”??';
+    if(it)$('#cuConfirmTxt').textContent='Delete “'+it.en+'”? / કાઢી નાખવું?';
     $('#cuRows').innerHTML=customers.map(function(x){
       var cls='tr'+(x.id===cuEditId||x.id===cuDelId?' sel':'');
       var inner='<div class="n"><b>'+esc(x.en)+'</b></div><div class="u">'+esc(x.mobile)+'<span>'+esc(x.city||'')+'</span></div>';
       return '<button type="button" class="'+cls+'" data-crow="'+x.id+'">'+inner+'</button>';
-    }).join('')||'<div class="emptyRow">No customers yet.</div>';
+    }).join('')||'<div class="emptyRow">No customers yet.<br>હજી કોઈ ગ્રાહક નથી.</div>';
   }
   $('#custForm').addEventListener('submit',function(ev){
     ev.preventDefault();
     var en=$('#cu-en').value.replace(/\s+/g,' ').trim().toUpperCase(), mob=$('#cu-mob').value.replace(/\D/g,''),
         em=$('#cu-email').value.trim().toUpperCase(), ad=$('#cu-addr').value.trim().toUpperCase(), ci=$('#cu-city').value.trim().toUpperCase();
     if(mob.length>10&&/^(91|0)/.test(mob))mob=mob.slice(-10);
-    if(!en){toast('Enter customer name');return}
-    if(mob.length!==10){toast('Enter 10 digit mobile no.');return}
-    if(em&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){toast('Enter a valid e-mail');return}
+    if(!en){toast('Enter customer name · ગ્રાહકનું નામ લખો');return}
+    if(mob.length!==10){toast('Enter 10 digit mobile no. · 10 અંકનો મોબાઇલ નં. લખો');return}
+    if(em&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){toast('Enter a valid e-mail · સાચો ઈ-મેલ લખો');return}
     if(cuMode==='edit'&&cuEditId!==null){
       var old=customers.filter(function(x){return x.id===cuEditId})[0]||{};
       customers.forEach(function(x){if(x.id===cuEditId){x.en=en;x.mobile=mob;x.email=em;x.address=ad;x.city=ci}});
       save(CUST_KEY,customers);
       sheetSend({action:'editCustomer',id:cuEditId,en:en,mobile:mob,email:em,address:ad,city:ci});
-      toast('Customer updated');resetCust();return;
+      toast('Customer updated · ગ્રાહક સુધાર્યો');resetCust();return;
     }
     var c={id:Date.now(),en:en,mobile:mob,email:em,address:ad,city:ci};
     customers.push(c);save(CUST_KEY,customers);
-    toast('Customer saved');resetCust();sheetSend(Object.assign({action:'addCustomer'},c));
+    toast('Customer saved · ગ્રાહક સાચવ્યો');resetCust();sheetSend(Object.assign({action:'addCustomer'},c));
   });
   renderCust();
 
@@ -1686,33 +1950,34 @@ input.rate{min-height:36px;width:84px}
     $('#suppForm').hidden=!showForm;
     $('#suTbl').hidden=suMode==='add';
     var pr=$('#suPrompt'),it=suppliers.filter(function(x){return x.id===suDelId})[0];
-    if(!showForm&&!it){pr.hidden=false;pr.innerHTML=suMode==='edit'?'Tap a supplier in the list below to edit.':'Tap a supplier in the list below to delete.'}else pr.hidden=true;
+    if(!showForm&&!it){pr.hidden=false;pr.innerHTML=(suMode==='edit'?'Tap a supplier in the list below to edit.<span class="gu">સુધારવા માટે નીચેની યાદીમાંથી સપ્લાયર પસંદ કરો.</span>':'Tap a supplier in the list below to delete.<span class="gu">કાઢવા માટે નીચેની યાદીમાંથી સપ્લાયર પસંદ કરો.</span>')}else pr.hidden=true;
+    $('#suTitle').innerHTML=(suMode==='edit'?'Edit Supplier<span class="gu">સપ્લાયર સુધારો</span>':suMode==='delete'?'Delete Supplier<span class="gu">સપ્લાયર કાઢો</span>':'Add Supplier<span class="gu">સપ્લાયર ઉમેરો</span>');
     $('#suConfirm').hidden=!(suMode==='delete'&&it);
-    if(it)$('#suConfirmTxt').textContent='Delete “'+it.en+'”??';
+    if(it)$('#suConfirmTxt').textContent='Delete “'+it.en+'”? / કાઢી નાખવું?';
     $('#suRows').innerHTML=suppliers.map(function(x){
       var cls='tr'+(x.id===suEditId||x.id===suDelId?' sel':'');
       var inner='<div class="n"><b>'+esc(x.en)+'</b></div><div class="u">'+esc(x.mobile)+'<span>'+esc(x.city||'')+'</span></div>';
       return '<button type="button" class="'+cls+'" data-srow="'+x.id+'">'+inner+'</button>';
-    }).join('')||'<div class="emptyRow">No suppliers yet.</div>';
+    }).join('')||'<div class="emptyRow">No suppliers yet.<br>હજી કોઈ સપ્લાયર નથી.</div>';
   }
   $('#suppForm').addEventListener('submit',function(ev){
     ev.preventDefault();
     var en=$('#su-en').value.replace(/\s+/g,' ').trim().toUpperCase(), mob=$('#su-mob').value.replace(/\D/g,''),
         em=$('#su-email').value.trim().toUpperCase(), ad=$('#su-addr').value.trim().toUpperCase(), ci=$('#su-city').value.trim().toUpperCase();
     if(mob.length>10&&/^(91|0)/.test(mob))mob=mob.slice(-10);
-    if(!en){toast('Enter supplier name');return}
-    if(mob.length!==10){toast('Enter 10 digit mobile no.');return}
-    if(em&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){toast('Enter a valid e-mail');return}
+    if(!en){toast('Enter supplier name · સપ્લાયરનું નામ લખો');return}
+    if(mob.length!==10){toast('Enter 10 digit mobile no. · 10 અંકનો મોબાઇલ નં. લખો');return}
+    if(em&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){toast('Enter a valid e-mail · સાચો ઈ-મેલ લખો');return}
     if(suMode==='edit'&&suEditId!==null){
       var old=suppliers.filter(function(x){return x.id===suEditId})[0]||{};
       suppliers.forEach(function(x){if(x.id===suEditId){x.en=en;x.mobile=mob;x.email=em;x.address=ad;x.city=ci}});
       save(SUPP_KEY,suppliers);
       sheetSend({action:'editSupplier',id:suEditId,en:en,mobile:mob,email:em,address:ad,city:ci});
-      toast('Supplier updated');resetSupp();return;
+      toast('Supplier updated · સપ્લાયર સુધાર્યો');resetSupp();return;
     }
     var c={id:Date.now(),en:en,mobile:mob,email:em,address:ad,city:ci};
     suppliers.push(c);save(SUPP_KEY,suppliers);
-    toast('Supplier saved');resetSupp();sheetSend(Object.assign({action:'addSupplier'},c));
+    toast('Supplier saved · સપ્લાયર સાચવ્યો');resetSupp();sheetSend(Object.assign({action:'addSupplier'},c));
   });
   renderSupp();
 
@@ -1825,17 +2090,22 @@ input.rate{min-height:36px;width:84px}
   function renderPrices(){
     var rows=items.map(function(x){
       var on=priceEdit===x.id;
-      return '<div class="pr"><div class="n"><b>'+esc(x.en)+'</b><span class="u">1 '+esc(unitShort(x.unit))+' · '+esc(unitGu(x.unit))+'</span></div>'+
-        '<div class="rb"><span class="rs">₹</span><input class="rate" type="text" inputmode="decimal" id="rate-'+x.id+'" data-rate="'+x.id+'" value="'+esc(fmtRate(prices[x.id]))+'"'+(on?'':' readonly')+' aria-label="Rate / ભાવ">'+
-        '<button type="button" class="ed'+(on?' on':'')+'" data-edit="'+x.id+'" aria-label="'+(on?'Save rate / ભાવ સાચવો':'Edit rate / ભાવ બદલો')+'">'+(on?CHECK:PENCIL)+'</button></div></div>';
+      function box(id,lbl,gu,val){return '<label class="rl"><small>'+lbl+'<span class="gu">'+gu+'</span></small><span class="rb"><span class="rs">₹</span><input class="rate" type="text" inputmode="decimal" id="'+id+'-'+x.id+'" data-rate="'+x.id+'" value="'+esc(val!=null?fmtRate(val):'')+'" placeholder="0"'+(on?'':' readonly')+'></span></label>'}
+      return '<div class="pr2"><div class="n"><b>'+esc(x.en)+'</b><span class="u">1 '+esc(unitShort(x.unit))+' · '+esc(unitGu(x.unit))+'</span></div>'+
+        '<button type="button" class="ed'+(on?' on':'')+'" data-edit="'+x.id+'" aria-label="'+(on?'Save rates / ભાવ સાચવો':'Edit rates / ભાવ બદલો')+'">'+(on?CHECK:PENCIL)+'</button>'+
+        '<div class="rr">'+box('rate','Customer','ગ્રાહક',prices[x.id])+box('srate','Supplier','સપ્લાયર',sprices[x.id])+'</div></div>';
     }).join('');
     $('#priceRows').innerHTML=rows||'<div class="emptyRow">No items yet. Add items first.<br>હજી કોઈ વસ્તુ નથી. પહેલા વસ્તુ ઉમેરો.<br><button type="button" class="btn pri" data-open="items" style="margin:12px auto 0;min-width:200px">Add Items<span class="gu">આઇટમ ઉમેરો</span></button></div>';
   }
   function savePrice(id){
-    var inp=$('#rate-'+id);if(!inp)return;
-    var v=parseFloat(String(inp.value).replace(/,/g,'.').replace(/[^0-9.]/g,''));
-    if(isNaN(v)||v<0){toast('Enter a valid rate · સાચો ભાવ લખો');return}
-    prices[id]=Math.round(v*100)/100;save(PRICES_KEY,prices);sheetSend({action:'setRate',id:id,rate:prices[id]});priceEdit=null;renderPrices();toast('Rate saved · ભાવ સાચવ્યો');
+    var a=$('#rate-'+id),b=$('#srate-'+id);if(!a||!b)return;
+    function pv(i){return parseFloat(String(i.value).replace(/,/g,'.').replace(/[^0-9.]/g,''))}
+    var c=pv(a),sp=pv(b);
+    if(isNaN(c)||c<0){toast('Enter a valid customer rate · ગ્રાહક ભાવ લખો');a.focus();return}
+    if(isNaN(sp)||sp<0){toast('Enter a valid supplier rate · સપ્લાયર ભાવ લખો');b.focus();return}
+    prices[id]=Math.round(c*100)/100;sprices[id]=Math.round(sp*100)/100;save(PRICES_KEY,prices);save(SPRICES_KEY,sprices);
+    sheetSend({action:'setRate',id:id,rate:prices[id],srate:sprices[id],supplierRate:sprices[id]});
+    priceEdit=null;renderPrices();toast('Rates saved · ભાવ સાચવ્યા');
   }
   document.addEventListener('keydown',function(ev){
     var t=ev.target;if(!t||!t.classList||!t.classList.contains('rate'))return;
@@ -1859,6 +2129,7 @@ input.rate{min-height:36px;width:84px}
 
   document.addEventListener('click',function(ev){
     var el=ev.target.closest('button');if(!el)return;
+    if(el.id==='backBtn')return goBack();
     if(el.dataset.open==='customer'){adminView='customer';cuMode='add';cuDelId=null;resetCust();return showView()}
     if(el.id==='custBack'){adminView='menu';return showView()}
     if(el.id==='cuCancel'){cuDelId=null;return resetCust()}
@@ -1870,7 +2141,7 @@ input.rate{min-height:36px;width:84px}
       return;
     }
     if(el.id==='cuNo'){cuDelId=null;return renderCust()}
-    if(el.id==='cuYes'){customers=customers.filter(function(x){return x.id!==cuDelId});save(CUST_KEY,customers);sheetSend({action:'deleteCustomer',id:cuDelId});cuDelId=null;toast('Customer deleted');return renderCust()}
+    if(el.id==='cuYes'){customers=customers.filter(function(x){return x.id!==cuDelId});save(CUST_KEY,customers);sheetSend({action:'deleteCustomer',id:cuDelId});cuDelId=null;toast('Customer deleted · ગ્રાહક કાઢ્યો');return renderCust()}
     if(el.dataset.open==='supplier'){adminView='supplier';suMode='add';suDelId=null;resetSupp();return showView()}
     if(el.id==='suppBack'){adminView='menu';return showView()}
     if(el.id==='suCancel'){suDelId=null;return resetSupp()}
@@ -1882,7 +2153,7 @@ input.rate{min-height:36px;width:84px}
       return;
     }
     if(el.id==='suNo'){suDelId=null;return renderSupp()}
-    if(el.id==='suYes'){suppliers=suppliers.filter(function(x){return x.id!==suDelId});save(SUPP_KEY,suppliers);sheetSend({action:'deleteSupplier',id:suDelId});suDelId=null;toast('Supplier deleted');return renderSupp()}
+    if(el.id==='suYes'){suppliers=suppliers.filter(function(x){return x.id!==suDelId});save(SUPP_KEY,suppliers);sheetSend({action:'deleteSupplier',id:suDelId});suDelId=null;toast('Supplier deleted · સપ્લાયર કાઢ્યો');return renderSupp()}
     if(el.dataset.mic)return micClick(el.dataset.mic);
     if(el.dataset.act==='perm')return openPerms();
     if(el.dataset.t)return setTab(el.dataset.t);
@@ -1903,12 +2174,12 @@ input.rate{min-height:36px;width:84px}
     if(el.id==='cancelBtn'){resetForm();delId=null;renderItems();return}
     if(el.dataset.row){
       var id=+el.dataset.row,it=items.filter(function(x){return x.id===id})[0];if(!it)return;
-      if(mode==='edit'){editId=id;$('#item-en').value=it.en;$('#item-unit').value=it.unit;$('#item-rate').value=prices[it.id]!=null?prices[it.id]:'';renderItems();$('#item-en').focus()}
+      if(mode==='edit'){editId=id;$('#item-en').value=it.en;$('#item-unit').value=it.unit;$('#item-rate').value=prices[it.id]!=null?prices[it.id]:'';$('#item-srate').value=sprices[it.id]!=null?sprices[it.id]:'';renderItems();$('#item-en').focus()}
       else if(mode==='delete'){delId=id;renderItems()}
       return;
     }
     if(el.id==='confirmNo'){delId=null;return renderItems()}
-    if(el.id==='confirmYes'){delete prices[delId];save(PRICES_KEY,prices);items=items.filter(function(x){return x.id!==delId});sheetSend({action:'deleteItem',id:delId});delId=null;persist();toast('Item deleted · વસ્તુ કાઢી');return renderItems()}
+    if(el.id==='confirmYes'){delete prices[delId];delete sprices[delId];save(PRICES_KEY,prices);save(SPRICES_KEY,sprices);items=items.filter(function(x){return x.id!==delId});sheetSend({action:'deleteItem',id:delId});delId=null;persist();toast('Item deleted · વસ્તુ કાઢી');return renderItems()}
   });
 
   applyTheme(load(THEME,'system'));
