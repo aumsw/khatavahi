@@ -1298,7 +1298,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   renderHome();sheetLoadSummary();
   /* ---------- Bill (Outward + Inward) ---------- */
   var BILL_KEY='cyan-navy-billno-v1', BILL_IN_KEY='cyan-navy-inbillno-v1';
-  function newBill(t){return {type:t||'out',cust:'',date:todayStr(),touched:false,rows:[],cur:{item:'',rate:'',qty:''},edit:null,splOk:false,labour:'',trans:'',misc:'',disc:''}}
+  function newBill(t){return {type:t||'out',cust:'',date:todayStr(),touched:false,rows:[],cur:{item:'',rate:'',qty:''},edit:null,labour:'',trans:'',misc:'',disc:''}}
   var bill=newBill();
   function bnum(v){var x=parseFloat(String(v).replace(/,/g,''));return isNaN(x)?0:x}
   function binr(v){return '₹ '+v.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
@@ -1381,29 +1381,30 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     return out;
   }
   function blank(){return {item:'',rate:'',qty:''}}
-  function isSpl(r){if(!r||!r.item||String(r.rate).trim()==='')return false;var b=billRate(r.item);return b!==''&&bnum(r.rate)!==bnum(b)}
+  /* Rate left empty -> the Price List rate is used. */
+  function effRate(r){return String(r.rate).trim()===''?billRate(r.item):r.rate}
   function rowOk(r){return !!r.item&&bnum(r.qty)>0}
   function rowEmpty(r){return !r.item&&!bnum(r.qty)&&!bnum(r.rate)}
   /* Rows that make up the bill right now: added items (minus the one being edited) plus the entry row if it is valid or being edited. */
   function liveRows(){
     var a=bill.rows.filter(function(_,i){return i!==bill.edit});
-    if(bill.edit!=null||rowOk(bill.cur))a.push(bill.cur);
+    if(bill.edit!=null||rowOk(bill.cur))a.push({item:bill.cur.item,rate:effRate(bill.cur),qty:bill.cur.qty});
     return a;
   }
   function listHtml(){
     if(!bill.rows.length)return '<div class="ilist-empty">No items added yet · હજી વસ્તુ ઉમેરી નથી</div>';
     var n=bill.rows.length, lastFrom=n-(n%2===0?2:1);
     return bill.rows.map(function(r,i){
-      var it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(unitShort(it.unit)):'', a=r2(bnum(r.rate)*bnum(r.qty));
-      return '<div class="ichip'+(bill.edit===i?' on':'')+(i>=lastFrom?' last':'')+'" data-i="'+i+'"><span class="ln"><span class="in">'+(i+1)+'. '+esc(it?it.en:'—')+'</span><span class="iq">('+esc(r.qty)+u+(isSpl(r)?' @'+pn(bnum(r.rate))+' <span class="spl">●SPL</span>':'')+') = <b>Rs. '+pn(a)+'</b></span></span><button type="button" class="i-edit" aria-label="Edit item">'+PEN+'</button></div>';
+      var it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(unitShort(it.unit)):'', a=r2(bnum(effRate(r))*bnum(r.qty));
+      return '<div class="ichip'+(bill.edit===i?' on':'')+(i>=lastFrom?' last':'')+'" data-i="'+i+'"><span class="ln"><span class="in">'+(i+1)+'. '+esc(it?it.en:'—')+'</span><span class="iq">('+esc(r.qty)+u+') = <b>Rs. '+pn(a)+'</b></span></span><button type="button" class="i-edit" aria-label="Edit item">'+PEN+'</button></div>';
     }).join('');
   }
     function curHtml(){
     var r=bill.cur, it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(it.unit):'', ed=bill.edit!=null;
     return '<div class="cin"><select class="b-item">'+billItemOpts(r.item)+'</select>'+
-      '<div class="b3"><label>Rate · ભાવ <span class="spl" id="b-spl"></span><input type="text" inputmode="decimal" class="b-rate" placeholder="'+(u?'₹/'+u:'₹')+'" value="'+esc(r.rate)+'"'+(bill.splOk?'':' readonly')+'></label>'+
+      '<div class="b3"><label>Rate · ભાવ<input type="text" inputmode="decimal" class="b-rate" placeholder="'+esc(r.item?billRate(r.item)||'₹':'₹')+'" value="'+esc(r.rate)+'"></label>'+
       '<label>Qty · જથ્થો<input type="text" inputmode="decimal" class="b-qty" placeholder="'+(u||'QTY')+'" value="'+esc(r.qty)+'"></label>'+
-      '<div class="b-amt">Amount · રકમ<b></b></div></div><div class="splrow"><button type="button" class="splb'+(bill.splOk?' on':'')+'" id="b-splbtn" aria-label="Special rate">SPL RATE'+(bill.splOk?' ✓':'')+'</button><span class=\"splh en\">[ TO GIVE ITEM AT SPL RATE CLICK ON THIS BLUE BUTTON ]</span><span class=\"splh gu\">[ ખાસ ભાવે વસ્તુ આપવા માટે આ વાદળી બટન દબાવો ]</span></div></div>'+
+      '<div class="b-amt">Amount · રકમ<b></b></div></div></div>'+
       '<div class="cbt"><button type="button" class="b-plus" id="b-plus" aria-label="'+(ed?'Save item':'Add item')+'">'+(ed?'✓':PLUS)+'</button>'+(ed?'<button type="button" class="b-del" id="b-cdel" aria-label="Remove item">✕</button>':'')+'</div>';
   }
   function drawList(){var l=$('#b-list');if(l)l.innerHTML=listHtml()}
@@ -1412,8 +1413,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   function billTotals(){
     var t=0;
     liveRows().forEach(function(r){t+=r2(bnum(r.rate)*bnum(r.qty))});
-    var ab=$('#b-cur .b-amt b');if(ab)ab.textContent=binr(r2(bnum(bill.cur.rate)*bnum(bill.cur.qty)));
-    var sp=$('#b-spl');if(sp)sp.textContent=isSpl(bill.cur)?'●':'';
+    var ab=$('#b-cur .b-amt b');if(ab)ab.textContent=binr(r2(bnum(effRate(bill.cur))*bnum(bill.cur.qty)));
     t=Math.max(0,Math.round((t+bnum(bill.labour)+bnum(bill.trans)+bnum(bill.misc)-bnum(bill.disc))*100)/100);
     var g=$('#b-grand');if(!g)return;
     g.textContent=binr(t);$('#b-words').innerHTML=guWords(t)+'<br>'+esc(bwords(t));
@@ -1579,6 +1579,13 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     var B=bPending;if(!B)return;
     genRecalc(B);$('#gb-tot').innerHTML=genTotHtml(B);$('#gb-note').innerHTML=genNote(B);billTotals();
   });
+  /* If the user clears the rate box and leaves it, the Price List rate comes back. */
+  document.addEventListener('focusout',function(ev){
+    var t=ev.target;
+    if(!t||!t.classList||!t.classList.contains('b-rate')||String(t.value).trim()!=='')return;
+    var d=bill.cur.item?billRate(bill.cur.item):'';
+    bill.cur.rate=d;t.value=d;billTotals();
+  });
   var bBusy=false;
   function saveBill(){
     if(bBusy)return;
@@ -1693,14 +1700,11 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       var b=ev.target.closest('button');if(!b)return;
       if(b.id==='b-plus'){
         if(!rowOk(bill.cur)){toast('Fill item and quantity first · પહેલા આઇટમ અને જથ્થો ભરો');return}
+        if(String(bill.cur.rate).trim()==='')bill.cur.rate=billRate(bill.cur.item);
         if(bill.edit!=null){bill.rows[bill.edit]=bill.cur;bill.edit=null}else bill.rows.push(bill.cur);
         bill.rows=mergeRows(bill.rows);bill.cur=blank();drawAll();
         var l=$('#b-list');if(l)l.scrollTop=l.scrollHeight;
         var ns=$('#b-cur .b-item');if(ns)ns.focus();
-      }
-      else if(b.id==='b-splbtn'){
-        if(bill.splOk){bill.splOk=false;drawCur();toast('Rate locked · ભાવ લૉક');return}
-        askPass(function(){bill.splOk=true;drawCur();var r=$('#b-cur .b-rate');if(r){r.focus();r.select()}toast('Rate unlocked for this bill · આ બિલ માટે ભાવ ખુલ્લો')});
       }
       else if(b.id==='b-cdel'){
         if(bill.edit!=null)bill.rows.splice(bill.edit,1);
