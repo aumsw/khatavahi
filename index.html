@@ -680,6 +680,50 @@ input.rate{min-height:36px;width:84px}
 .pwr.bad .pwb{border-color:var(--danger)!important;animation:shk .35s}
 @keyframes shk{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 </style>
+<style id="v8">
+/* Added items: smaller font; long item -> name and qty/amount continue on 2nd row instead of getting cut */
+#b-list .ichip{align-items:center;min-height:30px}
+#b-list .ichip .ln{flex-wrap:wrap;white-space:normal;align-items:baseline;gap:0 4px;line-height:1.25;font-size:10px}
+#b-list .ichip .in{flex:0 1 auto;max-width:100%;min-width:0;overflow:visible;text-overflow:clip;white-space:normal;overflow-wrap:anywhere;font-size:10px}
+#b-list .ichip .iq{flex:none;white-space:nowrap;font-size:9.5px}
+#b-list .ichip .iq b{font-size:9.5px}
+/* Generate Bill popup: 4 charge boxes in one row (Transportation, Labour, Other, Discount) */
+.gb-ch{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.gb-ch .gf{font-size:9px;letter-spacing:0;line-height:1.2}
+.gb-ch .gf input{padding:0 6px;font-size:13px}
+/* SPL RATE button: navy blue, placed under the Rate box */
+.splrow{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:6px;row-gap:1px;margin-top:-2px;container-type:inline-size}
+.splh{white-space:nowrap;overflow:hidden;font-weight:700;color:var(--muted);line-height:1.3;min-width:0}
+.splh.en{font-size:min(9px,calc((100cqw - 92px)/36));letter-spacing:0;text-transform:uppercase}
+.splh.gu{grid-column:2;font-size:min(10px,calc((100cqw - 92px)/27))}
+.splrow .splb{grid-row:1/3;grid-column:1;align-self:center}
+.splb{margin:0;padding:3px 10px;border-radius:8px;background:#0B2545;color:#fff;box-shadow:0 0 0 1px var(--line);font:700 10px var(--font);letter-spacing:.05em;white-space:nowrap}
+.splb.on{background:#fff;color:#0B2545;box-shadow:inset 0 0 0 1.5px #0B2545}
+/* Amount in words (English + Gujarati): highlighted */
+#v-bill .bwords{margin-top:5px;padding:5px 8px;border-radius:8px;background:var(--soft);box-shadow:inset 3px 0 0 var(--accent);color:#0B2545;font-weight:700;font-size:11px;line-height:1.35}
+.gt3{margin-top:6px;padding:6px 8px;border-radius:8px;background:var(--surface);box-shadow:inset 3px 0 0 var(--accent);color:#0B2545;font-weight:700;font-size:11.5px;line-height:1.4}
+/* Bill type tabs: INWARD BILL (આવક બિલ) / OUTWARD BILL (જાવક બિલ) */
+#v-bill .seg span{flex-wrap:wrap;justify-content:center;text-align:center;column-gap:4px;row-gap:0;line-height:1.2;padding:3px 4px;font-size:11px;letter-spacing:0}
+#v-bill .seg span small{font-size:10px}
+/* Smart customer/supplier dropdown */
+.cbx{position:relative}
+#v-bill #b-custq,#v-payment #p-partyq{min-height:34px;font-size:13px;padding-right:30px}
+.cbx-ar{position:absolute;right:0;top:0;bottom:0;width:30px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;cursor:pointer}
+.cbx-list{position:fixed;z-index:99999;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:var(--surface);color:var(--fg);border:1.5px solid var(--accent-fill);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.22)}
+.cbx-list[hidden]{display:none}
+.cbx-opt{padding:9px 12px;font-size:13px;font-weight:600;border-bottom:1px dashed var(--line);cursor:pointer;text-transform:uppercase}
+.cbx-opt:last-child{border-bottom:0}
+.cbx-opt.sel{color:var(--accent)}
+.cbx-opt.act{background:var(--soft)}
+.cbx-opt mark{background:transparent;color:var(--accent);font-weight:800}
+.cbx-none{padding:12px;font-size:12px;color:var(--muted);text-align:center}
+/* All English text in CAPITALS (Gujarati is unaffected) */
+html{text-transform:uppercase}
+.rbo,.rbf button,.b3 input,.inv-h .br small,.splh,.cbx-opt,.cbx-none{text-transform:uppercase}
+.rbt,option{text-transform:uppercase}
+/* Buttons / inputs ignore the page's uppercase by default in browsers, so set it on them directly (Home, Reports, Payment, all tabs) */
+button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
+</style>
 
 
 
@@ -1162,7 +1206,7 @@ input.rate{min-height:36px;width:84px}
   renderHome();sheetLoadSummary();
   /* ---------- Bill (Outward + Inward) ---------- */
   var BILL_KEY='cyan-navy-billno-v1', BILL_IN_KEY='cyan-navy-inbillno-v1';
-  function newBill(t){return {type:t||'out',cust:'',date:todayStr(),touched:false,rows:[],cur:{item:'',rate:'',qty:''},edit:null,splOk:false,labour:'',trans:'',misc:''}}
+  function newBill(t){return {type:t||'out',cust:'',date:todayStr(),touched:false,rows:[],cur:{item:'',rate:'',qty:''},edit:null,splOk:false,labour:'',trans:'',misc:'',disc:''}}
   var bill=newBill();
   function bnum(v){var x=parseFloat(String(v).replace(/,/g,''));return isNaN(x)?0:x}
   function binr(v){return '₹ '+v.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
@@ -1174,7 +1218,7 @@ input.rate{min-height:36px;width:84px}
     var c=Math.round(amount*100), r=Math.floor(c/100), p=c%100, out=[];
     [[10000000,'Crore'],[100000,'Lakh'],[1000,'Thousand']].forEach(function(u){var q=Math.floor(r/u[0]);if(q){out.push(three(q)+' '+u[1]);r%=u[0]}});
     if(r)out.push(three(r));
-    return 'Rupees '+(out.join(' ')||'Zero')+(p?' and '+two(p)+' Paise':'')+' Only';
+    return '₹ '+(out.join(' ')||'Zero')+(p?' and '+two(p)+' Paise':'')+' Only';
   }
   /* Bill numbers continue from the latest bill in the Google Sheet (and any bill still waiting to be sent). */
   var billSeq={out:null,'in':null};
@@ -1204,7 +1248,7 @@ input.rate{min-height:36px;width:84px}
       return parts.join(' ');
     }
     if(r===0&&p>0)return conv(p)+' પૈસા માત્ર';
-    return 'રૂપિયા '+conv(r)+(p?' અને '+conv(p)+' પૈસા':'')+' માત્ર';
+    return '₹ '+conv(r)+(p?' અને '+conv(p)+' પૈસા':'')+' માત્ર';
   }
   function billNo(){return fmtNo(bill.type,nextSeq(bill.type))}
   function syncSeq(kind,cb){
@@ -1265,9 +1309,9 @@ input.rate{min-height:36px;width:84px}
     function curHtml(){
     var r=bill.cur, it=items.filter(function(x){return x.id===+r.item})[0], u=it?esc(it.unit):'', ed=bill.edit!=null;
     return '<div class="cin"><select class="b-item">'+billItemOpts(r.item)+'</select>'+
-      '<div class="b3"><label>Rate · ભાવ <button type="button" class="splb'+(bill.splOk?' on':'')+'" id="b-splbtn" aria-label="Special rate">SPL'+(bill.splOk?' ✓':'')+'</button> <span class="spl" id="b-spl"></span><input type="text" inputmode="decimal" class="b-rate" placeholder="'+(u?'₹/'+u:'₹')+'" value="'+esc(r.rate)+'"'+(bill.splOk?'':' readonly')+'></label>'+
+      '<div class="b3"><label>Rate · ભાવ <span class="spl" id="b-spl"></span><input type="text" inputmode="decimal" class="b-rate" placeholder="'+(u?'₹/'+u:'₹')+'" value="'+esc(r.rate)+'"'+(bill.splOk?'':' readonly')+'></label>'+
       '<label>Qty · જથ્થો<input type="text" inputmode="decimal" class="b-qty" placeholder="'+(u||'QTY')+'" value="'+esc(r.qty)+'"></label>'+
-      '<div class="b-amt">Amount · રકમ<b></b></div></div><div class="rhint">'+(bill.splOk?'✎ Rate unlocked – change applies to this bill only · આ બિલ માટે ભાવ બદલી શકાય':'Special rate? Tap red SPL and enter admin password · ખાસ ભાવ માટે લાલ SPL દબાવો')+'</div></div>'+
+      '<div class="b-amt">Amount · રકમ<b></b></div></div><div class="splrow"><button type="button" class="splb'+(bill.splOk?' on':'')+'" id="b-splbtn" aria-label="Special rate">SPL RATE'+(bill.splOk?' ✓':'')+'</button><span class=\"splh en\">[ TO GIVE ITEM AT SPL RATE CLICK ON THIS BLUE BUTTON ]</span><span class=\"splh gu\">[ ખાસ ભાવે વસ્તુ આપવા માટે આ વાદળી બટન દબાવો ]</span></div></div>'+
       '<div class="cbt"><button type="button" class="b-plus" id="b-plus" aria-label="'+(ed?'Save item':'Add item')+'">'+(ed?'✓':PLUS)+'</button>'+(ed?'<button type="button" class="b-del" id="b-cdel" aria-label="Remove item">✕</button>':'')+'</div>';
   }
   function drawList(){var l=$('#b-list');if(l)l.innerHTML=listHtml()}
@@ -1278,28 +1322,102 @@ input.rate{min-height:36px;width:84px}
     liveRows().forEach(function(r){t+=r2(bnum(r.rate)*bnum(r.qty))});
     var ab=$('#b-cur .b-amt b');if(ab)ab.textContent=binr(r2(bnum(bill.cur.rate)*bnum(bill.cur.qty)));
     var sp=$('#b-spl');if(sp)sp.textContent=isSpl(bill.cur)?'●':'';
-    t=Math.round((t+bnum(bill.labour)+bnum(bill.trans)+bnum(bill.misc))*100)/100;
+    t=Math.max(0,Math.round((t+bnum(bill.labour)+bnum(bill.trans)+bnum(bill.misc)-bnum(bill.disc))*100)/100);
     var g=$('#b-grand');if(!g)return;
-    g.textContent=binr(t);$('#b-words').textContent=bwords(t);
+    g.textContent=binr(t);$('#b-words').innerHTML=esc(bwords(t))+'<br>'+guWords(t);
   }
   function refreshBill(){
     var cs=$('#b-cust');if(!cs)return;
-    cs.innerHTML=billCustOpts(bill.cust);
+    cs.innerHTML=billCustOpts(bill.cust);cbxSync();
     var sel=$('#b-cur .b-item');if(sel)sel.innerHTML=billItemOpts(bill.cur.item);
     drawList();
   }
+
+  /* ---------- Smart dropdown (type to search, or scroll the list and tap) for Customer / Supplier boxes ----------
+     Each box is <select id="X" hidden> + <input class="cbx-in" data-for="X">. The hidden select stays the source of truth,
+     so the rest of the code (change handlers) works unchanged. */
+  var cbxAct=-1,cbxCur=null;
+  function cbxSelOf(i){return i?$('#'+i.getAttribute('data-for')):null}
+  function cbxLabel(i){var s=cbxSelOf(i);if(!s||!s.value)return '';var o=s.options[s.selectedIndex];return o?o.text:''}
+  function cbxSync(){var a=document.querySelectorAll('.cbx-in');for(var k=0;k<a.length;k++)if(document.activeElement!==a[k])a[k].value=cbxLabel(a[k])}
+  function cbxListEl(){var l=$('#b-cbxl');if(!l){l=document.createElement('div');l.id='b-cbxl';l.className='cbx-list';l.hidden=true;document.body.appendChild(l)}return l}
+  function cbxOpen(){var l=$('#b-cbxl');return !!(l&&!l.hidden)}
+  function cbxHide(){var l=$('#b-cbxl');if(l)l.hidden=true}
+  function cbxHl(t,q){var k=q?t.toLowerCase().indexOf(q):-1;if(k<0)return esc(t);return esc(t.slice(0,k))+'<mark>'+esc(t.slice(k,k+q.length))+'</mark>'+esc(t.slice(k+q.length))}
+  function cbxMark(scroll){
+    var l=cbxListEl(),o=l.querySelectorAll('.cbx-opt');
+    for(var k=0;k<o.length;k++)o[k].classList.toggle('act',k===cbxAct);
+    if(scroll&&o[cbxAct])o[cbxAct].scrollIntoView({block:'nearest'});
+  }
+  function cbxRender(i,q){
+    var s=cbxSelOf(i),l=cbxListEl();if(!s)return;
+    q=(q||'').trim().toLowerCase();
+    var h='',n=0,selAt=-1;
+    for(var k=1;k<s.options.length;k++){
+      var o=s.options[k];if(q&&o.text.toLowerCase().indexOf(q)<0)continue;
+      if(o.value===s.value)selAt=n;
+      h+='<div class="cbx-opt'+(o.value===s.value?' sel':'')+'" data-v="'+esc(o.value)+'">'+cbxHl(o.text,q)+'</div>';n++;
+    }
+    l.innerHTML=n?h:'<div class="cbx-none">No match · કોઈ મળ્યું નથી</div>';
+    cbxAct=n?(!q&&selAt>=0?selAt:0):-1;cbxMark(!q&&selAt>=0);
+  }
+  function cbxPlace(){
+    var i=cbxCur,l=$('#b-cbxl');if(!i||!l||l.hidden||!document.body.contains(i))return;
+    var r=i.getBoundingClientRect(),vv=window.visualViewport,vb=vv?vv.offsetTop+vv.height:window.innerHeight;
+    var below=vb-r.bottom-8,above=r.top-8,up=below<150&&above>below;
+    l.style.left=r.left+'px';l.style.width=r.width+'px';
+    l.style.maxHeight=Math.max(110,Math.min(260,up?above:below))+'px';
+    if(up){l.style.top='auto';l.style.bottom=(window.innerHeight-r.top+4)+'px'}else{l.style.bottom='auto';l.style.top=(r.bottom+4)+'px'}
+  }
+  function cbxShow(i,q){var l=cbxListEl();cbxCur=i;cbxRender(i,q);l.hidden=false;cbxPlace()}
+  function cbxPick(i,v){
+    var s=cbxSelOf(i);if(!s)return;
+    var ch=s.value!==v;s.value=v;cbxHide();
+    i.value=cbxLabel(i);i.blur();
+    if(ch)s.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+  function isCbx(t){return !!(t&&t.classList&&t.classList.contains('cbx-in'))}
+  document.addEventListener('focusin',function(e){if(isCbx(e.target)){e.target.select();cbxShow(e.target,'')}});
+  document.addEventListener('focusout',function(e){
+    var i=e.target;if(!isCbx(i))return;
+    var s=cbxSelOf(i);cbxHide();
+    if(s&&!i.value.trim()&&s.value!=='')cbxPick(i,'');else i.value=cbxLabel(i);
+  });
+  document.addEventListener('input',function(e){if(isCbx(e.target))cbxShow(e.target,e.target.value)});
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    if(isCbx(t)){if(!cbxOpen())cbxShow(t,'');return}
+    if(t.classList&&t.classList.contains('cbx-ar')){var i=t.parentNode.querySelector('.cbx-in');if(!i)return;if(cbxOpen()&&cbxCur===i){cbxHide();i.blur()}else i.focus();return}
+    var o=t.closest&&t.closest('.cbx-opt');if(o&&cbxCur)cbxPick(cbxCur,o.getAttribute('data-v'));
+  });
+  document.addEventListener('mousedown',function(e){var t=e.target;if((t.classList&&t.classList.contains('cbx-ar'))||(t.closest&&t.closest('#b-cbxl')))e.preventDefault()});
+  document.addEventListener('keydown',function(e){
+    var i=e.target;if(!isCbx(i))return;
+    var n=cbxListEl().querySelectorAll('.cbx-opt').length;
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+      e.preventDefault();if(!cbxOpen())cbxShow(i,i.value===cbxLabel(i)?'':i.value);
+      n=cbxListEl().querySelectorAll('.cbx-opt').length;
+      if(n){cbxAct=(cbxAct+(e.key==='ArrowDown'?1:-1)+n)%n;cbxMark(true)}
+    }else if(e.key==='Enter'){
+      e.preventDefault();var o=cbxListEl().querySelectorAll('.cbx-opt')[cbxAct];if(cbxOpen()&&o)cbxPick(i,o.getAttribute('data-v'));
+    }else if(e.key==='Escape'||e.key==='Tab'){cbxHide();if(e.key==='Escape')i.blur()}
+  });
+  window.addEventListener('resize',cbxPlace);window.addEventListener('scroll',cbxPlace,true);
+  if(window.visualViewport){visualViewport.addEventListener('resize',cbxPlace);visualViewport.addEventListener('scroll',cbxPlace)}
   function renderBill(){
+    cbxHide();
     var out=bill.type==='out';
     function f(id,en,gu,val){return '<label class="cf">'+en+' · '+gu+'<input type="text" inputmode="decimal" id="'+id+'" placeholder="₹" autocomplete="off" value="'+esc(val)+'"></label>'}
-    $('#v-bill').innerHTML='<div class="seg" role="radiogroup" aria-label="Bill type"><label><input type="radio" name="btype" value="in"'+(out?'':' checked')+'><span>Inward<small>ઇનવર્ડ</small></span></label><label><input type="radio" name="btype" value="out"'+(out?' checked':'')+'><span>Outward<small>આઉટવર્ડ</small></span></label></div>'+
+    $('#v-bill').innerHTML='<div class="seg" role="radiogroup" aria-label="Bill type"><label><input type="radio" name="btype" value="in"'+(out?'':' checked')+'><span>INWARD BILL<small>(આવક બિલ)</small></span></label><label><input type="radio" name="btype" value="out"'+(out?' checked':'')+'><span>OUTWARD BILL<small>(જાવક બિલ)</small></span></label></div>'+
       '<div class="card bcard"><div class="r2"><div class="bnoc">Bill No. · બિલ નં.<b>'+billNo()+'</b></div>'+
       '<div class="cf">Date · તારીખ<div class="dtw"><input type="text" id="b-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(bill.date)+'"><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="b-dpick" aria-label="Pick date" value="'+dmyToIso(bill.date)+'"></span></div></div></div>'+
-      '<select id="b-cust" aria-label="'+(out?'Customer':'Supplier')+'">'+billCustOpts(bill.cust)+'</select></div>'+
+      '<div class="cbx"><select id="b-cust" style="display:none" aria-label="'+(out?'Customer':'Supplier')+'">'+billCustOpts(bill.cust)+'</select><input type="text" id="b-custq" class="cbx-in" data-for="b-cust" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="'+(out?'Customer':'Supplier')+'" placeholder="'+(out?'Select / search customer · ગ્રાહક પસંદ કરો':'Select / search supplier · સપ્લાયર પસંદ કરો')+'"><span class="cbx-ar" aria-hidden="true">▾</span></div></div>'+
       '<div class="card bcard ilist" id="b-list"></div>'+
       '<div class="brow cur" id="b-cur"></div>'+
       '<div class="card bcard btot"><div class="bl2"><span>Grand Total <small>કુલ રકમ</small></span><b id="b-grand"></b></div><div class="bwords" id="b-words"></div></div>'+
-      '<div class="acts"><button type="button" class="btn pri" id="b-save">Generate Bill<span class="gu">બિલ બનાવો</span></button>'+
-      '<button type="button" class="btn sec" id="b-new">New<span class="gu">નવું</span></button></div>';
+      '<div class="acts"><button type="button" class="btn pri" id="b-save">GENERATE BILL<span class="gu">બિલ બનાવો</span></button>'+
+      '<button type="button" class="btn sec" id="b-new">NEW BILL<span class="gu">નવું બિલ</span></button></div>';
+    cbxSync();
     drawAll();
     syncSeq(bill.type,showBillNo);
   }
@@ -1317,13 +1435,13 @@ input.rate{min-height:36px;width:84px}
       var a=r2(rt*q);sub+=a;rows.push({id:it.id,name:it.en,unit:it.unit,rate:rt,qty:q,amount:a});
     });
     if(!rows.length){toast('Add item and quantity · આઇટમ અને જથ્થો ઉમેરો');return null}
-    var lab=bnum(bill.labour),tra=bnum(bill.trans),mis=bnum(bill.misc),total=r2(sub+lab+tra+mis);
+    var lab=bnum(bill.labour),tra=bnum(bill.trans),mis=bnum(bill.misc),dis=bnum(bill.disc),total=Math.max(0,r2(sub+lab+tra+mis-dis));
     if(!parseDmy(bill.date)){toast('Enter date as DD/MM/YYYY · તારીખ DD/MM/YYYY લખો');return null}
     var d=new Date(), no=billNo();
     var party={id:p.id,name:p.en,mobile:p.mobile||'',email:p.email||'',address:p.address||'',city:p.city||''};
     var data={billNo:no,billType:out?'Outward':'Inward',date:bill.date,savedAt:d.toISOString()};
     data[out?'customer':'supplier']=party;
-    data.items=rows;data.subTotal=r2(sub);data.labour=lab;data.transportation=tra;
+    data.items=rows;data.subTotal=r2(sub);data.labour=lab;data.transportation=tra;data.discount=dis;
     data.misc={details:'',amount:mis};data.grandTotal=total;data.amountInWords=bwords(total);
     return {out:out,no:no,total:total,data:data};
   }
@@ -1340,8 +1458,8 @@ input.rate{min-height:36px;width:84px}
     }).catch(function(){cb(pick())});
   }
   function genRecalc(B){
-    var lab=bnum(bill.labour),tra=bnum(bill.trans),mis=bnum(bill.misc),total=r2(B.data.subTotal+lab+tra+mis);
-    B.data.labour=lab;B.data.transportation=tra;B.data.misc={details:'',amount:mis};
+    var lab=bnum(bill.labour),tra=bnum(bill.trans),mis=bnum(bill.misc),dis=bnum(bill.disc),total=Math.max(0,r2(B.data.subTotal+lab+tra+mis-dis));
+    B.data.labour=lab;B.data.transportation=tra;B.data.discount=dis;B.data.misc={details:'',amount:mis};
     B.data.grandTotal=total;B.data.amountInWords=bwords(total);B.total=total;B.adv=r2(Math.min(B.advAvail||0,total));
   }
   function genInvHtml(B){
@@ -1356,7 +1474,7 @@ input.rate{min-height:36px;width:84px}
       '<div class="gs"><table><thead><tr><th>#</th><th>Item<small>વસ્તુ</small></th><th>Qty<small>જથ્થો</small></th><th>Rate<small>ભાવ</small></th><th>Amount<small>રકમ</small></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
   }
   function genTotHtml(B){
-    return '<div class="gt"><div class="gt1"><span>Items Total · વસ્તુ કુલ</span><b>₹ '+pn(B.data.subTotal)+'</b></div>'+
+    return '<div class="gt"><div class="gt1"><span>Items Total · વસ્તુ કુલ</span><b>₹ '+pn(B.data.subTotal)+'</b></div>'+(B.data.discount>0?'<div class="gt1"><span>Discount · છૂટ</span><b>− ₹ '+pn(B.data.discount)+'</b></div>':'')+
       '<div class="gt2"><span>Grand Total <small>કુલ રકમ</small></span><b>₹ '+pn(B.total)+'</b></div><div class="gt3">'+esc(B.data.amountInWords)+'<br>'+guWords(B.total)+'</div></div>';
   }
   function genNote(B){
@@ -1364,8 +1482,8 @@ input.rate{min-height:36px;width:84px}
   }
   document.addEventListener('input',function(ev){
     var t=ev.target,id=t&&t.id;
-    if(id!=='gb-tra'&&id!=='gb-lab'&&id!=='gb-misc')return;
-    if(id==='gb-tra')bill.trans=t.value;else if(id==='gb-lab')bill.labour=t.value;else bill.misc=t.value;
+    if(id!=='gb-tra'&&id!=='gb-lab'&&id!=='gb-misc'&&id!=='gb-disc')return;
+    if(id==='gb-tra')bill.trans=t.value;else if(id==='gb-lab')bill.labour=t.value;else if(id==='gb-disc')bill.disc=t.value;else bill.misc=t.value;
     var B=bPending;if(!B)return;
     genRecalc(B);$('#gb-tot').innerHTML=genTotHtml(B);$('#gb-note').innerHTML=genNote(B);billTotals();
   });
@@ -1388,7 +1506,7 @@ input.rate{min-height:36px;width:84px}
     bPending=B;
     function fld(id,en,gu,val){return '<label class="gf">'+en+'<span class="gu">'+gu+'</span><input type="text" inputmode="decimal" id="'+id+'" placeholder="₹" autocomplete="off" value="'+esc(val)+'"></label>'}
     openMdl('<div class="pvt">Generate Bill · બિલ બનાવો</div>'+genSumHtml(B)+
-      '<div class="gb-ch">'+fld('gb-tra','Transportation','ભાડું',bill.trans)+fld('gb-lab','Labour','મજૂરી',bill.labour)+fld('gb-misc','Other Charges','અન્ય ખર્ચ',bill.misc)+'</div>'+
+      '<div class="gb-ch">'+fld('gb-tra','Transportation','ભાડું',bill.trans)+fld('gb-lab','Labour','મજૂરી',bill.labour)+fld('gb-misc','Other Charges','અન્ય ખર્ચ',bill.misc)+fld('gb-disc','Discount','છૂટ',bill.disc)+'</div>'+
       '<div id="gb-tot">'+genTotHtml(B)+'</div><div id="gb-note">'+genNote(B)+'</div>'+
       '<div class="pv-acts"><button type="button" class="btn sec" id="bp-edit">Edit<span class="gu">સુધારો</span></button><button type="button" class="btn pri" id="bp-ok">Save<span class="gu">સાચવો</span></button></div>');
   }
@@ -1550,7 +1668,7 @@ input.rate{min-height:36px;width:84px}
     h+='<div class="rbf">'+(payBills.length?'<button type="button" id="p-rall">'+(all?'Clear · દૂર કરો':'Select all · બધા')+'</button>':'')+'<button type="button" class="pr" id="p-rdone">Done · થઈ ગયું</button></div>';
     return h;
   }
-  function refreshPayParty(){var el=$('#p-party');if(el)el.innerHTML=payPartyOpts()}
+  function refreshPayParty(){var el=$('#p-party');if(el){el.innerHTML=payPartyOpts();cbxSync()}}
   function payEnable(){
     var on=payEnabled();
     ['p-date','p-dpick','p-amt'].forEach(function(id){var e=$('#'+id);if(e)e.disabled=!on});
@@ -1591,16 +1709,17 @@ input.rate{min-height:36px;width:84px}
   var CAL='<svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg>';
   var EYE='<svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z"/></svg>';
   function renderPay(){
+    cbxHide();
     var c=pay.kind==='cust',on=payEnabled();
     $('#v-payment').innerHTML='<div class="seg" role="radiogroup" aria-label="Payment type"><label><input type="radio" name="ptype" value="cust"'+(c?' checked':'')+'><span>From Customer<small>ગ્રાહક પાસેથી</small></span></label><label><input type="radio" name="ptype" value="supp"'+(c?'':' checked')+'><span>To Supplier<small>સપ્લાયરને</small></span></label></div>'+
       '<div class="card bcard">'+
-      '<label class="cf">'+(c?'Customer Name · ગ્રાહક':'Supplier Name · સપ્લાયર')+'<select id="p-party">'+payPartyOpts()+'</select></label>'+
-      '<div class="cf">Ref. Bill No. · બિલ નં. <span style="text-transform:none;font-weight:500">(one or more · એક કે વધુ)</span><div class="rbx"><button type="button" class="rbt" id="p-rbtn"'+(pay.party?'':' disabled')+'><span id="p-rsum" style="display:contents">'+payRefSum()+'</span></button><div class="rbl" id="p-rl"'+(pay.open&&pay.party?'':' hidden')+'>'+payRefList()+'</div></div></div>'+
+      '<div class="cf">'+(c?'Customer Name · ગ્રાહક':'Supplier Name · સપ્લાયર')+'<div class="cbx"><select id="p-party" style="display:none">'+payPartyOpts()+'</select><input type="text" id="p-partyq" class="cbx-in" data-for="p-party" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="'+(c?'Customer':'Supplier')+'" placeholder="'+(c?'Select / search customer · ગ્રાહક પસંદ કરો':'Select / search supplier · સપ્લાયર પસંદ કરો')+'"><span class="cbx-ar" aria-hidden="true">▾</span></div></div>'+
+      '<div class="cf"><span style="white-space:nowrap">SELECT BILL NO. [ બિલ નં. પસંદ કરો ]</span><div class="rbx"><button type="button" class="rbt" id="p-rbtn"'+(pay.party?'':' disabled')+'><span id="p-rsum" style="display:contents">'+payRefSum()+'</span></button><div class="rbl" id="p-rl"'+(pay.open&&pay.party?'':' hidden')+'>'+payRefList()+'</div></div></div>'+
       '<div class="r2 pdis'+(on?'':' off')+'" id="p-dta"><div class="cf">Date · તારીખ<div class="dtw"><input type="text" id="p-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(pay.date)+'"'+(on?'':' disabled')+'><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="p-dpick" aria-label="Pick date" value="'+dmyToIso(pay.date)+'"'+(on?'':' disabled')+'></span></div></div>'+
       '<label class="cf">Amount · રકમ<input type="text" inputmode="decimal" id="p-amt" placeholder="₹" autocomplete="off" value="'+esc(pay.amount)+'"'+(on?'':' disabled')+'></label></div>'+
       '<div class="pnote" id="p-note"></div></div>'+
       '<button type="button" class="btn pri" id="p-save">Save Payment<span class="gu">ચુકવણી સાચવો</span></button>';
-    payNote();
+    payNote();cbxSync();
   }
   /* popup to look at the selected bill */
   function openMdl(html){$('#mdl-body').innerHTML=html;$('#mdl').hidden=false}
@@ -1614,11 +1733,11 @@ input.rate{min-height:36px;width:84px}
     }).join('');
     var sub=d.subTotal!=null?+d.subTotal:its.reduce(function(a,x){return a+(+x.amount||0)},0);
     function ln(t,v){return v?'<div><span>'+t+'</span><b>₹ '+pn(+v)+'</b></div>':''}
-    var h='<div class="inv"><div class="inv-h"><div class="br">DEEP ENTERPRISE<small>'+(out?'Sales Invoice · વેચાણ બિલ':'Purchase Bill · ખરીદ બિલ')+'</small></div><div class="ty">'+(out?'OUTWARD':'INWARD')+'</div></div>'+
+    var h='<div class="inv"><div class="inv-h"><div class="br">DEEP ENTERPRISE<small>'+(out?'Sales Invoice · વેચાણ બિલ':'Purchase Bill · ખરીદ બિલ')+'</small></div><div class="ty">'+(out?'OUTWARD':'INWARD')+'<span style="display:block;font:600 11px var(--font);letter-spacing:0;color:#9FB3C8;text-align:right">'+(out?'જાવક':'આવક')+'</span></div></div>'+
       '<div class="inv-m"><div><small>Bill No. · બિલ નં.</small><b>'+esc(d.billNo)+'</b></div><div><small>Date · તારીખ</small><b>'+esc(d.date||'')+'</b></div></div>'+
       '<div class="inv-p"><small>'+(out?'Bill To · ગ્રાહક':'Supplier · સપ્લાયર')+'</small><b>'+esc(pt.name||'')+'</b>'+(pt.mobile?'<span>'+esc(pt.mobile)+'</span>':'')+(addr?'<span>'+esc(addr)+'</span>':'')+'</div>'+
       '<table><thead><tr><th>#</th><th>Item</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>'+rows+'</tbody></table>'+
-      '<div class="inv-t"><div><span>Sub Total</span><b>₹ '+pn(sub)+'</b></div>'+ln('Labour · મજૂરી',d.labour)+ln('Transportation · ભાડું',d.transportation)+ln('Other Charges · અન્ય ખર્ચ',d.misc&&d.misc.amount)+
+      '<div class="inv-t"><div><span>Sub Total</span><b>₹ '+pn(sub)+'</b></div>'+ln('Labour · મજૂરી',d.labour)+ln('Transportation · ભાડું',d.transportation)+ln('Other Charges · અન્ય ખર્ચ',d.misc&&d.misc.amount)+(+d.discount>0?'<div><span>Discount · છૂટ</span><b>− ₹ '+pn(+d.discount)+'</b></div>':'')+
       '<div class="g"><span>Grand Total</span><b>₹ '+pn(+d.grandTotal||0)+'</b></div>';
     if(typeof d.paid==='number')h+='<div><span>'+esc(d.paidLabel||'Paid so far')+'</span><b>₹ '+pn(d.paid)+'</b></div><div class="due"><span>Balance Due</span><b>₹ '+pn(r2((d.grandTotal||0)-d.paid))+'</b></div>';
     h+='</div><div class="inv-w"><small>Amount in words · રકમ શબ્દોમાં</small>'+esc(d.amountInWords||'')+'<div class="guw">'+guWords(d.grandTotal)+'</div></div>'+
@@ -1835,8 +1954,8 @@ input.rate{min-height:36px;width:84px}
   /* ---------- Reports: Outward Bill, Inward Bill, Customer-wise Payment, Supplier-wise Payment ---------- */
   var repView='menu', RP={from:'',to:'',party:'',pk:'out',open:{},data:{out:null,'in':null},state:{}};
   var REPS={
-    out:{kind:'out',bills:true,en:'Outward Bill Report',gu:'આઉટવર્ડ બિલ રિપોર્ટ',party:'Customer',partyGu:'ગ્રાહક',sub:'All sales bills · બધા વેચાણ બિલ'},
-    'in':{kind:'in',bills:true,en:'Inward Bill Report',gu:'ઇનવર્ડ બિલ રિપોર્ટ',party:'Supplier',partyGu:'સપ્લાયર',sub:'All purchase bills · બધા ખરીદી બિલ'},
+    out:{kind:'out',bills:true,en:'Outward Bill Report',gu:'જાવક બિલ રિપોર્ટ',party:'Customer',partyGu:'ગ્રાહક',sub:'All sales bills · બધા વેચાણ બિલ'},
+    'in':{kind:'in',bills:true,en:'Inward Bill Report',gu:'આવક બિલ રિપોર્ટ',party:'Supplier',partyGu:'સપ્લાયર',sub:'All purchase bills · બધા ખરીદી બિલ'},
     cust:{kind:'out',bills:false,en:'Customer-wise Payment',gu:'ગ્રાહક મુજબ ચુકવણી',party:'Customer',partyGu:'ગ્રાહક',got:'Received',gotGu:'મળ્યા',sub:'Billed, received and due per customer · ગ્રાહક મુજબ'},
     dpay:{bills:false,daily:true,en:'Payment Report',gu:'ચુકવણી રિપોર્ટ',sub:'Date-wise payments · તારીખ મુજબ ચુકવણી',
       get kind(){return RP.pk},get party(){return RP.pk==='out'?'Customer':'Supplier'},get partyGu(){return RP.pk==='out'?'ગ્રાહક':'સપ્લાયર'},
@@ -1967,14 +2086,14 @@ input.rate{min-height:36px;width:84px}
   function dbParties(){return DB.kind==='out'?customers:suppliers}
   function dbMenu(){
     return '<h2>Reports<span class="gu">રિપોર્ટ</span></h2><div class="menu">'+
-      [['out','Outward Bills','આઉટવર્ડ બિલ','Display all sales bills · બધા વેચાણ બિલ જુઓ'],['in','Inward Bills','ઇનવર્ડ બિલ','Display all purchase bills · બધા ખરીદી બિલ જુઓ'],['bs','Account of Debit and Credit','જમા અને ઉધાર નો હિસાબ','Customers and suppliers on one screen · ગ્રાહક અને સપ્લાયર એક સ્ક્રીનમાં']].map(function(r){
+      [['out','Outward Bills','જાવક બિલ','Display all sales bills · બધા વેચાણ બિલ જુઓ'],['in','Inward Bills','આવક બિલ','Display all purchase bills · બધા ખરીદી બિલ જુઓ'],['bs','Account of Debit and Credit','જમા અને ઉધાર નો હિસાબ','Customers and suppliers on one screen · ગ્રાહક અને સપ્લાયર એક સ્ક્રીનમાં']].map(function(r){
         return '<button class="opt" data-rep="'+r[0]+'"><span class="dot">'+(r[0]==='bs'?RP_ICON.bs:RP_ICON.bill)+'</span><span class="t"><b>'+r[1]+'</b><span class="gu">'+r[2]+'</span><small>'+r[3]+'</small></span>'+CHEV+'</button>';
       }).join('')+'</div>';
   }
   function dbShell(){
     var out=DB.kind==='out', L=out?'Customer':'Supplier', G=out?'ગ્રાહક':'સપ્લાયર';
     return '<div class="noprint"><button class="back" id="repBack">'+BACK+'Reports · રિપોર્ટ</button></div>'+
-      '<h2>'+(out?'Outward Bills':'Inward Bills')+'<span class="gu">'+(out?'આઉટવર્ડ બિલ':'ઇનવર્ડ બિલ')+'</span></h2>'+
+      '<h2>'+(out?'Outward Bills':'Inward Bills')+'<span class="gu">'+(out?'જાવક બિલ':'આવક બિલ')+'</span></h2>'+
       '<div class="card rpf">'+
       '<label class="cf">Bill No. · બિલ નં.<input type="text" id="db-no" placeholder="'+(out?'OUT-0001':'IN-0001')+'" autocomplete="off" value="'+esc(DB.no)+'"></label>'+
       '<div class="r2"><label class="cf">From · થી<input type="date" id="db-from" value="'+esc(DB.from)+'"></label><label class="cf">To · સુધી<input type="date" id="db-to" value="'+esc(DB.to)+'"></label></div>'+
