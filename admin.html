@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Khatavahi Super Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+:root{--bg:#EDF4F8;--surface:#fff;--fg:#0B2545;--muted:#5A6B80;--line:#D9E5EE;--accent:#0A8FAE;--fill:#06B6D4;--on:#032530;--soft:#E0F6FB;--bar:#0B2545;--danger:#C2410C;--ok:#16A34A;
+ --font:'Inter','Noto Sans Gujarati',system-ui,sans-serif;--head:'Space Grotesk','Inter','Noto Sans Gujarati',sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#06122A;--surface:#0D2144;--fg:#E6F1F8;--muted:#8FA6BF;--line:#1B3560;--accent:#22D3EE;--fill:#22D3EE;--on:#03222B;--soft:#0F2C4E;--bar:#0A1A38;--danger:#FB923C;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px var(--font);-webkit-tap-highlight-color:transparent}
+button,input{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
+.bar{background:var(--bar);color:#fff;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;display:flex;align-items:center;gap:10px}
+.logo{width:30px;height:30px;border-radius:9px;background:var(--fill);color:var(--on);display:grid;place-items:center;font:700 13px var(--head)}
+.bar h1{margin:0;font:700 18px var(--head)}.bar h1 small{display:block;font:600 12px var(--font);opacity:.8}
+.bar .out{margin-left:auto;font-size:12px;font-weight:700;padding:6px 12px;border-radius:14px;background:rgba(255,255,255,.14);color:#fff}
+.wrap{max-width:560px;margin:0 auto;padding:14px 14px 40px;display:flex;flex-direction:column;gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:12px}
+h2{margin:0;font:700 16px var(--head);color:var(--accent);display:flex;flex-direction:column}
+.lb{display:flex;flex-direction:column;line-height:1.25}.lb .gu{font-weight:600;color:var(--accent)}
+label.f{display:flex;flex-direction:column;gap:5px;font-weight:700;font-size:12px;color:var(--muted)}
+label.f .lb{font-size:12px}
+input{width:100%;min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);padding:0 12px;font-size:15px}
+input:focus{outline:0;border-color:var(--fill);box-shadow:0 0 0 3px var(--soft)}
+.btn{min-height:50px;border-radius:14px;padding:6px 14px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center}
+.btn.pri{background:var(--fill);color:var(--on)}.btn.sec{background:var(--soft);color:var(--accent)}
+.btn:disabled{opacity:.55;cursor:wait}
+.btn.sm{min-height:36px;border-radius:10px;font-size:12px;padding:4px 10px}
+.msg{font-size:13px;line-height:1.5;padding:10px 12px;border-radius:12px;background:var(--soft)}
+.msg.err{background:rgba(194,65,12,.12);color:var(--danger);font-weight:600}
+.msg.ok{background:rgba(22,163,74,.12);color:var(--ok);font-weight:700}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row .k{min-width:0;font-size:12px;color:var(--muted);font-weight:700}
+.row .k b{display:block;color:var(--fg);font-weight:600;word-break:break-all;font-size:12.5px}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.cl{border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.cl b{font-size:14px;word-break:break-all}.cl small{color:var(--muted)}
+.empty{color:var(--muted);text-align:center;padding:14px}
+[hidden]{display:none!important}
+</style></head><body>
+
+<header class="bar"><div class="logo">KV</div><h1>Super Admin<small>સુપર એડમિન</small></h1><button class="out" id="logout" hidden>Logout</button></header>
+
+<div class="wrap" id="login">
+  <div class="card">
+    <h2><span class="lb"><span class="gu">એડમિન કી</span><span>Admin Key</span></span></h2>
+    <label class="f" id="apiBox" hidden><span class="lb"><span class="gu">બેકએન્ડ URL</span><span>Backend URL (Apps Script Web App .../exec)</span></span><input id="api" type="text" autocomplete="off" placeholder="https://script.google.com/macros/s/.../exec"></label>
+    <label class="f"><span class="lb"><span class="gu">સિક્રેટ કી</span><span>Secret key</span></span><input id="key" type="password" autocomplete="current-password"></label>
+    <div class="msg err" id="lerr" hidden></div>
+    <button class="btn pri" id="go"><span class="lb"><span class="gu">લૉગિન</span><span>Login</span></span></button>
+  </div>
+</div>
+
+<div class="wrap" id="app" hidden>
+  <div class="card">
+    <h2><span class="lb"><span class="gu">નવો ગ્રાહક બનાવો</span><span>Create new customer</span></span></h2>
+    <label class="f"><span class="lb"><span class="gu">ગ્રાહકનું ઈ-મેલ (ફોલ્ડર અને ડેટાબેઝનું નામ)</span><span>Customer email (folder + database name)</span></span><input id="email" type="email" inputmode="email" autocomplete="off" autocapitalize="off" placeholder="name@gmail.com"></label>
+    <label class="f"><span class="lb"><span class="gu">બિઝનેસનું નામ (બિલ પર છપાશે)</span><span>Business name (printed on bills)</span></span><input id="biz" type="text" autocomplete="off" placeholder="e.g. DEEP ENTERPRISE"></label>
+    <div class="msg" id="cmsg" hidden></div>
+    <button class="btn pri" id="create"><span class="lb"><span class="gu">બનાવો</span><span>Create</span></span></button>
+  </div>
+
+  <div class="card" id="res" hidden></div>
+
+  <div class="card">
+    <h2><span class="lb"><span class="gu">બધા ગ્રાહકો</span><span>All customers <span id="cnt"></span></span></span></h2>
+    <input id="q" type="text" placeholder="Search email · ઈ-મેલ શોધો" autocomplete="off">
+    <div id="list"></div>
+    <button class="btn sec" id="reload"><span class="lb"><span class="gu">તાજું કરો</span><span>Refresh</span></span></button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var API='https://script.google.com/macros/s/AKfycbwbAHBm9aa4lxMg_KxCTwLDct3T9aeX8-ZqTQ0bUGsyH-2fNut6g0SQoUcusGAs32vaZw/exec';           /* <-- paste your Apps Script Web App URL here (ends with /exec) */
+  var $=function(s){return document.querySelector(s)};
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function ss(k,v){try{if(v===undefined)return sessionStorage.getItem(k)||'';v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){return ''}}
+  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k)||'';localStorage.setItem(k,v)}catch(e){return ''}}
+  var clients=[], KEY='';
+  function api(){return API.indexOf('http')===0?API:ls('ksa-api')}
+  function call(p){
+    var u=api(); if(!u) return Promise.reject(new Error('Paste the backend URL first'));
+    p.key=KEY;
+    var qs=Object.keys(p).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(p[k])}).join('&');
+    return fetch(u+(u.indexOf('?')>-1?'&':'?')+qs).then(function(r){return r.json()}).then(function(d){
+      if(d&&d.error) throw new Error(d.error==='unauthorized'?'Wrong key · ખોટી કી':d.error);
+      return d;
+    });
+  }
+  function show(id,on){$(id).hidden=!on}
+  function setMsg(el,t,k){el.hidden=!t;el.className='msg'+(k?' '+k:'');el.textContent=t||''}
+  function copy(t,btn){
+    function done(){var o=btn.textContent;btn.textContent='Copied ✓';setTimeout(function(){btn.textContent=o},1400)}
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done,function(){prompt('Copy:',t)});
+    else{prompt('Copy:',t)}
+  }
+  function rowHtml(en,gu,val,url){
+    return '<div class="row"><div class="k">'+gu+' · '+en+'<b>'+esc(val)+'</b></div><div class="acts">'+
+      (url?'<a class="btn sec sm" href="'+esc(url)+'" target="_blank" rel="noopener">Open</a>':'')+
+      '<button class="btn sec sm" data-copy="'+esc(url||val)+'">Copy</button></div></div>';
+  }
+  function showResult(c,title){
+    var el=$('#res');el.hidden=false;
+    el.innerHTML='<div class="msg ok">'+esc(title)+'</div>'+
+      rowHtml('Folder','ફોલ્ડર',c.email,c.folderUrl)+
+      rowHtml('Database (Google Sheet)','ડેટાબેઝ','Khatavahi ('+c.email+')',c.sheetUrl)+
+      rowHtml('index.html','index.html','index.html',c.indexUrl)+
+      rowHtml('App link','એપ લિંક',c.appUrl,c.appUrl);
+  }
+  function renderList(){
+    var q=$('#q').value.trim().toLowerCase();
+    var L=clients.filter(function(c){return !q||c.email.toLowerCase().indexOf(q)>-1});
+    $('#cnt').textContent='· '+clients.length;
+    $('#list').innerHTML=L.length?L.map(function(c){
+      return '<div class="cl"><div><b>'+esc(c.email)+'</b><br><small>Created '+esc(c.created)+(c.sheetId&&c.indexId?'':' · <span style="color:var(--danger)">incomplete</span>')+'</small></div><div class="acts">'+
+        '<a class="btn sec sm" href="'+esc(c.folderUrl)+'" target="_blank" rel="noopener">Folder</a>'+
+        (c.sheetUrl?'<a class="btn sec sm" href="'+esc(c.sheetUrl)+'" target="_blank" rel="noopener">Database</a>':'')+
+        (c.appUrl?'<a class="btn sec sm" href="'+esc(c.appUrl)+'" target="_blank" rel="noopener">Open app</a><button class="btn sec sm" data-copy="'+esc(c.appUrl)+'">Copy link</button>':'')+
+        '<button class="btn sec sm" data-refresh="'+esc(c.email)+'">Update app</button></div></div>';
+    }).join(''):'<div class="empty">'+(clients.length?'No match · મળ્યું નહીં':'No customers yet · હજી કોઈ ગ્રાહક નથી')+'</div>';
+  }
+  function load(btn){
+    if(btn)btn.disabled=true;
+    return call({type:'adminList'}).then(function(d){clients=d.clients||[];renderList()}).finally(function(){if(btn)btn.disabled=false});
+  }
+  function enter(){show('#login',false);show('#app',true);show('#logout',true);load()}
+  function needApi(){if(API.indexOf('http')!==0&&!ls('ksa-api'))show('#apiBox',true)}
+  $('#go').onclick=function(){
+    var a=$('#api').value.trim(); if(a&&API.indexOf('http')!==0) ls('ksa-api',a);
+    KEY=$('#key').value; setMsg($('#lerr'),'');
+    if(!KEY){setMsg($('#lerr'),'Enter key · કી લખો','err');return}
+    var b=$('#go');b.disabled=true;
+    call({type:'adminList'}).then(function(d){ss('ksa-key',KEY);clients=d.clients||[];enter()})
+      .catch(function(e){setMsg($('#lerr'),e.message==='Failed to fetch'?'Cannot reach backend. Check the URL / deployment.':e.message,'err');needApi()})
+      .finally(function(){b.disabled=false});
+  };
+  $('#key').addEventListener('keydown',function(e){if(e.key==='Enter')$('#go').click()});
+  $('#logout').onclick=function(){ss('ksa-key',null);KEY='';location.reload()};
+  $('#create').onclick=function(){
+    var email=$('#email').value.trim().toLowerCase(), biz=$('#biz').value.trim(), m=$('#cmsg'), b=$('#create');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){setMsg(m,'Enter a valid email · સાચું ઈ-મેલ લખો','err');return}
+    b.disabled=true;$('#res').hidden=true;
+    setMsg(m,'Creating folder, database and index.html… this takes about 10–20 seconds. · બની રહ્યું છે, 10–20 સેકન્ડ રાહ જુઓ…');
+    call({type:'adminCreate',email:email,biz:biz}).then(function(d){
+      setMsg(m,'');showResult(d.client,'✓ Created · બની ગયું: '+email);$('#email').value='';$('#biz').value='';return load();
+    }).catch(function(e){
+      if(e.message!=='Failed to fetch'){setMsg(m,e.message,'err');return}
+      /* the reply can get lost even when the server finished: check the list before reporting failure */
+      setMsg(m,'Checking whether it was created… · તપાસી રહ્યા છે…');
+      return load().then(function(){
+        var c=clients.filter(function(x){return x.email===email})[0];
+        if(c&&c.sheetId&&c.indexId){showResult(c,'✓ Created · બની ગયું: '+email);setMsg(m,'');$('#email').value='';$('#biz').value=''}
+        else setMsg(m,'Could not confirm. Press Refresh in the list below and check Drive.','err');
+      }).catch(function(){setMsg(m,'Could not reach backend. Press Refresh below and check Drive.','err')});
+    }).finally(function(){b.disabled=false});
+  };
+  $('#q').oninput=renderList;
+  $('#reload').onclick=function(){load($('#reload')).catch(function(e){alert(e.message)})};
+  document.addEventListener('click',function(ev){
+    var c=ev.target.closest('[data-copy]');if(c){copy(c.getAttribute('data-copy'),c);return}
+    var r=ev.target.closest('[data-refresh]');
+    if(r){
+      var em=r.getAttribute('data-refresh');
+      if(!confirm('Update the app file for '+em+' to the latest template?\nTheir data is not touched.'))return;
+      r.disabled=true;r.textContent='Updating…';
+      call({type:'adminRefresh',email:em}).then(function(){r.textContent='Updated ✓';return load()}).catch(function(e){alert(e.message);r.textContent='Update app';r.disabled=false});
+    }
+  });
+  needApi();
+  var saved=ss('ksa-key');
+  if(saved&&api()){KEY=saved;call({type:'adminList'}).then(function(d){clients=d.clients||[];enter()}).catch(function(){ss('ksa-key',null)})}
+})();
+</script>
+</body></html>
