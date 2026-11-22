@@ -742,6 +742,44 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
 .plr .nm b{font-weight:600;font-size:12.5px;overflow-wrap:anywhere}
 .plr .nm small{margin-left:3px;color:var(--accent);font-weight:700;font-size:11px;white-space:nowrap}
 .plr .rt{font-weight:800;font-size:13px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+/* Sales Report + Customer-wise Report */
+.rpf input.bad{border-color:var(--danger)!important}
+.lgn{display:flex;flex-direction:column;gap:2px;padding:10px 12px}
+.lgn b{font:700 16px var(--head)}
+.lgn span{color:var(--muted);font-size:12px}
+.lgr{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.lgc{display:grid;grid-template-columns:1fr 1fr}
+.lgc>div:first-child{border-right:1px solid var(--line)}
+.lgh>div{background:var(--bar);color:#fff;font-weight:700;font-size:11px;letter-spacing:.04em;padding:7px 8px;text-align:center}
+.lgh small{display:block;font-weight:600;opacity:.85;letter-spacing:0;font-size:10px}
+.lgb>div{min-width:0}
+.lgi{display:flex;flex-direction:column;gap:1px;padding:6px 8px;border-top:1px solid var(--line)}
+.lgb>div>.lgi:first-child{border-top:0}
+.lgi .a{display:flex;justify-content:space-between;gap:6px;align-items:baseline;font-size:12px}
+.lgi .a span{font-weight:700;overflow-wrap:anywhere;min-width:0}
+.lgi .a b{font:700 12.5px var(--head);white-space:nowrap;font-variant-numeric:tabular-nums}
+.lgi small{color:var(--muted);font-size:10.5px}
+.lgi small .dn{color:var(--danger);font-weight:700}
+.lgi.e{color:var(--muted);text-align:center;padding:10px}
+.lgi[data-dbill]{cursor:pointer}.lgi[data-dbill]:active{background:var(--soft)}
+.lgf>div{display:flex;flex-direction:column;gap:1px;padding:7px 8px;border-top:2px solid var(--line);background:var(--soft)}
+.lgf span{font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.03em}
+.lgf span small{display:block;font-size:10px;font-weight:600;color:var(--accent);letter-spacing:0}
+.lgf b{font:800 14px var(--head);font-variant-numeric:tabular-nums}
+.lgo{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:#DC2626;color:#fff;font-weight:800;font-size:13px;letter-spacing:.04em}
+.lgo.ok{background:#16A34A}
+.lgo span small{display:block;font-weight:600;font-size:11px;letter-spacing:0;opacity:.95}
+.lgo b{font:800 20px var(--head);font-variant-numeric:tabular-nums;white-space:nowrap}
+/* Admin > Edit Bill / Delete Bill, and the "editing" banner in the Bill tab */
+#v-abill .seg{gap:6px}
+#v-abill .seg span{min-height:28px;gap:4px;border-radius:10px;flex-direction:row;flex-wrap:wrap;justify-content:center;text-align:center;column-gap:4px;row-gap:0;line-height:1.2;padding:3px 4px;font-size:11px;letter-spacing:0}
+#v-abill .seg span small{font-size:10px}
+#v-abill .rc{cursor:pointer}
+#v-abill .rc:active{background:var(--soft)}
+#v-abill .rc.locked{opacity:.65}
+.editbn{display:flex;flex-direction:column;gap:3px;padding:8px 12px;border-radius:12px;background:var(--soft);box-shadow:inset 4px 0 0 var(--accent);color:var(--accent);font-weight:700;font-size:12.5px}
+.editbn small{display:block;font-size:11px;font-weight:600}
+.editbn em{font-style:normal;font-weight:500;font-size:11.5px;color:var(--muted)}
 </style>
 
 
@@ -811,7 +849,22 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
           <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
         </button>
       </div>
+      <h2>Bills<span class="gu">બિલ</span></h2>
+      <div class="menu">
+        <button class="opt" data-open="ebill">
+          <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></span>
+          <span class="t"><b>Edit Bill</b><span class="gu">બિલ સુધારો</span><small>Change items, charges or discount of a bill · બિલ સુધારો</small></span>
+          <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
+        </button>
+        <button class="opt" data-open="dbill">
+          <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M6 19a2 2 0 002 2h8a2 2 0 002-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></span>
+          <span class="t"><b>Delete Bill</b><span class="gu">બિલ કાઢો</span><small>Only bills with no payment · ચુકવણી વગરના બિલ</small></span>
+          <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
+        </button>
+      </div>
     </section>
+
+    <section class="view" id="v-abill" hidden></section>
 
     <section class="view" id="v-items" hidden>
       <button class="back" id="itemsBack"><svg class="i" viewBox="0 0 24 24"><path d="M15.4 6 16.8 7.4 12.2 12l4.6 4.6-1.4 1.4-6-6z"/></svg>Admin · એડમિન</button>
@@ -964,7 +1017,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
 
 <script>
 (function(){
-  var ADMIN_T={items:['Items','આઇટમ'],customer:['Customer','ગ્રાહક'],supplier:['Supplier','સપ્લાયર'],prices:['Price List','ભાવ પત્રક']};
+  var ADMIN_T={items:['Items','આઇટમ'],customer:['Customer','ગ્રાહક'],supplier:['Supplier','સપ્લાયર'],prices:['Price List','ભાવ પત્રક'],ebill:['Edit Bill','બિલ સુધારો'],dbill:['Delete Bill','બિલ કાઢો']};
   var TITLES={home:['Khatavahi','ખાતાવહી'],payment:['Payment','ચુકવણી'],bill:['Bill','બિલ'],reports:['Reports','રિપોર્ટ'],admin:['Admin','એડમિન']};
   var THEME='cyan-navy-theme', ITEMS_KEY='cyan-navy-items-v1', PRICES_KEY='cyan-navy-prices-v1', SPRICES_KEY='cyan-navy-sprices-v1';
   /* GOOGLE SHEET: paste your Apps Script Web App URL between the quotes (ends with /exec). Leave empty to save only on this device. */
@@ -1289,7 +1342,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     if(r===0&&p>0)return conv(p)+' પૈસા માત્ર';
     return '₹ '+conv(r)+(p?' અને '+conv(p)+' પૈસા':'')+' માત્ર';
   }
-  function billNo(){return fmtNo(bill.type,nextSeq(bill.type))}
+  function billNo(){return bill.editNo||fmtNo(bill.type,nextSeq(bill.type))}
   function syncSeq(kind,cb){
     function done(){if(cb)cb()}
     if(!SHEET_URL)return done();
@@ -1447,15 +1500,15 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     cbxHide();
     var out=bill.type==='out';
     function f(id,en,gu,val){return '<label class="cf">'+en+' · '+gu+'<input type="text" inputmode="decimal" id="'+id+'" placeholder="₹" autocomplete="off" value="'+esc(val)+'"></label>'}
-    $('#v-bill').innerHTML='<div class="seg" role="radiogroup" aria-label="Bill type"><label><input type="radio" name="btype" value="out"'+(out?' checked':'')+'><span>OUTWARD BILL<small>(જાવક બિલ)</small></span></label><label><input type="radio" name="btype" value="in"'+(out?'':' checked')+'><span>INWARD BILL<small>(આવક બિલ)</small></span></label></div>'+
+    $('#v-bill').innerHTML=editBanner()+'<div class="seg" role="radiogroup" aria-label="Bill type"><label><input type="radio" name="btype" value="out"'+(out?' checked':'')+(bill.editNo?' disabled':'')+'><span>OUTWARD BILL<small>(જાવક બિલ)</small></span></label><label><input type="radio" name="btype" value="in"'+(out?'':' checked')+(bill.editNo?' disabled':'')+'><span>INWARD BILL<small>(આવક બિલ)</small></span></label></div>'+
       '<div class="card bcard"><div class="r2"><div class="bnoc">Bill No. · બિલ નં.<b>'+billNo()+'</b></div>'+
       '<div class="cf">Date · તારીખ<div class="dtw"><input type="text" id="b-date" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(bill.date)+'"><span class="dtp" title="Pick date">'+CAL+'<input type="date" id="b-dpick" aria-label="Pick date" value="'+dmyToIso(bill.date)+'"></span></div></div></div>'+
-      '<div class="cbx"><select id="b-cust" style="display:none" aria-label="'+(out?'Customer':'Supplier')+'">'+billCustOpts(bill.cust)+'</select><input type="text" id="b-custq" class="cbx-in" data-for="b-cust" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="'+(out?'Customer':'Supplier')+'" placeholder="'+(out?'Select / search customer · ગ્રાહક પસંદ કરો':'Select / search supplier · સપ્લાયર પસંદ કરો')+'"><span class="cbx-ar" aria-hidden="true">▾</span></div></div>'+
+      '<div class="cbx"><select id="b-cust" style="display:none" aria-label="'+(out?'Customer':'Supplier')+'">'+billCustOpts(bill.cust)+'</select><input type="text" id="b-custq" class="cbx-in" data-for="b-cust"'+(bill.editNo&&bill.editPaid>0?' disabled':'')+' autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="'+(out?'Customer':'Supplier')+'" placeholder="'+(out?'Select / search customer · ગ્રાહક પસંદ કરો':'Select / search supplier · સપ્લાયર પસંદ કરો')+'"><span class="cbx-ar" aria-hidden="true">▾</span></div></div>'+
       '<div class="card bcard ilist" id="b-list"></div>'+
       '<div class="brow cur" id="b-cur"></div>'+
       '<div class="card bcard btot"><div class="bl2"><span>Grand Total <small>કુલ રકમ</small></span><b id="b-grand"></b></div><div class="bwords" id="b-words"></div></div>'+
-      '<div class="acts"><button type="button" class="btn pri" id="b-save">GENERATE BILL<span class="gu">બિલ બનાવો</span></button>'+
-      '<button type="button" class="btn sec" id="b-new">NEW BILL<span class="gu">નવું બિલ</span></button></div>';
+      '<div class="acts"><button type="button" class="btn pri" id="b-save">'+(bill.editNo?'UPDATE BILL<span class="gu">બિલ સુધારો</span>':'GENERATE BILL<span class="gu">બિલ બનાવો</span>')+'</button>'+
+      '<button type="button" class="btn sec" id="b-new">'+(bill.editNo?'CANCEL EDIT<span class="gu">રદ કરો</span>':'NEW BILL<span class="gu">નવું બિલ</span>')+'</button></div>';
     cbxSync();
     drawAll();
     syncSeq(bill.type,showBillNo);
@@ -1530,6 +1583,11 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   function saveBill(){
     if(bBusy)return;
     var B0=buildBill();if(!B0)return;
+    if(bill.editNo){
+      B0.edit=true;B0.advAvail=0;genRecalc(B0);
+      if(bill.editPaid>0&&B0.total<bill.editPaid){toast('Total cannot be less than paid ₹'+pn(bill.editPaid)+' · કુલ રકમ ચુકવણીથી ઓછી નહીં');return}
+      showBillPreview(B0);return;
+    }
     bBusy=true;
     var kind=B0.out?'out':'in';
     syncSeq(kind,function(){
@@ -1544,7 +1602,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   function showBillPreview(B){
     bPending=B;
     function fld(id,en,gu,val){return '<label class="gf">'+en+'<span class="gu">'+gu+'</span><input type="text" inputmode="decimal" id="'+id+'" placeholder="₹" autocomplete="off" value="'+esc(val)+'"></label>'}
-    openMdl('<div class="pvt">Generate Bill · બિલ બનાવો</div>'+genSumHtml(B)+
+    openMdl('<div class="pvt">'+(B.edit?'Update Bill · બિલ સુધારો':'Generate Bill · બિલ બનાવો')+'</div>'+genSumHtml(B)+
       '<div class="gb-ch">'+fld('gb-tra','Transportation','ભાડું',bill.trans)+fld('gb-lab','Labour','મજૂરી',bill.labour)+fld('gb-misc','Other Charges','અન્ય ખર્ચ',bill.misc)+fld('gb-disc','Discount','છૂટ',bill.disc)+'</div>'+
       '<div id="gb-tot">'+genTotHtml(B)+'</div><div id="gb-note">'+genNote(B)+'</div>'+
       '<div class="pv-acts"><button type="button" class="btn sec" id="bp-edit">Edit<span class="gu">સુધારો</span></button><button type="button" class="btn pri" id="bp-ok">Save<span class="gu">સાચવો</span></button></div>');
@@ -1560,7 +1618,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   var finalNo='';
   function showFinalBill(B){
     finalNo=B.no;
-    openMdl('<div class="pvt ok">✓ Bill saved · બિલ સાચવ્યું</div><div id="inv-print">'+genInvHtml(B)+'</div>'+
+    openMdl('<div class="pvt ok">'+(B.edit?'✓ Bill updated · બિલ સુધારાયું':'✓ Bill saved · બિલ સાચવ્યું')+'</div><div id="inv-print">'+genInvHtml(B)+'</div>'+
       '<div class="inv-acts">'+
       '<button type="button" class="fa pri" id="fb-pdf">'+IC.pdf+'<span>Generate PDF</span><span class="gu">પીડીએફ બનાવો</span></button>'+
       '<button type="button" class="fa pri" id="fb-print">'+IC.print+'<span>Print</span><span class="gu">પ્રિન્ટ</span></button>'+
@@ -1601,7 +1659,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   document.addEventListener('click',function(ev){
     var b=ev.target.closest&&ev.target.closest('button');if(!b)return;
     if(b.id==='bp-edit'){bPending=null;closeMdl()}
-    else if(b.id==='bp-ok'){var B=bPending;bPending=null;closeMdl();if(B){commitBill(B);showFinalBill(B)}}
+    else if(b.id==='bp-ok'){var B=bPending;if(B&&B.edit&&bill.editPaid>0&&B.total<bill.editPaid){toast('Total cannot be less than paid ₹'+pn(bill.editPaid)+' · કુલ રકમ ચુકવણીથી ઓછી નહીં');return}bPending=null;closeMdl();if(B){if(B.edit)commitEdit(B);else commitBill(B);showFinalBill(B)}}
   });
   (function(){
     var vb=$('#v-bill');
@@ -1655,8 +1713,124 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
         drawAll();var q=$('#b-cur .b-qty');if(q)q.focus();
       }
       else if(b.id==='b-save')saveBill();
-      else if(b.id==='b-new'){bill=newBill(bill.type);renderBill();toast('New bill · નવું બિલ')}
+      else if(b.id==='b-new'){var wasEdit=!!bill.editNo;bill=newBill(bill.type);renderBill();toast(wasEdit?'Edit cancelled · સુધારો રદ':'New bill · નવું બિલ')}
     });
+  })();
+
+  /* ---------- Admin: Edit Bill / Delete Bill ----------
+     Bills live in the Google Sheet. Delete sends {action:'deleteBill',type,billNo}; Edit opens the bill in the Bill tab
+     and saves it with {action:'editBill',type,billNo,data} (same data as saveBill). A bill that already has a payment can only be edited. */
+  var AB={kind:'out',q:''}, abDel=null;
+  function abMode(){return adminView==='dbill'?'del':'edit'}
+  function abHasPay(b,D){
+    if(!b)return false;
+    if(+b.paid>0)return true;
+    return !!(D&&D.pays.some(function(y){return String(y.billNo)===String(b.billNo)&&(+y.amount||0)>0}));
+  }
+  function abShell(){
+    var del=abMode()==='del',out=AB.kind==='out';
+    return '<button class="back" id="abBack">'+BACK+'Admin · એડમિન</button>'+
+      '<h2>'+(del?'Delete Bill<span class="gu">બિલ કાઢો</span>':'Edit Bill<span class="gu">બિલ સુધારો</span>')+'</h2>'+
+      '<div class="seg" role="radiogroup" aria-label="Bill type"><label><input type="radio" name="abk" value="out"'+(out?' checked':'')+'><span>OUTWARD BILL<small>(જાવક બિલ)</small></span></label><label><input type="radio" name="abk" value="in"'+(out?'':' checked')+'><span>INWARD BILL<small>(આવક બિલ)</small></span></label></div>'+
+      '<div class="card bcard"><input type="text" id="ab-q" placeholder="Search bill no. or name · બિલ નં. / નામ શોધો" autocomplete="off" value="'+esc(AB.q)+'"></div>'+
+      '<div class="pnote" style="display:block">'+(del?'Only a bill with no payment can be deleted; a bill with payment can only be edited. · ચુકવણી વગરનું બિલ જ કાઢી શકાય; ચુકવણી થયેલું બિલ ફક્ત સુધારી શકાય.':'Tap a bill to edit it. · સુધારવા માટે બિલ પર ટેપ કરો.')+'</div>'+
+      '<div id="ab-body"></div>';
+  }
+  function abOpen(){AB={kind:'out',q:''};$('#v-abill').innerHTML=abShell();abBody();abLoad()}
+  function abBody(){
+    var el=$('#ab-body');if(!el)return;
+    var D=RP.data[AB.kind],st=RP.state[AB.kind],del=abMode()==='del';
+    if(!D){
+      el.innerHTML='<div class="pnote" style="display:block">'+(st==='err'?'Could not load bills. · બિલ લોડ ન થયા.':'Loading… · લોડ થઈ રહ્યું છે…')+'</div>'+(st==='err'?'<button type="button" class="btn sec" id="ab-retry">Retry · ફરી પ્રયત્ન</button>':'');
+      return;
+    }
+    var q=norm(AB.q);
+    var rows=D.bills.filter(function(b){return !q||norm(b.billNo).indexOf(q)>-1||norm(b.party).indexOf(q)>-1}).sort(repSortDate);
+    var more=rows.length>150;if(more)rows=rows.slice(0,150);
+    el.innerHTML='<div class="rl">'+(rows.length?rows.map(function(b){
+      var hp=abHasPay(b,D);
+      return '<div class="rc'+(del&&hp?' locked':'')+'" data-abno="'+esc(b.billNo)+'"><div class="l1"><b>'+esc(b.billNo)+' <small style="font-weight:500;color:var(--muted)">· '+esc(b.date)+'</small></b><span class="am">₹'+pn(b.total)+'</span></div>'+
+        '<div class="l1"><span>'+esc(b.party)+(b.city?' <small style="color:var(--muted)">· '+esc(b.city)+'</small>':'')+'</span></div>'+
+        '<div class="l2"><span class="'+(hp?'ok':'')+'">'+(hp?'Payment ₹'+pn(b.paid)+' ✓ · ચુકવણી થઈ':'No payment · ચુકવણી નથી')+'</span><span>'+(del?(hp?'Edit only · ફક્ત સુધારો':'Tap to delete · કાઢવા ટેપ'):'Tap to edit · સુધારવા ટેપ')+'</span></div></div>';
+    }).join(''):'<div class="pnote" style="display:block">No bills found. · કોઈ બિલ મળ્યું નથી.</div>')+(more?'<div class="pnote" style="display:block">Showing latest 150 — search to narrow. · તાજા 150 બિલ — શોધો.</div>':'')+'</div>';
+  }
+  function abLoad(){
+    var kind=AB.kind;
+    if(!SHEET_URL){RP.state[kind]='err';abBody();return}
+    if(load(QUEUE_KEY,[]).length)sheetFlush();
+    RP.state[kind]=RP.data[kind]?'ok':'load';abBody();
+    fetch(SHEET_URL+'?type=report&kind='+kind).then(function(r){return r.json()}).then(function(d){
+      if(!d||!Array.isArray(d.bills)||!Array.isArray(d.pays))throw 0;
+      BC={};RP.data[kind]=d;RP.state[kind]='ok';
+      if(AB.kind===kind&&tab==='admin'&&(adminView==='ebill'||adminView==='dbill'))abBody();
+    }).catch(function(){if(!RP.data[kind])RP.state[kind]='err';if(AB.kind===kind&&tab==='admin')abBody()});
+  }
+  /* wait until the Sheet queue is empty, then run fn */
+  function abAfterFlush(fn){var n=0;(function w(){if(!load(QUEUE_KEY,[]).length||++n>25)return setTimeout(fn,900);setTimeout(w,1000)})()}
+  function abTap(no){
+    var D=RP.data[AB.kind],b=D&&D.bills.filter(function(x){return String(x.billNo)===String(no)})[0];if(!b)return;
+    if(abMode()==='edit')return abEdit(no,abHasPay(b,D)?(+b.paid||0):0);
+    if(abHasPay(b,D)){
+      openMdl('<div class="pvt">Cannot delete · કાઢી શકાય નહીં</div><div class="vm" style="margin:6px 0 12px">'+esc(no)+' · '+esc(b.party)+'<br>Payment ₹'+pn(+b.paid||0)+' is already recorded, so this bill can only be edited. · આ બિલ પર ચુકવણી થઈ ગઈ છે, એટલે તે ફક્ત સુધારી શકાય.</div>'+
+        '<div class="pv-acts"><button type="button" class="btn sec" id="ab-no">Close<span class="gu">બંધ</span></button><button type="button" class="btn pri" id="ab-goedit" data-no="'+esc(no)+'" data-paid="'+(+b.paid||0)+'">Edit Bill<span class="gu">બિલ સુધારો</span></button></div>');
+      return;
+    }
+    abDel={no:String(no),kind:AB.kind};
+    openMdl('<div class="pvt">Delete Bill · બિલ કાઢો</div><div class="vm" style="margin:6px 0 12px"><b>'+esc(no)+'</b> · '+esc(b.date)+' · '+esc(b.party)+' · ₹'+pn(b.total)+'<br>This cannot be undone. · આ પાછું લાવી શકાશે નહીં.</div>'+
+      '<div class="pv-acts"><button type="button" class="btn sec" id="ab-no">Cancel<span class="gu">રદ કરો</span></button><button type="button" class="btn dng" id="ab-yes">Delete<span class="gu">કાઢો</span></button></div>');
+  }
+  function abDelete(){
+    var d=abDel;abDel=null;if(!d)return;
+    sheetSend({action:'deleteBill',type:d.kind,billNo:d.no});
+    var D=RP.data[d.kind];if(D)D.bills=D.bills.filter(function(x){return String(x.billNo)!==d.no});
+    closeMdl();toast('Bill deleted · બિલ કાઢ્યું');abBody();
+    abAfterFlush(function(){if(tab==='admin'&&adminView==='dbill')abLoad()});
+  }
+  function abEdit(no,paid){
+    if(!SHEET_URL)return toast('Sheet not connected · શીટ જોડાયેલ નથી');
+    toast('Opening bill… · બિલ ખુલે છે…');
+    fetch(SHEET_URL+'?type=bill&kind='+AB.kind+'&no='+encodeURIComponent(no)).then(function(r){return r.json()}).then(function(d){
+      if(!d||!Array.isArray(d.items)||!d.items.length)throw 0;
+      var out=AB.kind==='out',pt=(out?d.customer:d.supplier)||{};
+      var lst=out?customers:suppliers;
+      if(!lst.filter(function(x){return String(x.id)===String(pt.id)})[0]){toast((out?'Customer':'Supplier')+' no longer exists · '+(out?'ગ્રાહક':'સપ્લાયર')+' હવે નથી');return}
+      for(var k=0;k<d.items.length;k++){
+        if(!items.filter(function(x){return x.id===+d.items[k].id})[0]){toast('Item “'+d.items[k].name+'” was deleted from Items · આઇટમ કાઢી નાખી છે');return}
+      }
+      var nb=newBill(AB.kind);
+      nb.cust=String(pt.id);nb.date=d.date||todayStr();nb.touched=true;
+      nb.rows=d.items.map(function(it){return {item:String(it.id),rate:String(it.rate),qty:String(it.qty)}});
+      nb.labour=+d.labour>0?String(d.labour):'';nb.trans=+d.transportation>0?String(d.transportation):'';
+      nb.misc=d.misc&&+d.misc.amount>0?String(d.misc.amount):'';nb.disc=+d.discount>0?String(d.discount):'';
+      nb.editNo=String(d.billNo||no);nb.editPaid=paid||0;
+      bill=nb;setTab('bill');
+    }).catch(function(){toast('Could not load this bill · બિલ લોડ ન થયું')});
+  }
+  function editBanner(){
+    if(!bill.editNo)return '';
+    return '<div class="editbn"><span><small>બિલ સુધારો</small>EDITING BILL · '+esc(bill.editNo)+'</span>'+(bill.editPaid>0?'<em>Payment ₹'+pn(bill.editPaid)+' recorded — party is locked and the total cannot go below it. · ચુકવણી થઈ ગઈ છે — નામ બદલાશે નહીં અને કુલ રકમ ચુકવણીથી ઓછી નહીં થાય.</em>':'')+'</div>';
+  }
+  function commitEdit(B){
+    B.data.editedAt=new Date().toISOString();
+    sheetSend({action:'editBill',type:B.out?'out':'in',billNo:B.no,data:B.data});
+    bill=newBill(bill.type);renderBill();toast('Bill updated · બિલ સુધારાયું');
+  }
+  document.addEventListener('click',function(ev){
+    var b=ev.target.closest&&ev.target.closest('button');
+    if(b){
+      if(b.dataset.open==='ebill'||b.dataset.open==='dbill'){adminView=b.dataset.open;showView();return}
+      if(b.id==='abBack'){adminView='menu';showView();return}
+      if(b.id==='ab-retry'){abLoad();return}
+      if(b.id==='ab-no'){abDel=null;closeMdl();return}
+      if(b.id==='ab-yes'){abDelete();return}
+      if(b.id==='ab-goedit'){var no=b.dataset.no,pd=+b.dataset.paid||0;closeMdl();abEdit(no,pd);return}
+    }
+    var r=ev.target.closest&&ev.target.closest('#v-abill [data-abno]');if(r)abTap(r.getAttribute('data-abno'));
+  });
+  (function(){
+    var v=$('#v-abill');
+    v.addEventListener('change',function(ev){var t=ev.target;if(t.name==='abk'){AB.kind=t.value;abBody();abLoad()}});
+    v.addEventListener('input',function(ev){var t=ev.target;if(t.id==='ab-q'){AB.q=t.value;abBody()}});
   })();
 
   /* ---------- Payment ---------- */
@@ -1920,7 +2094,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
 
   var tab='home', adminView='menu';
   function showView(){
-    var id='v-'+tab; if(tab==='admin')id=adminView==='items'?'v-items':adminView==='customer'?'v-customer':adminView==='supplier'?'v-supplier':adminView==='prices'?'v-prices':'v-admin';
+    var id='v-'+tab; if(tab==='admin')id=adminView==='items'?'v-items':adminView==='customer'?'v-customer':adminView==='supplier'?'v-supplier':adminView==='prices'?'v-prices':(adminView==='ebill'||adminView==='dbill')?'v-abill':'v-admin';
     $$('.view').forEach(function(v){v.hidden=v.id!==id});
     $$('.tab').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===tab?'true':'false')});
     var tt0=tab==='admin'&&ADMIN_T[adminView]?ADMIN_T[adminView]:TITLES[tab];
@@ -1930,6 +2104,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     $('#main').scrollTop=0;
     if(tab==='admin'&&(adminView==='items'||adminView==='prices'))sheetLoadItems(true);
     if(tab==='admin'&&adminView==='customer')sheetLoadCustomers(true);
+    if(tab==='admin'&&(adminView==='ebill'||adminView==='dbill'))abOpen();
     if(tab==='home')sheetLoadSummary();
     if(tab==='reports')openReports();else if(typeof bTipHide==='function')bTipHide();
     if(tab==='payment'){if(!pay.touched)pay.date=todayStr();renderPay();sheetLoadCustomers();sheetLoadSuppliers()}
@@ -2158,8 +2333,8 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   function dbParties(){return DB.kind==='out'?customers:suppliers}
   function dbMenu(){
     return '<h2>Reports<span class="gu">રિપોર્ટ</span></h2><div class="menu">'+
-      [['out','Outward Bills','જાવક બિલ','Display all sales bills · બધા વેચાણ બિલ જુઓ'],['in','Inward Bills','આવક બિલ','Display all purchase bills · બધા ખરીદી બિલ જુઓ'],['bs','Account of Debit and Credit','જમા અને ઉધાર નો હિસાબ','Customers and suppliers on one screen · ગ્રાહક અને સપ્લાયર એક સ્ક્રીનમાં'],['pl','Price List','ભાવ પત્રક','View customer / supplier rates · ગ્રાહક / સપ્લાયર ભાવ જુઓ']].map(function(r){
-        return '<button class="opt" data-rep="'+r[0]+'"><span class="dot">'+(r[0]==='bs'?RP_ICON.bs:r[0]==='pl'?RP_ICON.pl:RP_ICON.bill)+'</span><span class="t"><b>'+r[1]+'</b><span class="gu">'+r[2]+'</span><small>'+r[3]+'</small></span>'+CHEV+'</button>';
+      [['out','Outward Bills','જાવક બિલ','Display all sales bills · બધા વેચાણ બિલ જુઓ'],['in','Inward Bills','આવક બિલ','Display all purchase bills · બધા ખરીદી બિલ જુઓ'],['sr','Sales Report','વેચાણ રિપોર્ટ','Date, city & customer wise sales · તારીખ, શહેર, ગ્રાહક મુજબ વેચાણ'],['cr','Customer-wise Report','ગ્રાહક મુજબ રિપોર્ટ','Full record: bills, payments & outstanding · બિલ, ચુકવણી અને બાકી'],['bs','Account of Debit and Credit','જમા અને ઉધાર નો હિસાબ','Customers and suppliers on one screen · ગ્રાહક અને સપ્લાયર એક સ્ક્રીનમાં'],['pl','Price List','ભાવ પત્રક','View customer / supplier rates · ગ્રાહક / સપ્લાયર ભાવ જુઓ']].map(function(r){
+        return '<button class="opt" data-rep="'+r[0]+'"><span class="dot">'+(r[0]==='bs'?RP_ICON.bs:r[0]==='pl'?RP_ICON.pl:r[0]==='cr'?RP_ICON.pay:RP_ICON.bill)+'</span><span class="t"><b>'+r[1]+'</b><span class="gu">'+r[2]+'</span><small>'+r[3]+'</small></span>'+CHEV+'</button>';
       }).join('')+'</div>';
   }
   function dbShell(){
@@ -2360,6 +2535,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     var v=$('#v-reports');
     if(repView==='bs'){DB.kind='';v.innerHTML=bsShell();bsBody();bsLoad();return}
     if(repView==='pl'){DB.kind='';v.innerHTML=plShell();plBody();return}
+    if(repView==='sr'||repView==='cr'){DB.kind='out';v.innerHTML=xrShell();xrBody();outLoad();return}
     if(repView==='out'||repView==='in'){
       if(DB.kind!==repView){DB={kind:repView,from:'',to:'',no:'',party:'',pq:''}}
       v.innerHTML=dbShell();dbBody();dbLoad();
@@ -2394,6 +2570,195 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     });
     document.addEventListener('click',function(ev){
       var pl=$('#db-plist');if(pl&&!pl.hidden&&!(ev.target.closest&&ev.target.closest('.cbx')))pl.hidden=true;
+    });
+  })();
+  /* ---------- Reports: Sales Report + Customer-wise Report (ledger) ----------
+     Both read the outward (sales) bills + payments from the sheet, same as the Outward Bills report. */
+  var SR={from:'',to:'',city:'',cq:'',party:'',pq:''}, CR={from:'',to:'',party:'',pq:''};
+  function xrS(){return repView==='sr'?SR:CR}
+  function xrDmy(d){return pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+'/'+d.getFullYear()}
+  function xrRange(S){
+    var lo=parseDmy(S.from),hi=parseDmy(S.to);
+    if(lo&&hi&&hi<lo){var x=lo;lo=hi;hi=x}
+    return {lo:lo,hi:hi};
+  }
+  function xrIn(S,dmy){
+    var r=xrRange(S);if(!r.lo&&!r.hi)return true;
+    var d=parseDmy(dmy);if(!d)return false;
+    return (!r.lo||d>=r.lo)&&(!r.hi||d<=r.hi);
+  }
+  function xrPre(k){
+    var n=new Date(),y=n.getFullYear(),m=n.getMonth();
+    if(k==='m')return [xrDmy(new Date(y,m,1)),xrDmy(new Date(y,m+1,0))];
+    if(k==='lm')return [xrDmy(new Date(y,m-1,1)),xrDmy(new Date(y,m,0))];
+    if(k==='y')return ['01/01/'+y,'31/12/'+y];
+    return ['',''];
+  }
+  function xrPreOn(S){
+    var ks=['all','m','lm','y'];
+    for(var i=0;i<ks.length;i++){var p=xrPre(ks[i]);if(S.from===p[0]&&S.to===p[1])return ks[i]}
+    return '';
+  }
+  function xrBillCity(b){
+    if(b.city)return String(b.city);
+    var c=customers.filter(function(x){return String(x.id)===String(b.partyId)})[0];
+    return c&&c.city?String(c.city):'';
+  }
+  function xrCities(){
+    var m={};
+    customers.forEach(function(c){var t=String(c.city||'').trim();if(t)m[norm(t)]=t});
+    var D=RP.data.out;
+    if(D)D.bills.forEach(function(b){var t=xrBillCity(b).trim();if(t&&!m[norm(t)])m[norm(t)]=t});
+    return Object.keys(m).map(function(k){return m[k]}).sort(function(a,b){return a.localeCompare(b)});
+  }
+  /* Smart dropdown boxes: type to search, or tap the arrow and scroll the list */
+  var XD={
+    'sr-city':{S:function(){return SR},vk:'city',tk:'cq',all:'All cities · બધા શહેર',
+      opts:function(q){return xrCities().filter(function(c){return !q||norm(c).indexOf(q)>-1}).map(function(c){return {v:c,t:c,s:''}})}},
+    'sr-cust':{S:function(){return SR},vk:'party',tk:'pq',all:'All customers · બધા ગ્રાહક',
+      opts:function(q){var city=norm(SR.city);return customers.filter(function(c){return (!city||norm(c.city)===city)&&(!q||norm(c.en).indexOf(q)>-1||norm(c.city).indexOf(q)>-1)}).map(function(c){return {v:String(c.id),t:c.en,s:c.city||''}})}},
+    'cr-cust':{S:function(){return CR},vk:'party',tk:'pq',all:'',
+      opts:function(q){return customers.filter(function(c){return !q||norm(c.en).indexOf(q)>-1||norm(c.city).indexOf(q)>-1}).map(function(c){return {v:String(c.id),t:c.en,s:c.city||''}})}}
+  };
+  function xdHtml(id,en,gu,ph){
+    var X=XD[id],S=X.S();
+    return '<div class="cf">'+en+' · '+gu+'<div class="cbx"><div class="dtw"><input type="text" id="'+id+'-q" data-xd="'+id+'" placeholder="'+ph+'" autocomplete="off" value="'+esc(S[X.tk])+'"><button type="button" class="vbtn" data-xd="'+id+'" data-xa="1" aria-label="Show list">▼</button></div><div class="cbl" id="'+id+'-l" hidden></div></div></div>';
+  }
+  function xdList(id,all){
+    var X=XD[id],S=X.S(),el=$('#'+id+'-l');if(!el)return;
+    var q=all?'':norm(S[X.tk]),L=X.opts(q);
+    el.innerHTML=(X.all&&(L.length||!q)?'<button type="button" data-xd="'+id+'" data-xv="" data-xt="" class="'+(!S[X.vk]?'on':'')+'">'+X.all+'</button>':'')+
+      L.map(function(o){return '<button type="button" data-xd="'+id+'" data-xv="'+esc(o.v)+'" data-xt="'+esc(o.t)+'" class="'+(String(o.v)===String(S[X.vk])?'on':'')+'">'+esc(o.t)+(o.s?' <small>· '+esc(o.s)+'</small>':'')+'</button>'}).join('')+
+      (!L.length&&q?'<div class="none">No match · મળ્યું નહીં</div>':'');
+    el.hidden=false;
+  }
+  function xdPick(id,v,t){
+    var X=XD[id],S=X.S();
+    S[X.vk]=v;S[X.tk]=v===''?'':t;
+    if(id==='sr-city'&&S.party&&v){
+      var c=customers.filter(function(x){return String(x.id)===String(S.party)})[0];
+      if(c&&norm(c.city)!==norm(v)){S.party='';S.pq='';var q=$('#sr-cust-q');if(q)q.value=''}
+    }
+    var i=$('#'+id+'-q');if(i)i.value=S[X.tk];
+    var l=$('#'+id+'-l');if(l)l.hidden=true;
+    xrBody();
+  }
+  function xrShell(){
+    var sr=repView==='sr',S=xrS();
+    function dt(id,k){return '<input type="text" inputmode="numeric" maxlength="10" id="'+id+'" data-dm="'+k+'" placeholder="DD/MM/YYYY" autocomplete="off" value="'+esc(S[k])+'">'}
+    return '<div class="noprint"><button class="back" id="repBack">'+BACK+'Reports · રિપોર્ટ</button></div>'+
+      '<h2>'+(sr?'Sales Report<span class="gu">વેચાણ રિપોર્ટ</span>':'Customer-wise Report<span class="gu">ગ્રાહક મુજબ રિપોર્ટ</span>')+'</h2>'+
+      '<div class="card rpf noprint">'+
+      '<div class="r2"><label class="cf">From · થી'+dt('xr-from','from')+'</label><label class="cf">To · સુધી'+dt('xr-to','to')+'</label></div>'+
+      '<div class="chips"><button type="button" class="chip" data-xpre="m">This month</button><button type="button" class="chip" data-xpre="lm">Last month</button><button type="button" class="chip" data-xpre="y">This year</button><button type="button" class="chip" data-xpre="all">All · બધા</button></div>'+
+      (sr?xdHtml('sr-city','City','શહેર','Type city or tap ▼ · શહેર લખો')+xdHtml('sr-cust','Customer','ગ્રાહક','Type name or tap ▼ · નામ લખો')
+         :xdHtml('cr-cust','Customer','ગ્રાહક','Type name or tap ▼ · નામ લખો'))+
+      '<button type="button" class="btn sec" id="xr-clear">Clear Filters<span class="gu">ફિલ્ટર હટાવો</span></button></div>'+
+      '<div id="xr-body"></div>';
+  }
+  function xrPeriod(S){
+    var a=parseDmy(S.from)?S.from:'',b=parseDmy(S.to)?S.to:'';
+    return a||b?(a||'Start')+' → '+(b||'Today'):'All dates · બધી તારીખ';
+  }
+  function xrBody(){
+    if(repView!=='sr'&&repView!=='cr')return;
+    var el=$('#xr-body');if(!el)return;
+    var D=RP.data.out,st=RP.state.out,S=xrS();
+    $$('#v-reports .chip[data-xpre]').forEach(function(c){c.classList.toggle('on',c.dataset.xpre===xrPreOn(S))});
+    if(!D){
+      el.innerHTML='<div class="pnote" style="display:block">'+(st==='err'?'Could not load data. · માહિતી લોડ ન થઈ.':'Loading… · લોડ થઈ રહ્યું છે…')+'</div>'+(st==='err'?'<button type="button" class="btn sec" id="xr-retry">Retry · ફરી પ્રયત્ન</button>':'');
+      return;
+    }
+    if(repView==='sr')srRender(el,D);else crRender(el,D);
+  }
+  function srRender(el,D){
+    var cq=norm(SR.city),pq=norm(SR.pq);
+    var rows=D.bills.filter(function(b){
+      if(!xrIn(SR,b.date))return false;
+      var bc=norm(xrBillCity(b));
+      if(SR.city){if(bc!==cq)return false}else if(cq&&bc.indexOf(cq)<0)return false;
+      if(SR.party){if(String(b.partyId)!==String(SR.party))return false}else if(pq&&norm(b.party).indexOf(pq)<0)return false;
+      return true;
+    }).sort(repSortDate);
+    var T=0,P=0,Dd=0;rows.forEach(function(b){T+=b.total;P+=b.paid;Dd+=b.due});
+    el.innerHTML='<div class="rsum"><div><small>Sales · વેચાણ · '+rows.length+'</small><b>₹'+pn(r2(T))+'</b></div><div><small>Received · મળ્યા</small><b>₹'+pn(r2(P))+'</b></div><div class="d"><small>Due · બાકી</small><b>₹'+pn(r2(Dd))+'</b></div></div>'+
+      '<div class="pnote" style="display:block">'+esc(xrPeriod(SR))+(SR.city?' · '+esc(SR.city):'')+'</div>'+
+      '<div class="rl">'+(rows.length?rows.map(function(b){
+        var bc=xrBillCity(b);
+        return '<div class="rc" data-dbill="'+esc(b.billNo)+'"><div class="l1"><b>'+esc(b.billNo)+' <small style="font-weight:500;color:var(--muted)">· '+esc(b.date)+'</small></b><span class="am">₹'+pn(b.total)+'</span></div>'+
+          '<div class="l1"><span>'+esc(b.party)+(bc?' <small style="color:var(--muted)">· '+esc(bc)+'</small>':'')+'</span></div>'+
+          '<div class="l2"><span>Received ₹'+pn(b.paid)+'</span><span class="'+(b.due>0?'dn':'ok')+'">'+(b.due>0?'Due ₹'+pn(b.due):'Cleared ✓')+'</span></div></div>';
+      }).join(''):'<div class="pnote" style="display:block">No sales found. · કોઈ વેચાણ મળ્યું નથી.</div>')+'</div>';
+  }
+  function crRender(el,D){
+    var pid=CR.party;
+    if(!pid){el.innerHTML='<div class="pnote" style="display:block">Select a customer to see the full record. · પૂરો રેકોર્ડ જોવા ગ્રાહક પસંદ કરો.</div>';return}
+    var c=customers.filter(function(x){return String(x.id)===String(pid)})[0]||{};
+    var allB=D.bills.filter(function(b){return String(b.partyId)===String(pid)});
+    var allP=D.pays.filter(function(y){return String(y.partyId)===String(pid)});
+    var bills=allB.filter(function(b){return xrIn(CR,b.date)}).sort(function(a,b){return -repSortDate(a,b)});
+    var pays=allP.filter(function(y){return xrIn(CR,y.date)}).sort(function(a,b){return -repSortDate(a,b)});
+    var TB=0,TP=0,due=0,adv=0;
+    bills.forEach(function(b){TB+=b.total});pays.forEach(function(y){TP+=y.amount});
+    allB.forEach(function(b){due+=b.due});allP.forEach(function(y){if(!y.billNo)adv+=y.amount});
+    TB=r2(TB);TP=r2(TP);due=r2(due);adv=r2(adv);
+    var name=c.en||(allB[0]&&allB[0].party)||(allP[0]&&allP[0].party)||'';
+    var left=bills.length?bills.map(function(b){
+      return '<div class="lgi" data-dbill="'+esc(b.billNo)+'"><div class="a"><span>'+esc(b.billNo)+'</span><b>₹'+pn(b.total)+'</b></div><small>'+esc(b.date)+(b.due>0?' · <span class="dn">Due ₹'+pn(b.due)+'</span>':'')+'</small></div>';
+    }).join(''):'<div class="lgi e">—</div>';
+    var right=pays.length?pays.map(function(y){
+      return '<div class="lgi"><div class="a"><span>'+(y.billNo?esc(y.billNo):'Advance · એડવાન્સ')+'</span><b>₹'+pn(y.amount)+'</b></div><small>'+esc(y.date)+'</small></div>';
+    }).join(''):'<div class="lgi e">—</div>';
+    el.innerHTML='<div class="card lgn"><b>'+esc(name)+'</b><span>'+esc([c.city,c.mobile||c.mob].filter(Boolean).join(' · '))+'</span></div>'+
+      '<div class="pnote" style="display:block">'+esc(xrPeriod(CR))+'</div>'+
+      '<div class="lgr"><div class="lgc lgh"><div><small>બિલ</small>BILLS</div><div><small>ચુકવણી વિગત</small>PAYMENT DETAILS</div></div>'+
+      '<div class="lgc lgb"><div>'+left+'</div><div>'+right+'</div></div>'+
+      '<div class="lgc lgf"><div><span><small>કુલ બિલ</small>TOTAL BILLS</span><b>₹'+pn(TB)+'</b></div><div><span><small>કુલ ચુકવણી</small>TOTAL RECEIVED</span><b>₹'+pn(TP)+'</b></div></div></div>'+
+      (due>0?'<div class="lgo"><span><small>બાકી</small>OUTSTANDING</span><b>₹'+pn(due)+'</b></div>':'<div class="lgo ok"><span><small>કોઈ બાકી નથી</small>CLEARED ✓</span><b>₹0</b></div>')+
+      (adv>0?'<div class="pnote" style="display:block">Advance received (not against a bill) · એડવાન્સ મળ્યા: ₹'+pn(adv)+'</div>':'')+
+      '<div class="pnote" style="display:block">Outstanding = all unpaid bills, all dates · બાકી = બધા બિલ, બધી તારીખ</div>';
+  }
+  function outLoad(){
+    if(!SHEET_URL){RP.state.out='err';xrBody();return}
+    if(load(QUEUE_KEY,[]).length)sheetFlush();
+    RP.state.out=RP.data.out?'ok':'load';xrBody();
+    fetch(SHEET_URL+'?type=report&kind=out').then(function(r){return r.json()}).then(function(d){
+      if(!d||!Array.isArray(d.bills)||!Array.isArray(d.pays))throw 0;
+      BC={};RP.data.out=d;RP.state.out='ok';if(tab==='reports')xrBody();
+    }).catch(function(){if(!RP.data.out)RP.state.out='err';if(tab==='reports')xrBody()});
+  }
+  (function(){
+    var v=$('#v-reports');
+    v.addEventListener('click',function(ev){var b=ev.target.closest&&ev.target.closest('button');if(!b)return;
+      if(b.dataset.rep==='sr')SR={from:'',to:'',city:'',cq:'',party:'',pq:''};
+      else if(b.dataset.rep==='cr')CR={from:'',to:'',party:'',pq:''};
+    },true);
+    v.addEventListener('input',function(ev){
+      var t=ev.target;if(repView!=='sr'&&repView!=='cr')return;
+      if(t.dataset&&t.dataset.dm){
+        var S=xrS();t.value=fmtDmyInput(t.value);
+        S[t.dataset.dm]=parseDmy(t.value)?t.value:'';
+        t.classList.toggle('bad',t.value.length===10&&!parseDmy(t.value));
+        xrBody();
+      }else if(t.dataset&&t.dataset.xd&&t.id===t.dataset.xd+'-q'){
+        var id=t.dataset.xd,X=XD[id],S2=X.S();
+        S2[X.tk]=t.value;S2[X.vk]='';
+        if(id==='cr-cust'){var L=X.opts(norm(t.value));if(L.length===1&&t.value.trim())S2.party=L[0].v}
+        xdList(id,false);xrBody();
+      }
+    });
+    v.addEventListener('click',function(ev){
+      if(repView!=='sr'&&repView!=='cr')return;
+      var b=ev.target.closest&&ev.target.closest('button');if(!b)return;
+      if(b.dataset.xpre){var p=xrPre(b.dataset.xpre),S=xrS();S.from=p[0];S.to=p[1];$('#xr-from').value=p[0];$('#xr-to').value=p[1];xrBody()}
+      else if(b.dataset.xd&&b.dataset.xa){var l=$('#'+b.dataset.xd+'-l');if(l.hidden)xdList(b.dataset.xd,true);else l.hidden=true}
+      else if(b.dataset.xd&&b.hasAttribute('data-xv'))xdPick(b.dataset.xd,b.getAttribute('data-xv'),b.getAttribute('data-xt'));
+      else if(b.id==='xr-clear'){if(repView==='sr')SR={from:'',to:'',city:'',cq:'',party:'',pq:''};else CR={from:'',to:'',party:'',pq:''};v.innerHTML=xrShell();xrBody()}
+      else if(b.id==='xr-retry')outLoad();
+    });
+    document.addEventListener('click',function(ev){
+      if(ev.target.closest&&ev.target.closest('.cbx'))return;
+      var a=document.querySelectorAll('.cbl[id$="-l"]');for(var k=0;k<a.length;k++)a[k].hidden=true;
     });
   })();
   /* Bill details: hover (mouse) shows a floating preview, click / tap opens the full bill. Loaded on demand, then cached. */
