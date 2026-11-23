@@ -768,6 +768,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
 .lgf b{font:800 14px var(--head);font-variant-numeric:tabular-nums}
 .lgo{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:#DC2626;color:#fff;font-weight:800;font-size:13px;letter-spacing:.04em}
 .lgo.ok{background:#16A34A}
+.lgo.cr{background:#0E7490}
 .lgo span small{display:block;font-weight:600;font-size:11px;letter-spacing:0;opacity:.95}
 .lgo b{font:800 20px var(--head);font-variant-numeric:tabular-nums;white-space:nowrap}
 /* Admin > Edit Bill / Delete Bill, and the "editing" banner in the Bill tab */
@@ -1364,6 +1365,25 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   var UC='<div class="uc"><div class="ring"><svg class="i" viewBox="0 0 24 24"><path d="M22.7 19 13.6 9.9a5.4 5.4 0 00-1.3-5.6 5.4 5.4 0 00-5.2-1.4l3.2 3.2-2.8 2.8-3.2-3.2A5.4 5.4 0 004.9 11a5.4 5.4 0 005.6 1.3l9.1 9.1a1 1 0 001.4 0l1.7-1.7a1 1 0 000-1.7z"/></svg></div><b>Under Construction</b><div class="gb">નિર્માણાધીન</div><span>This section is being built and will be available soon.</span><span>આ વિભાગ તૈયાર થઈ રહ્યો છે અને જલ્દી ઉપલબ્ધ થશે.</span></div>';
   /* Home summary tiles. To Be Received = total of all Outward bills, To Be Paid = total of all Inward bills (read from the Sheet).
      Advance Received / Advance Paid = payments in excess of bills, per party. Payment section is not built yet, so both stay 0 for now. */
+  /* Credit (જમા) helpers. A payment with no bill is shown as "જમા" in the Bill No. place.
+     When that credit is used against a bill, the matching debit entry always names the bill. */
+  function adjBillOf(y,lists){
+    var b=y.adjBill||y.adjustedBill||'';if(b)return String(b);
+    var m=/against\s+(.+)$/i.exec(String(y.note||''));if(m)return m[1].trim();
+    if(y.id!=null&&y.id!==''){
+      var L=lists||[];
+      if(!lists&&typeof RP!=='undefined'&&RP&&RP.data){['out','in'].forEach(function(k){if(RP.data[k]&&RP.data[k].pays)L.push(RP.data[k].pays)})}
+      var pid=String(+y.id-1);
+      for(var i=0;i<L.length;i++)for(var j=0;j<L[i].length;j++){var x=L[i][j];
+        if(String(x.id)===pid&&String(x.partyId)===String(y.partyId)&&x.billNo&&Math.abs((+x.amount||0)+(+y.amount||0))<0.005)return String(x.billNo)}
+    }
+    return '';
+  }
+  function payRef(y,lists){
+    if(y.billNo)return esc(y.billNo);
+    if((+y.amount||0)<0){var b=adjBillOf(y,lists);return 'ઉધાર · '+(b?'બિલ '+esc(b)+' સામે ':'')+'જમા સરભર'}
+    return 'જમા';
+  }
   var HOME_KEY='cyan-navy-home-v1', HT=load(HOME_KEY,{recv:0,pay:0,arecv:0,apaid:0});
   /* DU = party-wise list behind each tile (largest first): [{id,name,city,amt}]. Loaded from the Sheet (type=dues). */
   var DUES_KEY='cyan-navy-dues-v1', DU=load(DUES_KEY,{recv:[],pay:[],arecv:[],apaid:[]}), topKind='cust';
@@ -1381,7 +1401,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   function todayHtml(k){
     var t=tileOf(k),s=k==='tsales',L=tdList(k);
     return '<div class="vh"><b>'+t.en+'</b><span>'+t.gu+'</span></div><div class="vm">'+todayDmy()+' · '+t.who+' · '+t.whoGu+'</div>'+
-      (L.length?L.map(function(x){return '<div class="dl"><span>'+esc(s?x.billNo:(x.billNo||'Advance · એડવાન્સ'))+'<small> · '+esc(x.party)+'</small></span><b>₹'+pn(s?x.total:x.amount)+'</b></div>'}).join('')+
+      (L.length?L.map(function(x){return '<div class="dl"><span>'+(s?esc(x.billNo):payRef(x))+'<small> · '+esc(x.party)+'</small></span><b>₹'+pn(s?x.total:x.amount)+'</b></div>'}).join('')+
         '<div class="vs tot"><span>Total · કુલ</span><b>₹'+pn(tdSum(k))+'</b></div>':'<div class="pnote">Nothing today · આજે કંઈ નથી</div>');
   }
   function sheetLoadToday(){
@@ -1391,7 +1411,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       var t=todayDmy();
       TD={day:t,
         bills:d.bills.filter(function(b){return b.date===t}).map(function(b){return {billNo:b.billNo,party:b.party,total:+b.total||0}}),
-        pays:d.pays.filter(function(y){return y.date===t&&(+y.amount||0)!==0}).map(function(y){return {billNo:y.billNo,party:y.party,amount:+y.amount||0}})};
+        pays:d.pays.filter(function(y){return y.date===t&&(+y.amount||0)!==0}).map(function(y){return {billNo:y.billNo,party:y.party,amount:+y.amount||0,id:y.id,partyId:y.partyId,note:y.note,adjBill:adjBillOf(y,[d.pays])}})};
       save(TD_KEY,TD);renderHome();
     }).catch(function(){});
   }
@@ -1410,7 +1430,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   function renderHome(){
     $('#v-home').innerHTML='<div class="stats">'+TILES.map(function(t){
       var dy=!!t.day,val=dy?tdSum(t.k):(HT[t.k]||0);
-      return '<button type="button" class="stat '+t.c+'" data-k="'+t.k+'"><span class="sl">'+t.en+'</span><span class="sg">'+t.gu+'</span>'+(dy?'<span class="sd">TODAY · આજ · '+todayDmy()+' · '+tdList(t.k).length+(t.k==='tsales'?(tdList(t.k).length===1?' bill':' bills'):(tdList(t.k).length===1?' payment':' payments'))+'</span>':'')+'<span class="sv" data-k="'+t.k+'"><small>₹</small>'+val.toLocaleString('en-IN',{maximumFractionDigits:2})+'</span></button>';
+      return '<button type="button" class="stat '+t.c+'" data-k="'+t.k+'"><span class="sl">'+t.en+'</span><span class="sg">'+t.gu+'</span>'+(dy?'<span class="sd">D.: '+todayDmy()+', '+['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'][new Date().getDay()]+'</span>':'')+'<span class="sv" data-k="'+t.k+'"><small>₹</small>'+val.toLocaleString('en-IN',{maximumFractionDigits:2})+'</span></button>';
     }).join('')+'</div>'+renderTop();
   }
   /* Hover (mouse) = quick tip with top parties; click / tap = full list. */
@@ -1720,7 +1740,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   }
   function genInvHtml(B){
     var vd=B.data;
-    if(B.adv>0){vd={};for(var k in B.data)vd[k]=B.data[k];vd.paid=B.adv;vd.paidLabel='Advance adjusted · એડવાન્સ સામે'}
+    if(B.adv>0){vd={};for(var k in B.data)vd[k]=B.data[k];vd.paid=B.adv;vd.paidLabel='Credit adjusted · જમા સામે'}
     return billViewHtml(vd);
   }
   function genSumHtml(B){
@@ -1734,7 +1754,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       '<div class="gt2"><span>Grand Total <small>કુલ રકમ</small></span><b>₹ '+pn(B.total)+'</b></div><div class="gt3">'+guWords(B.total)+'<br>'+esc(B.data.amountInWords)+'</div></div>';
   }
   function genNote(B){
-    return B.adv>0?'<div class="pcm">Advance ₹'+pn(B.adv)+' will be set against this bill automatically.'+(B.total>B.adv?' Balance due: <b>₹'+pn(r2(B.total-B.adv))+'</b>.':' The bill will be fully cleared.')+'</div>':'';
+    return B.adv>0?'<div class="pcm">Credit (જમા) ₹'+pn(B.adv)+' will be set against this bill automatically.'+(B.total>B.adv?' Balance due: <b>₹'+pn(r2(B.total-B.adv))+'</b>.':' The bill will be fully cleared.')+'</div>':'';
   }
   document.addEventListener('input',function(ev){
     var t=ev.target,id=t&&t.id;
@@ -1820,12 +1840,12 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       /* Advance is used up: one entry puts the money against the new bill, one takes the same amount out of Advance (negative, no bill no.). */
       var pt=B.data.customer||B.data.supplier, ts=Date.now(), kind=out?'cust':'supp', dt=B.data.date;
       var base={action:'savePayment',kind:kind,date:dt,paymentDate:dt,dateIso:dmyToIso(dt),savedAt:new Date().toISOString(),partyId:pt.id,partyName:pt.name};
-      function mk(id,bn,amt){var o={};for(var k in base)o[k]=base[k];o.id=String(id);o.billNo=bn;o.amount=amt;o.note='Advance adjusted against '+B.no;return o}
+      function mk(id,bn,amt){var o={};for(var k in base)o[k]=base[k];o.id=String(id);o.billNo=bn;o.amount=amt;o.note='Credit adjusted against '+B.no;if(!bn)o.adjBill=B.no;return o}
       sheetSend(mk(ts,B.no,adv));
       sheetSend(mk(ts+1,'',-adv));
     }
     var nn=seqNum(B.no);billSeq[out?'out':'in']=nn;save(out?BILL_KEY:BILL_IN_KEY,nn);
-    bill=newBill(bill.type);renderBill();toast(adv>0?'Bill saved · Advance ₹'+pn(adv)+' adjusted · બિલ સાચવ્યું':'Bill saved · બિલ સાચવ્યું');
+    bill=newBill(bill.type);renderBill();toast(adv>0?'Bill saved · Credit ₹'+pn(adv)+' adjusted · બિલ સાચવ્યું':'Bill saved · બિલ સાચવ્યું');
   }
   document.addEventListener('click',function(ev){
     var b=ev.target.closest&&ev.target.closest('button');if(!b)return;
@@ -2033,12 +2053,12 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   function payAlloc(amt){var rem=amt,al=[];paySel().forEach(function(b){var d=Math.max(b.due,0);if(rem<=0||d<=0)return;var x=r2(Math.min(rem,d));al.push({b:b,amt:x});rem=r2(rem-x)});return {al:al,extra:rem}}
   function payRefSum(){
     if(!pay.party)return '<span class="ph">Select '+(pay.kind==='cust'?'customer':'supplier')+' first · પહેલા પાર્ટી પસંદ કરો</span><span class="ar">▼</span>';
-    if(pay.mode==='adv')return '<span>No Bill · Advance</span><span class="ar">▼</span>';
+    if(pay.mode==='adv')return '<span>No Bill · Credit</span><span class="ar">▼</span>';
     if(pay.mode==='bill'&&pay.refs.length){var l=paySel().map(function(b){return b.billNo});return '<span>'+esc(l.join(', '))+(l.length>1?' · '+l.length+' bills':'')+'</span><span class="ar">▼</span>'}
     return '<span class="ph">Select bill / No Bill · બિલ પસંદ કરો</span><span class="ar">▼</span>';
   }
   function payRefList(){
-    var h='<div class="rbo'+(pay.mode==='adv'?' on':'')+'" data-adv="1" role="checkbox" aria-checked="'+(pay.mode==='adv')+'"><span class="ck">'+(pay.mode==='adv'?'✓':'')+'</span><span class="rt"><b>No Bill · Advance</b><small>બિલ વગર એડવાન્સ</small></span></div>';
+    var h='<div class="rbo'+(pay.mode==='adv'?' on':'')+'" data-adv="1" role="checkbox" aria-checked="'+(pay.mode==='adv')+'"><span class="ck">'+(pay.mode==='adv'?'✓':'')+'</span><span class="rt"><b>No Bill · Credit</b><small>બિલ વગર જમા</small></span></div>';
     if(payLoading)h+='<div class="rbn">Loading bills… · બિલ લોડ થાય છે…</div>';
     else if(!payBills.length)h+='<div class="rbn">No pending bills · કોઈ બાકી બિલ નથી</div>';
     h+=payBills.map(function(b){
@@ -2065,7 +2085,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   }
   function payNote(){
     var n=$('#p-note');if(!n)return;
-    var a=bnum(pay.amount),c=pay.kind==='cust',adv=c?'Advance Received':'Advance Paid';
+    var a=bnum(pay.amount),c=pay.kind==='cust',adv=c?'Credit Received (જમા)':'Credit Paid (જમા)';
     if(!pay.party){n.textContent='';return}
     if(!pay.mode){n.textContent='Select a bill or "No Bill" to enter date and amount · તારીખ અને રકમ માટે બિલ પસંદ કરો';return}
     if(pay.mode==='adv'){n.textContent=(a?'₹'+pn(a)+' ':'Amount ')+'will be saved as '+adv+' (no bill selected).';return}
@@ -2147,7 +2167,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   /* Amount differs from the selected bills' due: show what will happen and ask for confirmation first. */
   var pPending=null;
   function payConfirm(p,amt){
-    var c=pay.kind==='cust', adv=c?'Advance Received':'Advance Paid', A=payAlloc(amt), due=paySelDue(), h;
+    var c=pay.kind==='cust', adv=c?'Credit Received (જમા)':'Credit Paid (જમા)', A=payAlloc(amt), due=paySelDue(), h;
     pPending={p:p,amt:amt};
     h='<div class="pvt">Confirm Payment · ચુકવણી ખાતરી</div><div class="pcs">'+
       paySel().map(function(b){var x=A.al.filter(function(y){return y.b===b})[0];return '<div><span>Bill '+esc(b.billNo)+' · Due ₹'+pn(Math.max(b.due,0))+'</span><b>'+(x?'₹ '+pn(x.amt):'—')+'</b></div>'}).join('')+
@@ -2169,7 +2189,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     /* Each bill gets only its due part; anything above the total due is saved as a separate Advance entry. */
     A.al.forEach(function(x){send(x.b.billNo,x.amt)});
     if(extra>0)send('',extra);
-    var msg=applied>0&&extra>0?'Bills ₹'+pn(applied)+' + Advance ₹'+pn(extra)+' saved · ચુકવણી સાચવી':(applied===0?(c?'Saved as Advance Received · એડવાન્સ મળ્યા':'Saved as Advance Paid · એડવાન્સ ચૂકવ્યા'):'Payment saved · ચુકવણી સાચવી');
+    var msg=applied>0&&extra>0?'Bills ₹'+pn(applied)+' + Credit ₹'+pn(extra)+' saved · ચુકવણી સાચવી':(applied===0?(c?'Saved as Credit Received · જમા મળ્યા':'Saved as Credit Paid · જમા ચૂકવ્યા'):'Payment saved · ચુકવણી સાચવી');
     if(c){HT.recv=Math.max(0,r2((HT.recv||0)-applied));HT.arecv=r2((HT.arecv||0)+extra)}
     else{HT.pay=Math.max(0,r2((HT.pay||0)-applied));HT.apaid=r2((HT.apaid||0)+extra)}
     save(HOME_KEY,HT);renderHome();
@@ -2421,10 +2441,10 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     if(R.daily){
       var TT=0,AB=0,AD=0,N=0;
       rows.days.forEach(function(d){d.pays.forEach(function(y){TT+=y.amount;N++;if(y.billNo)AB+=y.amount;else AD+=y.amount})});
-      h+='<div class="rsum"><div><small>'+R.got+' · '+R.gotGu+'</small><b>₹'+pn(r2(TT))+'</b></div><div><small>Against bills · બિલ સામે</small><b>₹'+pn(r2(AB))+'</b></div><div><small>Advance · એડવાન્સ</small><b>₹'+pn(r2(AD))+'</b></div></div>';
+      h+='<div class="rsum"><div><small>'+R.got+' · '+R.gotGu+'</small><b>₹'+pn(r2(TT))+'</b></div><div><small>Against bills · બિલ સામે</small><b>₹'+pn(r2(AB))+'</b></div><div><small>Credit · જમા</small><b>₹'+pn(r2(AD))+'</b></div></div>';
       h+='<div class="pnote">'+esc(tp)+' · '+N+' payment'+(N===1?'':'s')+'</div><div class="rl">'+(rows.days.length?rows.days.map(function(d){
         return '<div class="rc"><div class="l1"><b>'+esc(d.date)+'</b><span class="am">₹'+pn(r2(d.total))+'</span></div><div class="pl">'+d.pays.map(function(y){
-          return '<div><span>'+esc(y.party||'')+' · '+(y.billNo?esc(y.billNo):'Advance · એડવાન્સ')+'</span><span>₹'+pn(y.amount)+'</span></div>';
+          return '<div><span>'+esc(y.party||'')+' · '+payRef(y)+'</span><span>₹'+pn(y.amount)+'</span></div>';
         }).join('')+'</div></div>';
       }).join(''):'<div class="pnote">No payments found. · કોઈ ચુકવણી મળી નથી.</div>')+'</div>';
     }else if(R.bills){
@@ -2442,7 +2462,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
         var op=!!RP.open[x.id];
         return '<button type="button" class="rc" data-party="'+esc(x.id)+'"><div class="l1"><b>'+esc(x.name)+(x.city?' <small style="font-weight:500;color:var(--muted)">· '+esc(x.city)+'</small>':'')+'</b><span class="am">₹'+pn(x.due)+'</span></div>'+
           '<div class="l2"><span>Billed ₹'+pn(x.billed)+'</span><span>'+R.got+' ₹'+pn(x.got)+'</span><span class="'+(x.due>0?'dn':'ok')+'">'+(x.due>0?'Due':'Cleared ✓')+'</span></div>'+
-          (op?'<div class="pl">'+(x.pays.length?x.pays.map(function(y){return '<div><span>'+esc(y.date)+' · '+(y.billNo?esc(y.billNo):'Advance · એડવાન્સ')+'</span><span>₹'+pn(y.amount)+'</span></div>'}).join(''):'<div><span>No payments in this period · આ સમયમાં ચુકવણી નથી</span></div>')+'</div>':'<div class="l2"><span>'+x.pays.length+' payment'+(x.pays.length===1?'':'s')+' · tap to view</span></div>')+'</button>';
+          (op?'<div class="pl">'+(x.pays.length?x.pays.map(function(y){return '<div><span>'+esc(y.date)+' · '+payRef(y)+'</span><span>₹'+pn(y.amount)+'</span></div>'}).join(''):'<div><span>No payments in this period · આ સમયમાં ચુકવણી નથી</span></div>')+'</div>':'<div class="l2"><span>'+x.pays.length+' payment'+(x.pays.length===1?'':'s')+' · tap to view</span></div>')+'</button>';
       }).join(''):'<div class="pnote">No data found. · કોઈ માહિતી મળી નથી.</div>')+'</div>';
     }
     $('#rp-body').innerHTML=h;
@@ -2501,15 +2521,18 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   function dbParties(){return DB.kind==='out'?customers:suppliers}
   function dbMenu(){
     return '<h2>Reports<span class="gu">રિપોર્ટ</span></h2><div class="menu">'+
-      [['out','Outward Bills','જાવક બિલ','Display all sales bills · બધા વેચાણ બિલ જુઓ'],['in','Inward Bills','આવક બિલ','Display all purchase bills · બધા ખરીદી બિલ જુઓ'],['sr','Sales Report','વેચાણ રિપોર્ટ','Item-wise sales by month & year (infographic) · મહિના અને વર્ષ મુજબ આઇટમ વેચાણ'],['cr','Customer-wise Report','ગ્રાહક મુજબ રિપોર્ટ','Full record: bills, payments & outstanding · બિલ, ચુકવણી અને બાકી'],['cw','City Wise Report','શહેર મુજબ રિપોર્ટ','Customers of a city with outstanding · શહેરના ગ્રાહક અને બાકી'],['bs','Account of Debit and Credit','જમા અને ઉધાર નો હિસાબ','Customers and suppliers on one screen · ગ્રાહક અને સપ્લાયર એક સ્ક્રીનમાં'],['pl','Price List','ભાવ પત્રક','View customer / supplier rates · ગ્રાહક / સપ્લાયર ભાવ જુઓ']].map(function(r){
+      [['out','Bills','બિલ','Outward & Inward bills · જાવક અને આવક બિલ'],['sr','Sales Report','વેચાણ રિપોર્ટ','Item-wise sales by month & year (infographic) · મહિના અને વર્ષ મુજબ આઇટમ વેચાણ'],['cr','Customer-wise Report','ગ્રાહક મુજબ રિપોર્ટ','Full record: bills, payments & outstanding · બિલ, ચુકવણી અને બાકી'],['cw','City Wise Report','શહેર મુજબ રિપોર્ટ','Customers of a city with outstanding · શહેરના ગ્રાહક અને બાકી'],['bs','Account of Debit and Credit','જમા અને ઉધાર નો હિસાબ','Customers and suppliers on one screen · ગ્રાહક અને સપ્લાયર એક સ્ક્રીનમાં'],['pl','Price List','ભાવ પત્રક','View customer / supplier rates · ગ્રાહક / સપ્લાયર ભાવ જુઓ']].map(function(r){
         return '<button class="opt" data-rep="'+r[0]+'"><span class="dot">'+(r[0]==='bs'?RP_ICON.bs:r[0]==='pl'?RP_ICON.pl:(r[0]==='cr'||r[0]==='cw')?RP_ICON.pay:RP_ICON.bill)+'</span><span class="t"><b>'+r[1]+'</b><span class="gu">'+r[2]+'</span><small>'+r[3]+'</small></span>'+CHEV+'</button>';
       }).join('')+'</div>';
   }
   function dbShell(){
     var out=DB.kind==='out', L=out?'Customer':'Supplier', G=out?'ગ્રાહક':'સપ્લાયર';
     return '<div class="noprint"><button class="back" id="repBack">'+BACK+'Reports · રિપોર્ટ</button></div>'+
-      '<h2>'+(out?'Outward Bills':'Inward Bills')+'<span class="gu">'+(out?'જાવક બિલ':'આવક બિલ')+'</span></h2>'+
+      '<h2>Bills<span class="gu">બિલ</span></h2>'+
       '<div class="card rpf">'+
+      '<div class="r2" role="radiogroup" aria-label="Bill type">'+
+      '<label class="cf" style="flex-direction:row;align-items:center;gap:8px;font-size:14px;color:inherit"><input type="radio" name="db-k" value="out"'+(out?' checked':'')+' style="width:20px;height:20px;accent-color:var(--accent)"><span>Outward · જાવક</span></label>'+
+      '<label class="cf" style="flex-direction:row;align-items:center;gap:8px;font-size:14px;color:inherit"><input type="radio" name="db-k" value="in"'+(out?'':' checked')+' style="width:20px;height:20px;accent-color:var(--accent)"><span>Inward · આવક</span></label></div>'+
       '<label class="cf">Bill No. · બિલ નં.<input type="text" id="db-no" placeholder="'+(out?'OUT-0001':'IN-0001')+'" autocomplete="off" value="'+esc(DB.no)+'"></label>'+
       '<div class="r2"><label class="cf">From · થી<input type="date" id="db-from" value="'+esc(DB.from)+'"></label><label class="cf">To · સુધી<input type="date" id="db-to" value="'+esc(DB.to)+'"></label></div>'+
       '<div class="pnote">Only From date = that one day · ફક્ત From તારીખ = એ એક દિવસ</div>'+
@@ -2649,8 +2672,8 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
         '<div class="gh">Debit<span class="gu">ઉધાર</span></div><div class="gh">Credit<span class="gu">જમા</span></div>'+
         cell('py','To pay to suppliers','સપ્લાયરને ચૂકવવાના',X.S.due,X.S.parties)+
         cell('rc','To receive from customers','ગ્રાહક પાસેથી લેવાના',X.C.due,X.C.parties)+
-        cell('ar','Advance received from customers','ગ્રાહક પાસેથી મળેલ એડવાન્સ',X.C.adv)+
-        cell('ap','Advance paid to suppliers','સપ્લાયરને આપેલ એડવાન્સ',X.S.adv)+
+        cell('ar','Credit received from customers','ગ્રાહક પાસેથી મળેલ જમા',X.C.adv)+
+        cell('ap','Credit paid to suppliers','સપ્લાયરને આપેલ જમા',X.S.adv)+
       '</div>'+
       '<div class="bstot"><div><small>Total Debit · કુલ ઉધાર</small><b>'+bsAmt(dT)+'</b></div><div><small>Total Credit · કુલ જમા</small><b>'+bsAmt(cT)+'</b></div></div>'+
       '<div class="bsdiff '+(df>0?'g':df<0?'r':'z')+'"><span class="t">'+(df>0?'To be received':df<0?'To be paid':'Settled')+'<span class="gu">'+(df>0?'લેવાના બાકી':df<0?'ચૂકવવાના બાકી':'બરાબર · કંઈ બાકી નથી')+'</span></span><b>'+bsAmt(Math.abs(df))+'</b></div>'+
@@ -2660,8 +2683,8 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   var BSD={
     py:{en:'To pay to suppliers',gu:'સપ્લાયરને ચૂકવવાના',k:'in',bills:true},
     rc:{en:'To receive from customers',gu:'ગ્રાહક પાસેથી લેવાના',k:'out',bills:true},
-    ar:{en:'Advance received from customers',gu:'ગ્રાહક પાસેથી મળેલ એડવાન્સ',k:'out',bills:false},
-    ap:{en:'Advance paid to suppliers',gu:'સપ્લાયરને આપેલ એડવાન્સ',k:'in',bills:false}
+    ar:{en:'Credit received from customers',gu:'ગ્રાહક પાસેથી મળેલ જમા',k:'out',bills:false},
+    ap:{en:'Credit paid to suppliers',gu:'સપ્લાયરને આપેલ જમા',k:'in',bills:false}
   };
   function bsDetail(key){
     var R=BSD[key],D=RP.data[R.k];if(!R||!D)return;
@@ -2670,7 +2693,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     if(R.bills){
       D.bills.forEach(function(b){var due=r2((+b.total||0)-(+b.paid||0));if(due<=0)return;var o=g(b.partyId,b.party,b.city);o.total+=due;o.lines.push([esc(b.billNo)+(b.date?' · '+esc(b.date):'')+' · ₹'+pn(+b.total||0)+(+b.paid>0?' (Paid ₹'+pn(+b.paid)+')':''),due])});
     }else{
-      D.pays.forEach(function(x){var a=+x.amount||0;if(x.billNo||!a)return;var o=g(x.partyId,x.party);o.total+=a;o.lines.push([esc(x.date||'')+' · '+(a<0?'Adjusted against bill · બિલ સામે સરભર':'Advance · એડવાન્સ'),a])});
+      D.pays.forEach(function(x){var a=+x.amount||0;if(x.billNo||!a)return;var o=g(x.partyId,x.party);o.total+=a;o.lines.push([esc(x.date||'')+' · '+payRef(x),a])});
     }
     var list=Object.keys(m).map(function(k){var o=m[k];o.total=r2(o.total);return o}).filter(function(o){return o.total!==0}).sort(function(a,b){return b.total-a.total});
     list.forEach(function(o){tot+=o.total});
@@ -2720,6 +2743,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     });
     v.addEventListener('change',function(ev){
       var t=ev.target;
+      if(t.name==='db-k'){DB={kind:t.value,from:DB.from,to:DB.to,no:'',party:'',pq:''};repView=t.value;RP.party='';RP.open={};v.innerHTML=dbShell();dbBody();dbLoad();return}
       if(t.id==='db-from'){DB.from=t.value;dbBody()}
       else if(t.id==='db-to'){DB.to=t.value;dbBody()}
     });
@@ -3077,15 +3101,16 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       return '<div class="lgi" data-dbill="'+esc(b.billNo)+'"><div class="a"><span>'+esc(b.billNo)+'</span><b>₹'+pn(b.total)+'</b></div><small>'+esc(b.date)+(b.due>0?' · <span class="dn">Due ₹'+pn(b.due)+'</span>':'')+'</small></div>';
     }).join(''):'<div class="lgi e">—</div>';
     var right=pays.length?pays.map(function(y){
-      return '<div class="lgi"><div class="a"><span>'+(y.billNo?esc(y.billNo):'Advance · એડવાન્સ')+'</span><b>₹'+pn(y.amount)+'</b></div><small>'+esc(y.date)+'</small></div>';
+      return '<div class="lgi"><div class="a"><span>'+payRef(y)+'</span><b>₹'+pn(y.amount)+'</b></div><small>'+esc(y.date)+'</small></div>';
     }).join(''):'<div class="lgi e">—</div>';
     el.innerHTML='<div class="card lgn"><b>'+esc(name)+'</b><span>'+esc([c.city,c.mobile||c.mob].filter(Boolean).join(' · '))+'</span></div>'+
       '<div class="pnote" style="display:block">'+esc(xrPeriod(CR))+' · '+bills.length+' bills</div>'+
       '<div class="lgr"><div class="lgc lgh"><div><small>બિલ</small>BILLS</div><div><small>ચુકવણી વિગત</small>PAYMENT DETAILS</div></div>'+
       '<div class="lgc lgb"><div>'+left+'</div><div>'+right+'</div></div>'+
       '<div class="lgc lgf"><div><span><small>કુલ બિલ</small>TOTAL BILLS</span><b>₹'+pn(TB)+'</b></div><div><span><small>કુલ ચુકવણી</small>TOTAL RECEIVED</span><b>₹'+pn(TP)+'</b></div></div></div>'+
-      (due>0?'<div class="lgo"><span><small>બાકી</small>OUTSTANDING</span><b>₹'+pn(due)+'</b></div>':'<div class="lgo ok"><span><small>કોઈ બાકી નથી</small>CLEARED ✓</span><b>₹0</b></div>')+
-      (adv>0?'<div class="pnote" style="display:block">Advance received (not against a bill) · એડવાન્સ મળ્યા: ₹'+pn(adv)+'</div>':'')+
+      (due>0?'<div class="lgo"><span><small>બાકી</small>OUTSTANDING</span><b>₹'+pn(due)+'</b></div>':(adv>0?'':'<div class="lgo ok"><span><small>કોઈ બાકી નથી</small>CLEARED ✓</span><b>₹0</b></div>'))+
+      (adv>0?'<div class="lgo cr" style="'+(due>0?'margin-top:8px':'')+'"><span><small>'+(due>0?'':'બિલ ક્લિયર ✓ · ')+'જમા બાકી</small>CREDIT BALANCE</span><b>₹'+pn(adv)+'</b></div>':'')+
+      (adv>0?'<div class="pnote" style="display:block">Credit received (not against a bill) · જમા મળ્યા: ₹'+pn(adv)+'</div>':'')+
       '<div class="pnote" style="display:block">Outstanding = all unpaid bills, all dates · બાકી = બધા બિલ, બધી તારીખ</div>';
   }
   /* ----- City Wise Report: customers of a city with their outstanding; tap one to open the Customer-wise Report ----- */
