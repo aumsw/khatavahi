@@ -1017,11 +1017,6 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
 
 <style id="v10">
 /* ===== v10: Demo ribbon, compact report filters, Sales infographic ===== */
-.demo-ribbon{position:fixed;top:env(safe-area-inset-top,0px);right:0;z-index:50;background:#F59E0B;color:#2b1a00;font:800 9px var(--font);letter-spacing:.08em;padding:2px 8px;border-radius:0 0 0 8px;pointer-events:none;opacity:.94}
-.demo-card{gap:10px}
-.demo-t b{display:flex;flex-direction:column;font-size:14px}
-.demo-t b .gu{font-size:12px;font-weight:600;color:var(--accent)}
-.demo-t small{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.4}
 /* compact filters (Customer-wise + Sales report) */
 .xchips{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:1px 0}
 .xchips::-webkit-scrollbar{display:none}
@@ -1105,234 +1100,61 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
 #v-reports .sv-sticky+.sv-kp{margin-top:4px}
 .xf .xchips{flex-wrap:wrap;overflow:visible}
 .xf .xchips .chip{padding:5px 10px}
+
+/* one-line Customer-wise filter + City Wise list */
+.xf-r{display:flex;gap:6px;align-items:flex-start}
+.xf-r .cbx{flex:1;min-width:0}
+.xf .vbtn{width:38px;min-width:38px}
+.xf-b{flex:0 0 auto;height:36px;padding:0 10px!important;font-size:12px;white-space:nowrap;text-transform:none}
+.xf-p{display:flex;flex-direction:column;gap:6px}
+.xf-p[hidden]{display:none}
+.cw-l{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.cw-r{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;padding:11px 12px;background:none;border:0;border-top:1px solid var(--line);text-transform:none;letter-spacing:0;color:var(--fg)}
+.cw-r:first-child{border-top:0}
+.cw-r:active{background:var(--soft)}
+.cw-r:disabled{opacity:.7}
+.cw-r .nm{min-width:0;display:flex;flex-direction:column;gap:2px}
+.cw-r .nm b{font-size:13px;font-weight:700;text-transform:uppercase;overflow-wrap:anywhere;line-height:1.25}
+.cw-r .nm small{color:var(--muted);font-size:11px}
+.cw-r .am{font:800 14px var(--head);white-space:nowrap;font-variant-numeric:tabular-nums}
+.cw-r .am.dn{color:var(--danger)}
+.cw-r .am.ok{color:#16A34A;font-size:12px}
+
+/* Home: today's Sales / Payment Received tiles */
+.s-tsales{--c:#06B6D4}.s-trecv{--c:#16A34A}
+.stat .sd{font-weight:700;font-size:12px;color:var(--muted);margin-top:2px}
+
+/* Sales Report: Date Wise / Item Wise */
+.sr-mode{margin:0 0 2px}
+.dw-l,#sr-rank{display:flex;flex-direction:column}
+.dw-l{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.dw-r{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;padding:11px 12px;background:none;border:0;border-top:1px solid var(--line);text-transform:none;letter-spacing:0;color:var(--fg)}
+.dw-r:first-child{border-top:0}
+.dw-r.on{background:var(--soft)}
+.dw-r .nm{display:flex;flex-direction:column;gap:2px;min-width:0}
+.dw-r .nm b{font:700 13.5px var(--head)}
+.dw-r .nm small{color:var(--muted);font-size:11px}
+.dw-r .am{font:800 14px var(--head);white-space:nowrap;font-variant-numeric:tabular-nums}
+.dw-p{background:var(--soft);border-top:1px solid var(--line);padding:2px 12px 4px;display:flex;flex-direction:column;border-radius:0 0 10px 10px;margin-bottom:4px}
+.dw-l .dw-p{border-radius:0;margin-bottom:0}
+.dw-c{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}
+.dw-c:first-child{border-top:0}
+.dw-c .nm{display:flex;flex-direction:column;gap:1px;min-width:0}
+.dw-c .nm b{font-size:12.5px;font-weight:700;text-transform:uppercase;overflow-wrap:anywhere;line-height:1.25}
+.dw-c .nm small{color:var(--muted);font-size:10.5px;text-transform:none}
+.dw-c .am{font:800 13px var(--head);white-space:nowrap;font-variant-numeric:tabular-nums}
+.dw-t{border-top:2px solid var(--line)}
+.dw-t .am{color:var(--accent)}
+.sv-ir.on{background:var(--soft)}
 </style>
 <script>
-/* ===== DEMO DATA (50 customers · 200 items · 5000 bills) =====
-   Mock backend: while Demo Data is ON, every request to the Google Sheet web app is answered from data
-   generated here, and nothing is written to your real Sheet. Turn it OFF in Admin > Demo Data. */
-(function(){
-  var DEMO_KEY='cyan-navy-demo-v1';
-  var ON=true;try{ON=localStorage.getItem(DEMO_KEY)!=='0'}catch(e){}
-  window.DEMO_ON=ON;
-
-  /* ---------- Admin switch ---------- */
-  function adminBox(){
-    var a=document.getElementById('v-admin');if(!a)return;
-    var h=document.createElement('div');
-    h.innerHTML='<h2>Demo Data<span class="gu">ડેમો ડેટા</span></h2><div class="card demo-card"><div class="demo-t"><b>'+(ON?'Demo data is ON':'Demo data is OFF')+'<span class="gu">'+(ON?'ડેમો ડેટા ચાલુ છે':'ડેમો ડેટા બંધ છે')+'</span></b><small>50 customers · 200 items · 5000 sales bills. New entries are not saved while it is ON. · નવી એન્ટ્રી સાચવાશે નહીં.</small></div><button type="button" class="btn '+(ON?'sec':'pri')+'" id="demo-toggle">'+(ON?'Turn OFF · બંધ કરો':'Turn ON · ચાલુ કરો')+'</button></div>';
-    while(h.firstChild)a.appendChild(h.firstChild);
-    document.getElementById('demo-toggle').addEventListener('click',function(){
-      try{
-        if(!ON&&JSON.parse(localStorage.getItem('cyan-navy-sheet-queue-v1')||'[]').length){alert('Some entries are still waiting to sync to the Sheet. Try again in a minute.\nકેટલીક એન્ટ્રી શીટમાં સિંક થવાની બાકી છે.');return}
-        localStorage.setItem(DEMO_KEY,ON?'0':'1');
-        /* clear the cached copies so the other source loads clean */
-        ['cyan-navy-items-v1','cyan-navy-prices-v1','cyan-navy-sprices-v1','cyan-navy-customers-v1','cyan-navy-suppliers-v1','cyan-navy-billno-v1','cyan-navy-inbillno-v1','cyan-navy-home-v1','cyan-navy-dues-v1'].forEach(function(k){localStorage.removeItem(k)});
-      }catch(e){}
-      location.reload();
-    });
-  }
-  adminBox();
-  if(!ON)return;
-
-  var ribbon=document.createElement('div');ribbon.className='demo-ribbon';ribbon.textContent='DEMO DATA · ડેમો ડેટા';document.body.appendChild(ribbon);
-
-  /* ---------- helpers ---------- */
-  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-  var R=rng(20261122);
-  function ri(a,b){return a+Math.floor(R()*(b-a+1))}
-  function pick(a){return a[Math.floor(R()*a.length)]}
-  function p2(n){return (n<10?'0':'')+n}
-  function dmy(d){return p2(d.getDate())+'/'+p2(d.getMonth()+1)+'/'+d.getFullYear()}
-  function rd(v,s){return Math.round(v/s)*s}
-  var TODAY=new Date(2026,10,22);TODAY.setHours(0,0,0,0);
-  var START=new Date(2024,0,1);
-
-  /* ---------- items: base|gu|unit|minRate|maxRate|variant:gu,... (empty base = full names) ---------- */
-  var G=[
-   'Rice|ચોખા|KG|45|120|Basmati:બાસમતી,Sona Masoori:સોના મસૂરી,Kolam:કોલમ,Parmal:પરમલ,Jeera:જીરા,Ambemohar:આંબેમોહર,Brown:બ્રાઉન,Broken:કણકી',
-   'Wheat|ઘઉં|KG|28|48|Lokwan:લોકવન,Tukdi:ટુકડી,Sharbati:શરબતી,Bansi:બંસી,Mill:મિલ,Desi:દેશી,Sihor:સિહોર',
-   'Dal|દાળ|KG|80|190|Tur:તુવેર,Moong:મગ,Urad:અડદ,Chana:ચણા,Masoor:મસૂર,Moong Chilka:મગ છડી,Matki:મઠ,Mix:મિક્સ',
-   'Sugar|ખાંડ|KG|40|50|M-30:એમ-30,S-30:એસ-30,Medium:મીડિયમ,Raw:કાચી,Icing:આઈસિંગ,Cube:ક્યુબ',
-   'Oil|તેલ|Litre|90|220|Groundnut:સીંગ,Cotton Seed:કપાસિયા,Sunflower:સનફ્લાવર,Palm:પામ,Mustard:સરસવ,Sesame:તલ,Coconut:નાળિયેર,Soyabean:સોયાબીન',
-   'Ghee|ઘી|KG|450|700|Cow:ગાયનું,Buffalo:ભેંસનું,Desi:દેશી,Vanaspati:વનસ્પતિ,Premium:પ્રીમિયમ',
-   'Flour|લોટ|KG|30|70|Bajra:બાજરી,Jowar:જુવાર,Ragi:રાગી,Maize:મકાઈ,Rice:ચોખા,Gram:ચણા,Multigrain:મલ્ટીગ્રેન',
-   'Tea|ચા|KG|220|520|Assam:આસામ,Darjeeling:દાર્જિલિંગ,Kadak:કડક,Masala:મસાલા,Green:ગ્રીન,Elaichi:એલચી,Dust:ડસ્ટ',
-   'Coffee|કોફી|KG|450|900|Instant:ઇન્સ્ટન્ટ,Filter:ફિલ્ટર,Roasted:રોસ્ટેડ,Chicory:ચિકોરી',
-   'Salt|મીઠું|KG|10|30|Rock:સિંધવ,Iodised:આયોડીનયુક્ત,Black:કાળું,Crystal:ક્રિસ્ટલ,Sea:દરિયાઈ',
-   '||KG|120|900|Turmeric Powder:હળદર પાવડર,Red Chilli Powder:લાલ મરચું પાવડર,Coriander Powder:ધાણા પાવડર,Cumin Seeds:જીરું,Mustard Seeds:રાઈ,Fennel Seeds:વરિયાળી,Fenugreek Seeds:મેથી,Black Pepper:કાળા મરી,Cardamom:એલચી,Cloves:લવિંગ,Cinnamon:તજ,Bay Leaf:તમાલપત્ર,Ajwain:અજમો,Garam Masala:ગરમ મસાલો',
-   '||KG|350|1500|Almond:બદામ,Cashew:કાજુ,Raisins:કિસમિસ,Pistachio:પિસ્તા,Walnut:અખરોટ,Dates:ખજૂર,Fig:અંજીર,Apricot:જરદાળુ,Chironji:ચારોળી,Makhana:મખાના',
-   '||KG|30|90|Poha:પૌંઆ,Sabudana:સાબુદાણા,Suji:રવો,Vermicelli:સેવ,Murmura:મમરા,Daliya:દલિયા,Besan:બેસન,Maida:મેંદો',
-   '||KG|60|140|Kabuli Chana:કાબુલી ચણા,Green Peas:લીલા વટાણા,Black Chana:કાળા ચણા,White Chana:સફેદ ચણા,Lobia:ચોળી,Rajma:રાજમા,Soya Chunks:સોયા ચંક્સ',
-   '||KG|10|60|Potato:બટાકા,Onion:ડુંગળી,Garlic:લસણ,Ginger:આદુ,Tomato:ટામેટા,Green Chilli:લીલા મરચાં,Lemon:લીંબુ,Coriander Leaves:કોથમીર',
-   '||KG|45|85|Desi Jaggery:દેશી ગોળ,Jaggery Powder:ગોળ પાવડર,Jaggery Cubes:ગોળ ક્યુબ,Kolhapuri Jaggery:કોલ્હાપુરી ગોળ',
-   '||Bag|340|420|Cement OPC 43:સિમેન્ટ ઓપીસી ૪૩,Cement OPC 53:સિમેન્ટ ઓપીસી ૫૩,Cement PPC:સિમેન્ટ પીપીસી,White Cement:સફેદ સિમેન્ટ',
-   '||KG|55|80|TMT Bar 8mm:ટીએમટી સળિયા ૮ મીમી,TMT Bar 10mm:ટીએમટી સળિયા ૧૦ મીમી,TMT Bar 12mm:ટીએમટી સળિયા ૧૨ મીમી,TMT Bar 16mm:ટીએમટી સળિયા ૧૬ મીમી,TMT Bar 20mm:ટીએમટી સળિયા ૨૦ મીમી,Binding Wire:બાંધવાનો તાર',
-   '||Nos|6|12|Red Bricks:લાલ ઈંટ,Fly Ash Bricks:ફ્લાય એશ ઈંટ,Cement Blocks:સિમેન્ટ બ્લોક,Paver Blocks:પેવર બ્લોક',
-   '||Ton|450|1100|River Sand:નદીની રેતી,Crush Sand:ક્રશ રેતી,Gravel 10mm:કપચી ૧૦ મીમી,Gravel 20mm:કપચી ૨૦ મીમી',
-   '||Litre|55|480|Cow Milk:ગાયનું દૂધ,Buffalo Milk:ભેંસનું દૂધ,Toned Milk:ટોન્ડ દૂધ,Buttermilk:છાશ,Paneer:પનીર,Curd:દહીં,Butter:માખણ,Cream:ક્રીમ,Cheese:ચીઝ,Khoa:માવો',
-   '||Box|120|900|Glucose Biscuits:ગ્લુકોઝ બિસ્કિટ,Marie Biscuits:મારી બિસ્કિટ,Cream Biscuits:ક્રીમ બિસ્કિટ,Namkeen Mix:નમકીન મિક્સ,Bhujia Sev:ભુજિયા સેવ,Papad:પાપડ,Mango Pickle:કેરીનું અથાણું,Mixed Pickle:મિક્સ અથાણું,Tomato Ketchup:ટોમેટો કેચઅપ,Jam:જામ,Noodles:નૂડલ્સ,Chips:ચિપ્સ',
-   '||Box|150|600|Soft Drink 2L:કોલ્ડ ડ્રિંક ૨ લિટર,Soft Drink 600ml:કોલ્ડ ડ્રિંક ૬૦૦ મિલી,Mineral Water 1L:મિનરલ વોટર ૧ લિટર,Mineral Water 500ml:મિનરલ વોટર ૫૦૦ મિલી,Mango Juice:કેરીનો રસ,Orange Juice:નારંગીનો રસ,Soda:સોડા,Energy Drink:એનર્જી ડ્રિંક',
-   '||Dozen|60|480|Detergent Powder:ડિટર્જન્ટ પાવડર,Washing Soap:કપડાં ધોવાનો સાબુ,Bath Soap:નહાવાનો સાબુ,Toothpaste:ટૂથપેસ્ટ,Shampoo Sachet:શેમ્પૂ સેશે,Phenyl:ફિનાઇલ,Dishwash Liquid:ડિશવોશ લિક્વિડ,Agarbatti:અગરબત્તી,Matchbox:દિવાસળી,Toilet Cleaner:ટોઇલેટ ક્લીનર',
-   '||Box|90|700|Carry Bags:કેરી બેગ,Garbage Bags:કચરાની થેલી,Plastic Containers:પ્લાસ્ટિક ડબ્બા,Aluminium Foil:એલ્યુમિનિયમ ફોઇલ,Paper Plates:કાગળની ડિશ,Paper Cups:કાગળના કપ,Tissue Paper:ટિશ્યૂ પેપર,Packing Tape:પેકિંગ ટેપ',
-   '||Dozen|40|600|Notebook:નોટબુક,Ball Pen:બોલપેન,A4 Paper Ream:એ૪ કાગળ,Marker Pen:માર્કર પેન,File Folder:ફાઇલ ફોલ્ડર,Stapler Pins:સ્ટેપલર પિન,Glue Stick:ગુંદર સ્ટિક,Register:રજિસ્ટર',
-   '||Litre|180|520|Distemper Paint:ડિસ્ટેમ્પર રંગ,Emulsion Paint:ઇમલ્શન રંગ,Primer:પ્રાઇમર,Enamel Paint:ઇનામલ રંગ',
-   '||Box|80|900|LED Bulb 9W:એલઇડી બલ્બ ૯ વોટ,LED Tube Light:એલઇડી ટ્યુબ લાઇટ,Switch Board:સ્વિચ બોર્ડ,Copper Wire 1.5mm:કોપર વાયર ૧.૫ મીમી'
-  ];
-  var ITEMS=[];
-  G.forEach(function(g){
-    var p=g.split('|'),base=p[0],bgu=p[1],unit=p[2],lo=+p[3],hi=+p[4];
-    p[5].split(',').forEach(function(v){
-      var q=v.split(':');
-      var en=base?q[0]+' '+base:q[0], gu=base?q[1]+' '+bgu:q[1];
-      var u=unit;
-      if(/Milk|Buttermilk/.test(en))u='Litre';else if(/Paneer|Curd|Butter$|Cream|Cheese|Khoa/.test(en))u='KG';
-      ITEMS.push({en:en,gu:gu,unit:u,lo:lo,hi:hi});
-    });
-  });
-  var seenN={};ITEMS=ITEMS.filter(function(x){if(seenN[x.en])return false;seenN[x.en]=1;return true});
-  var pi=0;while(ITEMS.length<200){var s=ITEMS[pi++];if(!seenN[s.en+' Premium']){seenN[s.en+' Premium']=1;ITEMS.push({en:s.en+' Premium',gu:s.gu+' પ્રીમિયમ',unit:s.unit,lo:s.lo*1.2,hi:s.hi*1.25})}}
-  ITEMS=ITEMS.slice(0,200);
-  ITEMS.forEach(function(x,i){
-    x.id=i+1;
-    x.rate=rd(x.lo+R()*(x.hi-x.lo),x.hi>200?5:x.hi>60?1:.5);
-    x.srate=rd(x.rate*.9,x.hi>60?1:.5);
-    x.w=Math.pow(R(),3.5)*8+.1;               /* popularity */
-    x.peak=ri(1,12);x.amp=.15+R()*.55;          /* seasonality */
-  });
-
-  /* ---------- customers (50) & suppliers (12) ---------- */
-  var CITIES=['Rajkot','Rajkot','Rajkot','Ahmedabad','Ahmedabad','Surat','Vadodara','Jamnagar','Morbi','Gondal','Junagadh','Bhavnagar','Anand','Gandhinagar','Porbandar'];
-  var PA=['Shree','Jay','Om','Krishna','Ambika','Khodiyar','Sardar','Gopal','Dwarkadhish','Ganesh'];
-  var PB=['Traders','Enterprise','Stores','Agency','Provision'];
-  var AREAS=['Market Yard','Station Road','Gandhi Chowk','Ring Road','Kalawad Road','GIDC','Naranpura','Varachha','Alkapuri','Bedi Naka'];
-  var CUST=[];
-  for(var i=0;i<50;i++){
-    CUST.push({id:i+1,en:PA[i%10]+' '+PB[Math.floor(i/10)],mobile:'9'+ri(6,9)+String(ri(10000000,99999999)),email:'',address:'Shop '+ri(1,60)+', '+pick(AREAS),city:pick(CITIES)});
-  }
-  CUST.forEach(function(c,i){c.w=1/Math.pow(1+((i*17)%50),.75)});   /* a few big customers, many small */
-  var SUPP=[];
-  ['Bharat Agro Mills','Saurashtra Oil Mills','Gujarat Dal Mill','Kalupur Spices','Shakti Cement Depot','Metro Steel Corp','Amul Dairy Agency','Sagar Dry Fruits','Navkar Packaging','Sun Beverages','Vraj Paper Mart','Deep Hardware'].forEach(function(n,i){
-    SUPP.push({id:i+1,en:n,mobile:'9'+ri(6,9)+String(ri(10000000,99999999)),email:'',address:'Plot '+ri(1,90)+', '+pick(AREAS),city:pick(CITIES)});
-  });
-
-  /* ---------- bills ---------- */
-  var QTY={KG:[5,10,20,25,50,50,100,100,200,250,500],Litre:[10,15,15,30,50,100,200],Bag:[10,20,40,50,100,200],Box:[2,3,5,5,10,12,20,30],Dozen:[2,3,5,6,10,12,20],Nos:[500,1000,1500,2000,3000,5000],Ton:[2,3,5,8,10,15,20],Quintal:[1,2,5,10,20]};
-  /* day weights: growth + season + fewer Sundays */
-  var days=[],cum=[],tot=0;
-  for(var d=new Date(START);d<=TODAY;d=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1)){
-    var mi=(d.getFullYear()-2024)*12+d.getMonth(), m=d.getMonth()+1;
-    var wv=(1+.014*mi)*(1+.28*Math.cos((m-11)/12*6.2832))*(d.getDay()===0?.25:1);
-    tot+=wv;days.push(new Date(d));cum.push(tot);
-  }
-  function weighted(cumArr,t){var lo=0,hi=cumArr.length-1;while(lo<hi){var mid=(lo+hi)>>1;if(cumArr[mid]<t)lo=mid+1;else hi=mid}return lo}
-  function buildCum(f){var a=[],s=0;ITEMS.forEach(function(x){s+=f(x);a.push(s)});return a}
-  var ITEMCUM=[];for(var mm=1;mm<=12;mm++)(function(m){ITEMCUM[m]=buildCum(function(x){return x.w*(1+x.amp*Math.cos((m-x.peak)/12*6.2832))})})(mm);
-  var CUSTCUM=[],cs=0;CUST.forEach(function(c){cs+=c.w;CUSTCUM.push(cs)});
-  var SUPCUM=[],ss=0;SUPP.forEach(function(){ss+=1;SUPCUM.push(ss)});
-
-  function genBills(kind,n){
-    var out=[],dts=[];
-    for(var i=0;i<n;i++)dts.push(days[weighted(cum,R()*tot)]);
-    dts.sort(function(a,b){return a-b});
-    var parties=kind==='out'?CUST:SUPP, pc=kind==='out'?CUSTCUM:SUPCUM, pre=kind==='out'?'OUT-':'IN-';
-    dts.forEach(function(dt,i){
-      var party=parties[weighted(pc,R()*pc[pc.length-1])];
-      var scale=kind==='out'?(.35+party.w*1.4):1.2;
-      var infl=1+.07*((dt-START)/31557600000);
-      var m=dt.getMonth()+1,cumI=ITEMCUM[m],k=ri(2,8),used={},lines=[],sub=0;
-      for(var t=0;t<k*3&&lines.length<k;t++){
-        var it=ITEMS[weighted(cumI,R()*cumI[cumI.length-1])];if(used[it.id])continue;used[it.id]=1;
-        var qa=QTY[it.unit]||QTY.KG,q=pick(qa),base0=kind==='out'?it.rate:it.srate;
-        q=Math.max(1,Math.round(q*scale*(.5+R())));
-        var cap=Math.max(1,Math.floor(60000*(.4+R()*.8)/(base0*infl)));if(q>cap)q=cap;
-        if(q>=1000)q=Math.round(q/100)*100;else if(q>=100)q=Math.round(q/10)*10;else if(q>=20)q=Math.round(q/5)*5;
-        var base=kind==='out'?it.rate:it.srate;
-        var rate=Math.max(1,rd(base*infl*(.95+R()*.1),base>60?1:.5));
-        var amt=Math.round(q*rate*100)/100;sub+=amt;
-        lines.push({id:it.id,name:it.en,gu:it.gu,unit:it.unit,qty:q,rate:rate,amount:amt});
-      }
-      var lab=R()<.3?rd(sub*.004,50):0, tr=(party.city!=='Rajkot'&&R()<.7)?rd(500+R()*2200,50):(R()<.15?rd(300+R()*600,50):0);
-      var ms=R()<.06?rd(100+R()*400,50):0, dis=R()<.25?rd(sub*(.005+R()*.015),10):0;
-      var gt=Math.round(sub+lab+tr+ms-dis);
-      out.push({billNo:pre+String(i+1).padStart(4,'0'),date:dmy(dt),dt:dt,partyId:party.id,party:party.en,city:party.city,mobile:party.mobile,address:party.address,
-        items:lines,subTotal:Math.round(sub*100)/100,labour:lab,transportation:tr,misc:ms,discount:dis,total:gt,paid:0,due:gt});
-    });
-    return out;
-  }
-  function genPays(bills,kind){
-    var pays=[],id=1;
-    function add(b,dayOff,amt){
-      var dt=new Date(b.dt.getFullYear(),b.dt.getMonth(),b.dt.getDate()+dayOff);if(dt>TODAY||amt<=0)return 0;
-      pays.push({id:String(id++),billNo:b.billNo,date:dmy(dt),partyId:b.partyId,party:b.party,amount:amt});b.paid+=amt;return amt;
-    }
-    bills.forEach(function(b){
-      var r=R();
-      if(r<.62)add(b,ri(0,30),b.total);
-      else if(r<.82){var a=rd(b.total*(.4+R()*.3),100);add(b,ri(0,15),a);add(b,ri(20,60),b.total-a)}
-      else if(r<.93)add(b,ri(3,40),rd(b.total*(.3+R()*.4),100));
-      b.paid=Math.min(b.paid,b.total);b.due=Math.round((b.total-b.paid)*100)/100;
-    });
-    for(var k=0;k<(kind==='out'?45:6);k++){      /* advances (not against a bill) */
-      var pr=(kind==='out'?CUST:SUPP)[ri(0,(kind==='out'?CUST:SUPP).length-1)],dt=days[ri(0,days.length-1)];
-      pays.push({id:String(id++),billNo:'',date:dmy(dt),partyId:pr.id,party:pr.en,amount:rd(5000+R()*45000,500)});
-    }
-    pays.sort(function(a,b){var x=a.date.split('/'),y=b.date.split('/');return (x[2]+x[1]+x[0])<(y[2]+y[1]+y[0])?-1:1});
-    return pays;
-  }
-  var DB={out:{bills:genBills('out',5000)},'in':{bills:genBills('in',320)}};
-  DB.out.pays=genPays(DB.out.bills,'out');DB.in.pays=genPays(DB.in.bills,'in');
-  var IDX={out:{},in:{}};['out','in'].forEach(function(k){DB[k].bills.forEach(function(b){IDX[k][b.billNo]=b})});
-
-  /* ---------- request handlers ---------- */
-  function reportOf(k){
-    return {bills:DB[k].bills.map(function(b){return {billNo:b.billNo,date:b.date,party:b.party,partyId:b.partyId,city:b.city,total:b.total,paid:b.paid,due:b.due}}),pays:DB[k].pays};
-  }
-  function duesOf(){
-    var r={recv:{},pay:{},arecv:{},apaid:{}};
-    function add(m,id,name,city,a){var o=m[id]||(m[id]={id:id,name:name,city:city,amt:0});o.amt+=a}
-    DB.out.bills.forEach(function(b){if(b.due>0)add(r.recv,b.partyId,b.party,b.city,b.due)});
-    DB.in.bills.forEach(function(b){if(b.due>0)add(r.pay,b.partyId,b.party,b.city,b.due)});
-    DB.out.pays.forEach(function(p){if(!p.billNo)add(r.arecv,p.partyId,p.party,'',p.amount)});
-    DB.in.pays.forEach(function(p){if(!p.billNo)add(r.apaid,p.partyId,p.party,'',p.amount)});
-    var o={};Object.keys(r).forEach(function(k){o[k]=Object.keys(r[k]).map(function(i){var x=r[k][i];x.amt=Math.round(x.amt*100)/100;return x}).sort(function(a,b){return b.amt-a.amt})});
-    return o;
-  }
-  function sum(a){var s=0;a.forEach(function(x){s+=x.amt});return Math.round(s*100)/100}
-  function billOf(k,no){
-    var b=IDX[k][no];if(!b)return {};
-    var party={name:b.party,mobile:b.mobile,address:b.address,city:b.city};
-    var o={billNo:b.billNo,date:b.date,items:b.items.map(function(x){return {name:x.name,unit:x.unit,qty:x.qty,rate:x.rate,amount:x.amount}}),subTotal:b.subTotal,labour:b.labour||'',transportation:b.transportation||'',misc:b.misc?{amount:b.misc}:{},discount:b.discount||0,grandTotal:b.total,paid:b.paid,amountInWords:''};
-    if(k==='out')o.customer=party;else o.supplier=party;
-    return o;
-  }
-  function itemSales(k){
-    return DB[k].bills.map(function(b){return {billNo:b.billNo,date:b.date,partyId:b.partyId,party:b.party,city:b.city,items:b.items.map(function(x){return {id:x.id,name:x.name,gu:x.gu,unit:x.unit,qty:x.qty,amount:x.amount}})}});
-  }
-  function respond(url){
-    var u=new URL(url),t=u.searchParams.get('type'),k=u.searchParams.get('kind')==='in'?'in':'out';
-    if(t==='items')return ITEMS.map(function(x){return {id:x.id,en:x.en,gu:x.gu,unit:x.unit,rate:x.rate,srate:x.srate}});
-    if(t==='customers')return CUST.map(function(c){return {id:c.id,en:c.en,mobile:c.mobile,email:c.email,address:c.address,city:c.city}});
-    if(t==='suppliers')return SUPP.map(function(c){return {id:c.id,en:c.en,mobile:c.mobile,email:c.email,address:c.address,city:c.city}});
-    if(t==='report')return reportOf(k);
-    if(t==='itemsales')return itemSales(k);
-    if(t==='bill')return billOf(k,u.searchParams.get('no'));
-    if(t==='dues')return duesOf();
-    if(t==='summary'){var d=duesOf();return {recv:sum(d.recv),pay:sum(d.pay),arecv:sum(d.arecv),apaid:sum(d.apaid)}}
-    return {};
-  }
-  var realFetch=window.fetch.bind(window);
-  window.fetch=function(url,opt){
-    var s=String(url);
-    if(s.indexOf('script.google.com')<0)return realFetch(url,opt);
-    var post=opt&&opt.method&&opt.method.toUpperCase()==='POST';
-    return new Promise(function(res){
-      setTimeout(function(){
-        var body=post?'{}':JSON.stringify(respond(s));
-        res(new Response(body,{status:200,headers:{'Content-Type':'application/json'}}));
-      },post?30:120);
-    });
-  };
-})();
+/* one-time: remove cached demo data from this device so only real Sheet data is used */
+(function(){try{
+  if(localStorage.getItem('cyan-navy-demo-cleaned-v2'))return;
+  var q=JSON.parse(localStorage.getItem('cyan-navy-sheet-queue-v1')||'[]');
+  if(!q.length)['cyan-navy-items-v1','cyan-navy-prices-v1','cyan-navy-sprices-v1','cyan-navy-customers-v1','cyan-navy-suppliers-v1','cyan-navy-billno-v1','cyan-navy-inbillno-v1','cyan-navy-home-v1','cyan-navy-dues-v1','cyan-navy-today-v1','cyan-navy-demo-v1'].forEach(function(k){localStorage.removeItem(k)});
+  localStorage.setItem('cyan-navy-demo-cleaned-v2','1');
+}catch(e){}})();
 </script>
 <script>
 (function(){
@@ -1492,7 +1314,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     /* The queue is re-read from storage on every step, so entries added while a send is in progress are never lost. */
     (function next(){
       var q=load(QUEUE_KEY,[]);
-      if(!q.length){flushing=false;toast('Saved to Google Sheet · શીટમાં સાચવ્યું');sheetLoadItems();sheetLoadSummary();return}
+      if(!q.length){flushing=false;toast('Saved to Google Sheet · શીટમાં સાચવ્યું');sheetLoadItems();sheetLoadSummary();sheetLoadToday();return}
       sheetPost(q[0]).then(function(){var q2=load(QUEUE_KEY,[]);q2.shift();save(QUEUE_KEY,q2);next()})
         .catch(function(){flushing=false;toast('Sheet sync pending · શીટમાં પછી સાચવાશે')});
     })();
@@ -1548,9 +1370,31 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   var TILES=[
     {k:'recv',c:'s-recv',en:'To Be Received',gu:'લેવાના બાકી',who:'Customers who owe you',whoGu:'તમને લેવાના બાકી ગ્રાહકો',hdr:'Customer · ગ્રાહક'},
     {k:'pay',c:'s-pay',en:'To Be Paid',gu:'ચૂકવવાના બાકી',who:'Suppliers you owe',whoGu:'તમારે ચૂકવવાના બાકી સપ્લાયર',hdr:'Supplier · સપ્લાયર'},
-    {k:'arecv',c:'s-arecv',en:'Advance Received',gu:'એડવાન્સ મળ્યા',who:'Customers who paid in advance',whoGu:'એડવાન્સ આપનાર ગ્રાહકો',hdr:'Customer · ગ્રાહક'},
-    {k:'apaid',c:'s-apaid',en:'Advance Paid',gu:'એડવાન્સ ચૂકવ્યા',who:'Suppliers you paid in advance',whoGu:'એડવાન્સ આપેલ સપ્લાયર',hdr:'Supplier · સપ્લાયર'}
+    {k:'tsales',c:'s-tsales',day:1,en:'Today’s Sales Report',gu:'આજનો વેચાણ રિપોર્ટ',who:'Sales bills made today',whoGu:'આજના વેચાણ બિલ'},
+    {k:'trecv',c:'s-trecv',day:1,en:'Today’s Payment Received',gu:'આજની ચુકવણી મળી',who:'Payments received from customers today',whoGu:'આજે ગ્રાહકો પાસેથી મળેલ ચુકવણી'}
   ];
+  /* Today's figures (Sales Report + Payment Received tiles): taken from the outward report for today's date, DD/MM/YYYY. */
+  var TD_KEY='cyan-navy-today-v1', TD=load(TD_KEY,{day:'',bills:[],pays:[]});
+  function todayDmy(){var d=new Date();return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear()}
+  function tdList(k){return TD.day===todayDmy()?(k==='tsales'?TD.bills:TD.pays):[]}
+  function tdSum(k){var s=0;tdList(k).forEach(function(x){s+=k==='tsales'?x.total:x.amount});return Math.round(s*100)/100}
+  function todayHtml(k){
+    var t=tileOf(k),s=k==='tsales',L=tdList(k);
+    return '<div class="vh"><b>'+t.en+'</b><span>'+t.gu+'</span></div><div class="vm">'+todayDmy()+' · '+t.who+' · '+t.whoGu+'</div>'+
+      (L.length?L.map(function(x){return '<div class="dl"><span>'+esc(s?x.billNo:(x.billNo||'Advance · એડવાન્સ'))+'<small> · '+esc(x.party)+'</small></span><b>₹'+pn(s?x.total:x.amount)+'</b></div>'}).join('')+
+        '<div class="vs tot"><span>Total · કુલ</span><b>₹'+pn(tdSum(k))+'</b></div>':'<div class="pnote">Nothing today · આજે કંઈ નથી</div>');
+  }
+  function sheetLoadToday(){
+    if(!SHEET_URL||load(QUEUE_KEY,[]).length)return;
+    fetch(SHEET_URL+'?type=report&kind=out').then(function(r){return r.json()}).then(function(d){
+      if(!d||!Array.isArray(d.bills)||!Array.isArray(d.pays))throw 0;
+      var t=todayDmy();
+      TD={day:t,
+        bills:d.bills.filter(function(b){return b.date===t}).map(function(b){return {billNo:b.billNo,party:b.party,total:+b.total||0}}),
+        pays:d.pays.filter(function(y){return y.date===t&&(+y.amount||0)!==0}).map(function(y){return {billNo:y.billNo,party:y.party,amount:+y.amount||0}})};
+      save(TD_KEY,TD);renderHome();
+    }).catch(function(){});
+  }
   function tileOf(k){return TILES.filter(function(t){return t.k===k})[0]}
   function renderTop(){
     var cust=topKind==='cust', list=(cust?DU.recv:DU.pay)||[], top=list.slice(0,5), mx=top.length?top[0].amt:0,
@@ -1565,7 +1409,8 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   }
   function renderHome(){
     $('#v-home').innerHTML='<div class="stats">'+TILES.map(function(t){
-      return '<button type="button" class="stat '+t.c+'" data-k="'+t.k+'"><span class="sl">'+t.en+'</span><span class="sg">'+t.gu+'</span><span class="sv" data-k="'+t.k+'"><small>₹</small>'+(HT[t.k]||0).toLocaleString('en-IN',{maximumFractionDigits:2})+'</span></button>';
+      var dy=!!t.day,val=dy?tdSum(t.k):(HT[t.k]||0);
+      return '<button type="button" class="stat '+t.c+'" data-k="'+t.k+'"><span class="sl">'+t.en+'</span><span class="sg">'+t.gu+'</span>'+(dy?'<span class="sd">TODAY · આજ · '+todayDmy()+' · '+tdList(t.k).length+(t.k==='tsales'?(tdList(t.k).length===1?' bill':' bills'):(tdList(t.k).length===1?' payment':' payments'))+'</span>':'')+'<span class="sv" data-k="'+t.k+'"><small>₹</small>'+val.toLocaleString('en-IN',{maximumFractionDigits:2})+'</span></button>';
     }).join('')+'</div>'+renderTop();
   }
   /* Hover (mouse) = quick tip with top parties; click / tap = full list. */
@@ -1589,12 +1434,12 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     var vh=$('#v-home');
     vh.addEventListener('pointerover',function(ev){
       if(ev.pointerType!=='mouse')return;
-      var sv=ev.target.closest&&ev.target.closest('.sv');if(sv)showTip(sv);
+      var sv=ev.target.closest&&ev.target.closest('.sv');if(sv&&!tileOf(sv.dataset.k).day)showTip(sv);
     });
     vh.addEventListener('pointerout',function(ev){if(ev.target.closest&&ev.target.closest('.sv'))hideTip()});
     vh.addEventListener('click',function(ev){
       var st=ev.target.closest&&ev.target.closest('.stat');if(!st)return;
-      hideTip();openMdl(duesHtml(tileOf(st.dataset.k)));
+      hideTip();var tl=tileOf(st.dataset.k);openMdl(tl.day?todayHtml(tl.k):duesHtml(tl));
     });
     vh.addEventListener('change',function(ev){
       if(ev.target.name==='topk'){topKind=ev.target.value;renderHome()}
@@ -1614,7 +1459,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       DU={recv:d.recv||[],pay:d.pay||[],arecv:d.arecv||[],apaid:d.apaid||[]};save(DUES_KEY,DU);renderHome();
     }).catch(function(){});
   }
-  renderHome();sheetLoadSummary();
+  renderHome();sheetLoadSummary();sheetLoadToday();
   /* ---------- Bill (Outward + Inward) ---------- */
   var BILL_KEY='cyan-navy-billno-v1', BILL_IN_KEY='cyan-navy-inbillno-v1';
   function newBill(t){return {type:t||'out',cust:'',date:todayStr(),touched:false,rows:[],cur:{item:'',rate:'',qty:''},edit:null,labour:'',trans:'',misc:'',disc:''}}
@@ -2428,7 +2273,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     if(tab==='admin'&&(adminView==='items'||adminView==='prices'))sheetLoadItems(true);
     if(tab==='admin'&&adminView==='customer')sheetLoadCustomers(true);
     if(tab==='admin'&&(adminView==='ebill'||adminView==='dbill'))abOpen();
-    if(tab==='home')sheetLoadSummary();
+    if(tab==='home'){sheetLoadSummary();sheetLoadToday()}
     if(tab==='reports'){openReports();sheetLoadCustomers()}else if(typeof bTipHide==='function')bTipHide();
     if(tab==='payment'){if(!pay.touched)pay.date=todayStr();renderPay();sheetLoadCustomers();sheetLoadSuppliers()}
     if(tab==='bill'){if(!bill.touched)bill.date=todayStr();renderBill();sheetLoadItems();sheetLoadCustomers();sheetLoadSuppliers()}
@@ -2440,7 +2285,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   }
   /* Header back arrow: from an Admin sub-screen go to the Admin menu, from anywhere else go Home. */
   function goBack(){
-    if(tab==='reports'&&repView!=='menu'){repView='menu';return showView()}
+    if(tab==='reports'&&repView!=='menu'){repView=(repView==='cr'&&CR.back)?'cw':'menu';return showView()}
     if(tab==='admin'&&adminView!=='menu'){adminView='menu';priceEdit=null;return showView()}
     setTab('home');
   }
@@ -2656,8 +2501,8 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   function dbParties(){return DB.kind==='out'?customers:suppliers}
   function dbMenu(){
     return '<h2>Reports<span class="gu">રિપોર્ટ</span></h2><div class="menu">'+
-      [['out','Outward Bills','જાવક બિલ','Display all sales bills · બધા વેચાણ બિલ જુઓ'],['in','Inward Bills','આવક બિલ','Display all purchase bills · બધા ખરીદી બિલ જુઓ'],['sr','Sales Report','વેચાણ રિપોર્ટ','Item-wise sales by month & year (infographic) · મહિના અને વર્ષ મુજબ આઇટમ વેચાણ'],['cr','Customer-wise Report','ગ્રાહક મુજબ રિપોર્ટ','Full record: bills, payments & outstanding · બિલ, ચુકવણી અને બાકી'],['bs','Account of Debit and Credit','જમા અને ઉધાર નો હિસાબ','Customers and suppliers on one screen · ગ્રાહક અને સપ્લાયર એક સ્ક્રીનમાં'],['pl','Price List','ભાવ પત્રક','View customer / supplier rates · ગ્રાહક / સપ્લાયર ભાવ જુઓ']].map(function(r){
-        return '<button class="opt" data-rep="'+r[0]+'"><span class="dot">'+(r[0]==='bs'?RP_ICON.bs:r[0]==='pl'?RP_ICON.pl:r[0]==='cr'?RP_ICON.pay:RP_ICON.bill)+'</span><span class="t"><b>'+r[1]+'</b><span class="gu">'+r[2]+'</span><small>'+r[3]+'</small></span>'+CHEV+'</button>';
+      [['out','Outward Bills','જાવક બિલ','Display all sales bills · બધા વેચાણ બિલ જુઓ'],['in','Inward Bills','આવક બિલ','Display all purchase bills · બધા ખરીદી બિલ જુઓ'],['sr','Sales Report','વેચાણ રિપોર્ટ','Item-wise sales by month & year (infographic) · મહિના અને વર્ષ મુજબ આઇટમ વેચાણ'],['cr','Customer-wise Report','ગ્રાહક મુજબ રિપોર્ટ','Full record: bills, payments & outstanding · બિલ, ચુકવણી અને બાકી'],['cw','City Wise Report','શહેર મુજબ રિપોર્ટ','Customers of a city with outstanding · શહેરના ગ્રાહક અને બાકી'],['bs','Account of Debit and Credit','જમા અને ઉધાર નો હિસાબ','Customers and suppliers on one screen · ગ્રાહક અને સપ્લાયર એક સ્ક્રીનમાં'],['pl','Price List','ભાવ પત્રક','View customer / supplier rates · ગ્રાહક / સપ્લાયર ભાવ જુઓ']].map(function(r){
+        return '<button class="opt" data-rep="'+r[0]+'"><span class="dot">'+(r[0]==='bs'?RP_ICON.bs:r[0]==='pl'?RP_ICON.pl:(r[0]==='cr'||r[0]==='cw')?RP_ICON.pay:RP_ICON.bill)+'</span><span class="t"><b>'+r[1]+'</b><span class="gu">'+r[2]+'</span><small>'+r[3]+'</small></span>'+CHEV+'</button>';
       }).join('')+'</div>';
   }
   function dbShell(){
@@ -2858,7 +2703,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     var v=$('#v-reports');
     if(repView==='bs'){DB.kind='';v.innerHTML=bsShell();bsBody();bsLoad();return}
     if(repView==='pl'){DB.kind='';v.innerHTML=plShell();plBody();return}
-    if(repView==='sr'||repView==='cr'){DB.kind='out';v.innerHTML=xrShell();xrBody();outLoad();return}
+    if(repView==='sr'||repView==='cr'||repView==='cw'){DB.kind='out';v.innerHTML=xrShell();xrBody();outLoad();return}
     if(repView==='out'||repView==='in'){
       if(DB.kind!==repView){DB={kind:repView,from:'',to:'',no:'',party:'',pq:''}}
       v.innerHTML=dbShell();dbBody();dbLoad();
@@ -2897,12 +2742,14 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   })();
   /* ---------- Reports: Sales Report (item-wise infographic) + Customer-wise Report (ledger) ----------
      Sales Report reads every sales bill's item lines (type=itemsales); Customer-wise Report reads bills + payments (type=report). */
-  function newSR(){return {year:'all',month:0,city:'',cq:'',party:'',pq:'',iq:'',all:false}}
-  function newCR(){return {from:'',to:'',party:'',pq:'',custom:false}}
-  var SR=newSR(), CR=newCR(), SI={lines:null,state:'',cities:{},years:[],nItems:0,agg:null};
+  function newSR(){return {mode:'date',year:'all',month:0,city:'',cq:'',party:'',pq:'',iq:'',all:true,openDate:'',openItem:''}}
+  function newCR(){return {from:'',to:'',party:'',pq:'',custom:false,open:false,back:false}}
+  function newCW(){return {city:'',cq:'',only:false}}
+  function isXR(){return repView==='sr'||repView==='cr'||repView==='cw'}
+  var SR=newSR(), CR=newCR(), CW=newCW(), SI={lines:null,state:'',cities:{},years:[],nItems:0,agg:null};
   var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var PAL=['#06B6D4','#3B82F6','#10B981','#F59E0B','#EF4444','#8B5CF6','#94A3B8'];
-  function xrS(){return repView==='sr'?SR:CR}
+  function xrS(){return repView==='sr'?SR:repView==='cw'?CW:CR}
   function xrDmy(d){return pad2(d.getDate())+'/'+pad2(d.getMonth()+1)+'/'+d.getFullYear()}
   function xrRange(S){
     var lo=parseDmy(S.from),hi=parseDmy(S.to);
@@ -2945,6 +2792,8 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       opts:function(q){return xrCities().filter(function(c){return !q||norm(c).indexOf(q)>-1}).map(function(c){return {v:c,t:c,s:''}})}},
     'sr-cust':{S:function(){return SR},vk:'party',tk:'pq',all:'All customers · બધા ગ્રાહક',
       opts:function(q){var city=norm(SR.city);return customers.filter(function(c){return (!city||norm(c.city)===city)&&(!q||norm(c.en).indexOf(q)>-1||norm(c.city).indexOf(q)>-1)}).map(function(c){return {v:String(c.id),t:c.en,s:c.city||''}})}},
+    'cw-city':{S:function(){return CW},vk:'city',tk:'cq',all:'All cities · બધા શહેર',
+      opts:function(q){return xrCities().filter(function(c){return !q||norm(c).indexOf(q)>-1}).map(function(c){return {v:c,t:c,s:''}})}},
     'cr-cust':{S:function(){return CR},vk:'party',tk:'pq',all:'',
       opts:function(q){return customers.filter(function(c){return !q||norm(c.en).indexOf(q)>-1||norm(c.city).indexOf(q)>-1}).map(function(c){return {v:String(c.id),t:c.en,s:c.city||''}})}}
   };
@@ -2986,15 +2835,21 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     var back='<div class="noprint"><button class="back" id="repBack">'+BACK+'Reports · રિપોર્ટ</button></div>';
     if(sr)return back+
       '<h2>Sales Report<span class="gu">વેચાણ રિપોર્ટ</span></h2>'+
+      '<div class="seg sr-mode noprint" role="radiogroup" aria-label="Report type"><label><input type="radio" name="srm" value="date"'+(SR.mode==='date'?' checked':'')+'><span>Date Wise<small>તારીખ મુજબ</small></span></label><label><input type="radio" name="srm" value="item"'+(SR.mode==='item'?' checked':'')+'><span>Item Wise<small>આઇટમ મુજબ</small></span></label></div>'+
       '<div class="sr-fb noprint"><button type="button" class="chip fbtn" id="sr-more"><span id="sr-fsum"></span><b>▾</b></button><button type="button" class="chip" id="xr-clear">✕ Clear</button></div>'+
       '<div class="card sr-fp noprint" id="sr-fp" hidden><div class="r2">'+xdHtml('sr-city','City · શહેર')+xdHtml('sr-cust','Customer · ગ્રાહક')+'</div></div>'+
+      '<div id="xr-body"></div>';
+    if(repView==='cw')return back+
+      '<h2>City Wise Report<span class="gu">શહેર મુજબ રિપોર્ટ</span></h2>'+
+      '<div class="card xf noprint">'+xdHtml('cw-city','Select or type city · શહેર પસંદ કરો / લખો')+
+      '<div class="xchips"><button type="button" class="chip" id="cw-only">Outstanding only · બાકી વાળા</button><button type="button" class="chip" id="xr-clear">✕ Clear</button></div></div>'+
       '<div id="xr-body"></div>';
     function dt(id,k,ph){return '<input type="text" inputmode="numeric" maxlength="10" id="'+id+'" data-dm="'+k+'" placeholder="'+ph+'" autocomplete="off" value="'+esc(CR[k])+'">'}
     return back+
       '<h2>Customer-wise Report<span class="gu">ગ્રાહક મુજબ રિપોર્ટ</span></h2>'+
-      '<div class="card xf noprint">'+xdHtml('cr-cust','Select customer · ગ્રાહક પસંદ કરો')+
-      '<div class="xchips"><button type="button" class="chip" data-xpre="all">All · બધા</button><button type="button" class="chip" data-xpre="m">This month</button><button type="button" class="chip" data-xpre="lm">Last month</button><button type="button" class="chip" data-xpre="y">This year</button><button type="button" class="chip" id="xr-custom">Custom ▾</button><button type="button" class="chip" id="xr-clear">✕ Clear</button></div>'+
-      '<div class="r2 xf-d" id="xf-d" hidden>'+dt('xr-from','from','From DD/MM/YYYY')+dt('xr-to','to','To DD/MM/YYYY')+'</div></div>'+
+      '<div class="card xf noprint"><div class="xf-r">'+xdHtml('cr-cust','Select customer · ગ્રાહક પસંદ કરો')+'<button type="button" class="chip xf-b" id="xr-fbtn">Period ▾</button></div>'+
+      '<div class="xf-p" id="xf-p" hidden><div class="xchips"><button type="button" class="chip" data-xpre="all">All · બધા</button><button type="button" class="chip" data-xpre="m">This month</button><button type="button" class="chip" data-xpre="lm">Last month</button><button type="button" class="chip" data-xpre="y">This year</button><button type="button" class="chip" id="xr-custom">Custom ▾</button><button type="button" class="chip" id="xr-clear">✕ Clear</button></div>'+
+      '<div class="r2 xf-d" id="xf-d" hidden>'+dt('xr-from','from','From DD/MM/YYYY')+dt('xr-to','to','To DD/MM/YYYY')+'</div></div></div>'+
       '<div id="xr-body"></div>';
   }
   function xrPeriod(S){
@@ -3005,7 +2860,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     return '<div class="pnote" style="display:block">'+(st==='err'?'Could not load data. · માહિતી લોડ ન થઈ.':'Loading… · લોડ થઈ રહ્યું છે…')+'</div>'+(st==='err'?'<button type="button" class="btn sec" id="'+retryId+'">Retry · ફરી પ્રયત્ન</button>':'');
   }
   function xrBody(){
-    if(repView!=='sr'&&repView!=='cr')return;
+    if(!isXR())return;
     var el=$('#xr-body');if(!el)return;
     if(repView==='sr'){
       var fs=$('#sr-fsum');if(fs)fs.textContent=(SR.city||'All cities')+' · '+((SR.party||SR.pq)?(SR.pq||'1 customer'):'All customers');
@@ -3013,6 +2868,14 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       srRender(el);return;
     }
     var D=RP.data.out,st=RP.state.out;
+    if(repView==='cw'){
+      var ob=$('#cw-only');if(ob)ob.classList.toggle('on',!!CW.only);
+      if(!D){el.innerHTML=xrMsg(st,'xr-retry');return}
+      cwRender(el,D);return;
+    }
+    var pk=xrPreOn(CR),fb=$('#xr-fbtn');
+    if(fb)fb.textContent=(CR.custom?'Custom':pk==='m'?'This month':pk==='lm'?'Last month':pk==='y'?'This year':pk==='all'?'All dates':'Custom')+' ▾';
+    var fp=$('#xf-p');if(fp)fp.hidden=!CR.open;
     $$('#v-reports .chip[data-xpre]').forEach(function(c){c.classList.toggle('on',!CR.custom&&c.dataset.xpre===xrPreOn(CR))});
     var cb=$('#xr-custom');if(cb)cb.classList.toggle('on',!!CR.custom);
     var fd=$('#xf-d');if(fd)fd.hidden=!CR.custom;
@@ -3030,7 +2893,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       if(city)ci[norm(city)]=city;yr[y]=1;
       (b.items||[]).forEach(function(x){
         var id=(x.id!=null&&x.id!=='')?String(x.id):norm(x.name);ni[id]=1;
-        L.push({y:y,m:m,pid:pid,pn:pnm,city:norm(city),id:id,name:x.name||'',gu:x.gu||'',unit:x.unit||'',q:+x.qty||0,a:+x.amount||0,no:b.billNo});
+        L.push({y:y,m:m,key:y*10000+m*100+d.getDate(),ds:b.date,pname:b.party||'',cd:city,pid:pid,pn:pnm,city:norm(city),id:id,name:x.name||'',gu:x.gu||'',unit:x.unit||'',q:+x.qty||0,a:+x.amount||0,no:b.billNo});
       });
     });
     SI.cities=ci;SI.years=Object.keys(yr).map(Number).sort(function(a,b){return a-b});SI.nItems=Object.keys(ni).length;
@@ -3088,12 +2951,65 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       segs.map(function(g,i){return '<div><i style="background:'+PAL[i]+'"></i><span>'+esc(g.n)+'</span><b>'+(g.v/A.tot*100).toFixed(1)+'%</b></div>'}).join('')+'</div></div>'+
       (function(){var s10=0;A.list.slice(0,10).forEach(function(o){s10+=o.a});var p=(s10/A.tot*100).toFixed(0);return '<div class="pnote">Top 10 items = '+p+'% of sales · ટોચની 10 આઇટમ = '+p+'% વેચાણ</div>'})();
   }
-  function srRender(el){
-    var A=siAgg();SI.agg=A;
-    var Y=SR.year==='all'?0:+SR.year;
+  function svSticky(Y){
     var h='<div class="sv-sticky"><div class="xchips"><button type="button" class="chip'+(!Y?' on':'')+'" data-yr="all">All years · બધા વર્ષ</button>'+
       SI.years.map(function(y){return '<button type="button" class="chip'+(Y===y?' on':'')+'" data-yr="'+y+'">'+y+'</button>'}).join('')+'</div>'+
       (Y?'<div class="xchips"><button type="button" class="chip sm'+(!SR.month?' on':'')+'" data-mo="0">All</button>'+MON.map(function(n,i){return '<button type="button" class="chip sm'+(SR.month===i+1?' on':'')+'" data-mo="'+(i+1)+'">'+n+'</button>'}).join('')+'</div>':'')+'</div>';
+    return h;
+  }
+  function svR(v){return Math.round(v*100)/100}
+  var WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  /* customer-wise lines inside an opened date / item */
+  function svCustRows(map,showQty){
+    var L=Object.keys(map).map(function(k){return map[k]}).sort(function(a,b){return b.a-a.a}),T=0;
+    L.forEach(function(c){T+=c.a});
+    return L.map(function(c){
+      var n=Object.keys(c.bills).length;
+      return '<div class="dw-c"><span class="nm"><b>'+esc(c.name)+'</b><small>'+esc([c.city,showQty?pn(svR(c.q))+' '+unitShort(c.unit):'',n+(n===1?' bill':' bills')].filter(Boolean).join(' · '))+'</small></span><b class="am">₹'+pn(svR(c.a))+'</b></div>';
+    }).join('')+'<div class="dw-c dw-t"><span class="nm"><b>Total · કુલ</b><small>'+L.length+(L.length===1?' customer':' customers')+' · ગ્રાહક</small></span><b class="am">₹'+pn(svR(T))+'</b></div>';
+  }
+  /* Date Wise: one row per date with that day's sales; tap a date to see customer-wise sales under it */
+  function siDates(){
+    var Y=SR.year==='all'?0:+SR.year,m={},tot=0,bills={};
+    SI.lines.forEach(function(l){
+      if(!siPass(l))return;if(Y&&l.y!==Y)return;if(SR.month&&l.m!==SR.month)return;
+      var o=m[l.ds]||(m[l.ds]={ds:l.ds,key:l.key,a:0,bills:{},c:{}});
+      o.a+=l.a;o.bills[l.no]=1;
+      var c=o.c[l.pid]||(o.c[l.pid]={name:l.pname,city:l.cd,a:0,bills:{}});c.a+=l.a;c.bills[l.no]=1;
+      tot+=l.a;bills[l.no]=1;
+    });
+    return {L:Object.keys(m).map(function(k){return m[k]}).sort(function(a,b){return b.key-a.key}),tot:tot,nb:Object.keys(bills).length};
+  }
+  function svDateList(){
+    var A=SI.dagg;
+    return A.L.map(function(o){
+      var open=SR.openDate===o.ds,nb=Object.keys(o.bills).length,nc=Object.keys(o.c).length,d=parseDmy(o.ds);
+      return '<button type="button" class="dw-r'+(open?' on':'')+'" data-dt="'+esc(o.ds)+'"><span class="nm"><b>'+esc(o.ds)+'</b><small>'+(d?WD[d.getDay()]+' · ':'')+nb+(nb===1?' bill':' bills')+' · '+nc+(nc===1?' customer':' customers')+'</small></span><span class="am">₹'+pn(svR(o.a))+'</span></button>'+
+        (open?'<div class="dw-p">'+svCustRows(o.c,false)+'</div>':'');
+    }).join('');
+  }
+  function svDateRefresh(){var e=$('#sr-dl');if(e)e.innerHTML=svDateList()}
+  function srDateRender(el){
+    var Y=SR.year==='all'?0:+SR.year,h=svSticky(Y),A=siDates();SI.dagg=A;
+    if(!A.L.length){el.innerHTML=h+'<div class="pnote" style="display:block">No sales found. · કોઈ વેચાણ મળ્યું નથી.</div>';return}
+    el.innerHTML=h+'<div class="rsum"><div><small>Sales · વેચાણ</small><b>₹'+fmtC(A.tot)+'</b></div><div><small>Bills · બિલ</small><b>'+pn(A.nb)+'</b></div><div><small>Days · દિવસ</small><b>'+A.L.length+'</b></div></div>'+
+      '<div class="pnote" style="display:block">'+svPeriod()+' · tap a date for customer-wise sales · તારીખ દબાવો</div><div class="dw-l" id="sr-dl">'+svDateList()+'</div>';
+    var on=el.querySelector('.chip.sm.on'),row=on&&on.parentNode;
+    if(row)row.scrollLeft=on.offsetLeft-row.clientWidth/2+on.offsetWidth/2;
+  }
+  function siItemCust(id){
+    var Y=SR.year==='all'?0:+SR.year,m={};
+    SI.lines.forEach(function(l){
+      if(l.id!==id||!siPass(l))return;if(Y&&l.y!==Y)return;if(SR.month&&l.m!==SR.month)return;
+      var c=m[l.pid]||(m[l.pid]={name:l.pname,city:l.cd,a:0,q:0,unit:l.unit,bills:{}});c.a+=l.a;c.q+=l.q;c.bills[l.no]=1;
+    });
+    return svCustRows(m,true);
+  }
+  function srRender(el){
+    if(SR.mode==='date'){srDateRender(el);return}
+    var A=siAgg();SI.agg=A;
+    var Y=SR.year==='all'?0:+SR.year;
+    var h=svSticky(Y);
     if(!A.list.length){el.innerHTML=h+'<div class="pnote" style="display:block">No sales found. · કોઈ વેચાણ મળ્યું નથી.</div>';return}
     var top=A.list[0];
     h+='<div class="sv-kp"><div class="sv-k main"><small>Item Sales · વેચાણ</small><b>₹'+fmtC(A.tot)+'</b><em>'+svPeriod()+'</em></div>'+
@@ -3106,7 +3022,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       var bm=cols.slice().sort(function(a,b){return b.v-a.v})[0];if(bm&&bm.v)best='Best: '+bm.l+' ₹'+fmtC(bm.v);
     }else cols=SI.years.map(function(y){return {k:y,l:String(y),v:A.byYear[y]||0,t:'yr'}});
     h+='<div class="sv-x"><div class="sv-h"><b>'+(Y?'Sales by Month · મહિના મુજબ':'Sales by Year · વર્ષ મુજબ')+'</b><span>'+(best||'Tap a bar · બાર દબાવો')+'</span></div>'+svBars(cols,Y?'':'yr')+'</div>';
-    h+='<div class="sv-x"><div class="sv-h"><b>Top Items · ટોચની આઇટમ</b><span>'+svPeriod()+'</span></div><input type="text" class="sv-q" id="sr-iq" placeholder="Search item · આઇટમ શોધો" autocomplete="off" value="'+esc(SR.iq)+'"><div id="sr-rank"></div></div>';
+    h+='<div class="sv-x"><div class="sv-h"><b>Item Wise Sales · આઇટમ મુજબ</b><span>Tap an item · આઇટમ દબાવો</span></div><input type="text" class="sv-q" id="sr-iq" placeholder="Search item · આઇટમ શોધો" autocomplete="off" value="'+esc(SR.iq)+'"><div id="sr-rank"></div></div>';
     h+='<div class="sv-x"><div class="sv-h"><b>Item × '+(Y?'Month':'Year')+' · '+(Y?'મહિના':'વર્ષ')+' મુજબ</b><span>Top 10 · '+(Y?Y:'all years')+'</span></div>'+svHeat(A,Y)+'<div class="pnote">Tap any cell for details · વિગત માટે દબાવો</div></div>';
     h+='<div class="sv-x"><div class="sv-h"><b>Sales Share · હિસ્સો</b><span>'+svPeriod()+'</span></div>'+svDonut(A)+'</div>';
     h+='<div class="pnote" style="display:block">Item Sales = total of item amounts (labour, transport &amp; discount not included). · વેચાણ = આઇટમની રકમનો કુલ.</div>';
@@ -3120,7 +3036,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     var q=norm(SR.iq),L=A.list.filter(function(o){return !q||norm(o.name).indexOf(q)>-1||norm(o.gu).indexOf(q)>-1});
     var mx=A.list.length?A.list[0].a:1,N=(SR.all||q)?L.length:Math.min(10,L.length);
     el.innerHTML=L.slice(0,N).map(function(o,i){
-      return '<button type="button" class="sv-ir" data-item="'+esc(o.id)+'"><span class="rk">'+(A.list.indexOf(o)+1)+'</span><span class="nm"><b>'+esc(o.name)+'</b><small>'+esc(o.gu)+'</small><span class="bar"><u style="width:'+Math.max(o.a/mx*100,1.5).toFixed(1)+'%"></u></span></span><span class="vl"><b>₹'+fmtC(o.a)+'</b><small>'+pn(r2(o.q))+' '+esc(unitShort(o.unit))+' · '+(A.tot?(o.a/A.tot*100).toFixed(1):0)+'%</small></span></button>';
+      return '<button type="button" class="sv-ir'+(SR.openItem===o.id?' on':'')+'" data-ritem="'+esc(o.id)+'"><span class="rk">'+(A.list.indexOf(o)+1)+'</span><span class="nm"><b>'+esc(o.name)+'</b><small>'+esc(o.gu)+'</small><span class="bar"><u style="width:'+Math.max(o.a/mx*100,1.5).toFixed(1)+'%"></u></span></span><span class="vl"><b>₹'+fmtC(o.a)+'</b><small>'+pn(r2(o.q))+' '+esc(unitShort(o.unit))+' · '+(A.tot?(o.a/A.tot*100).toFixed(1):0)+'%</small></span></button>'+(SR.openItem===o.id?'<div class="dw-p">'+siItemCust(o.id)+'</div>':'');
     }).join('')+(L.length?'':'<div class="pnote" style="display:block">No match · મળ્યું નહીં</div>')+
       (!q&&L.length>10?'<button type="button" class="btn sec" id="sr-showall">'+(SR.all?'Show top 10 · ટોચની 10':'Show all '+L.length+' items · બધી આઇટમ')+'</button>':'');
   }
@@ -3137,6 +3053,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     var u=esc(unitShort(un));
     openMdl('<div class="vh"><b>'+esc(nm)+'</b></div><div class="vm">'+esc(gu)+(gu?' · ':'')+(Y?Y:'All years · બધા વર્ષ')+'</div>'+
       '<div class="sv-kp" style="margin:10px 0"><div class="sv-k"><small>Sold · વેચાણ</small><b>'+pn(r2(q))+' '+u+'</b></div><div class="sv-k"><small>Amount · રકમ</small><b>₹'+fmtC(a)+'</b></div></div>'+
+      '<div class="sv-h" style="margin:4px 0 6px"><b>Customer-wise · ગ્રાહક મુજબ</b><span>'+(Y?Y:'All years')+'</span></div><div class="dw-p" style="margin:0 0 12px">'+siItemCust(id)+'</div>'+
       svBars(cols,Y?'':'yr')+
       '<div class="sv-tb"><div class="sv-tr sv-th"><span>'+(Y?'Month':'Year')+'</span><span>Qty</span><span>Amount</span></div>'+
       cols.filter(function(c){return rows[c.k]}).map(function(c){var o=rows[c.k];return '<div class="sv-tr"><span>'+c.l+'</span><span>'+pn(r2(o.q))+' '+u+'</span><b>₹'+pn(r2(o.a))+'</b></div>'}).join('')+'</div>');
@@ -3171,6 +3088,32 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       (adv>0?'<div class="pnote" style="display:block">Advance received (not against a bill) · એડવાન્સ મળ્યા: ₹'+pn(adv)+'</div>':'')+
       '<div class="pnote" style="display:block">Outstanding = all unpaid bills, all dates · બાકી = બધા બિલ, બધી તારીખ</div>';
   }
+  /* ----- City Wise Report: customers of a city with their outstanding; tap one to open the Customer-wise Report ----- */
+  function cwR(v){return Math.round(v*100)/100}
+  function cwRender(el,D){
+    var due={},by={};
+    D.bills.forEach(function(b){var k=String(b.partyId);due[k]=(due[k]||0)+(+b.due||0)});
+    customers.forEach(function(c){by[String(c.id)]={id:String(c.id),name:c.en,city:String(c.city||'').trim()}});
+    D.bills.forEach(function(b){var k=String(b.partyId);if(!by[k])by[k]={id:k,name:b.party,city:xrBillCity(b).trim()}});
+    var all=Object.keys(by).map(function(k){var o=by[k];o.due=cwR(due[k]||0);return o});
+    var cn=norm(CW.city),qn=norm(CW.cq),h='';
+    if(!cn&&!qn){
+      var g={};
+      all.forEach(function(o){var k=norm(o.city)||'~';var x=g[k]||(g[k]={city:o.city||'—',n:0,due:0});x.n++;x.due+=o.due});
+      var L=Object.keys(g).map(function(k){var x=g[k];x.due=cwR(x.due);return x}).filter(function(x){return !CW.only||x.due>0}).sort(function(a,b){return b.due-a.due||a.city.localeCompare(b.city)});
+      var T=0;L.forEach(function(x){T+=x.due});
+      h='<div class="rsum" style="grid-template-columns:1fr 1fr"><div><small>Cities · શહેર</small><b>'+L.length+'</b></div><div class="d"><small>Outstanding · બાકી</small><b>₹'+pn(cwR(T))+'</b></div></div>'+
+        '<div class="pnote" style="display:block">Tap a city, or type / pick one above. · શહેર દબાવો અથવા ઉપર લખો.</div><div class="cw-l">'+
+        L.map(function(x){return '<button type="button" class="cw-r" data-cwcity="'+esc(x.city==='—'?'':x.city)+'"'+(x.city==='—'?' disabled':'')+'><span class="nm"><b>'+esc(x.city)+'</b><small>'+x.n+' customers · ગ્રાહક</small></span><span class="am'+(x.due>0?' dn':' ok')+'">'+(x.due>0?'₹'+pn(x.due):'Cleared ✓')+'</span></button>'}).join('')+'</div>';
+      el.innerHTML=h;return;
+    }
+    var rows=all.filter(function(o){return (cn?norm(o.city)===cn:norm(o.city).indexOf(qn)>-1)&&(!CW.only||o.due>0)}).sort(function(a,b){return b.due-a.due||a.name.localeCompare(b.name)});
+    var T2=0;rows.forEach(function(o){T2+=o.due});
+    h='<div class="rsum" style="grid-template-columns:1fr 1fr"><div><small>Customers · ગ્રાહક</small><b>'+rows.length+'</b></div><div class="d"><small>Outstanding · બાકી</small><b>₹'+pn(cwR(T2))+'</b></div></div>'+
+      '<div class="pnote" style="display:block">'+esc(CW.city||CW.cq)+' · tap a customer for the full report · ગ્રાહક દબાવો</div><div class="cw-l">'+
+      (rows.length?rows.map(function(o){return '<button type="button" class="cw-r" data-cwc="'+esc(o.id)+'"><span class="nm"><b>'+esc(o.name)+'</b>'+(CW.city?'':'<small>'+esc(o.city)+'</small>')+'</span><span class="am'+(o.due>0?' dn':' ok')+'">'+(o.due>0?'₹'+pn(o.due):'Cleared ✓')+'</span></button>'}).join(''):'<div class="pnote" style="display:block">No customers found. · કોઈ ગ્રાહક મળ્યા નથી.</div>')+'</div>';
+    el.innerHTML=h;
+  }
   function outLoad(){
     var sr=repView==='sr';
     if(!SHEET_URL){if(sr)SI.state='err';else RP.state.out='err';xrBody();return}
@@ -3194,9 +3137,10 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     v.addEventListener('click',function(ev){var b=ev.target.closest&&ev.target.closest('button');if(!b)return;
       if(b.dataset.rep==='sr')SR=newSR();
       else if(b.dataset.rep==='cr')CR=newCR();
+      else if(b.dataset.rep==='cw')CW=newCW();
     },true);
     v.addEventListener('input',function(ev){
-      var t=ev.target;if(repView!=='sr'&&repView!=='cr')return;
+      var t=ev.target;if(!isXR())return;
       if(t.id==='sr-iq'){SR.iq=t.value;siRank();return}
       if(t.dataset&&t.dataset.dm){
         t.value=fmtDmyInput(t.value);
@@ -3211,23 +3155,37 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       }
     });
     v.addEventListener('click',function(ev){
-      if(repView!=='sr'&&repView!=='cr')return;
+      if(!isXR())return;
       var t=ev.target,it=t.closest&&t.closest('[data-item]');
       if(it&&repView==='sr'){siItem(it.getAttribute('data-item'));return}
       var b=t.closest&&t.closest('button');if(!b)return;
       if(b.dataset.yr!==undefined){SR.year=b.dataset.yr;if(SR.year==='all')SR.month=0;xrBody()}
       else if(b.dataset.mo!==undefined){SR.month=+b.dataset.mo;xrBody()}
       else if(b.dataset.bar){var k=+b.dataset.k;if(b.dataset.bar==='yr'){SR.year=String(k);SR.month=0}else SR.month=SR.month===k?0:k;xrBody()}
+      else if(b.dataset.dt!==undefined){SR.openDate=SR.openDate===b.dataset.dt?'':b.dataset.dt;svDateRefresh()}
+      else if(b.dataset.ritem!==undefined){SR.openItem=SR.openItem===b.dataset.ritem?'':b.dataset.ritem;siRank()}
       else if(b.id==='sr-more'){var p=$('#sr-fp');p.hidden=!p.hidden}
       else if(b.id==='sr-showall'){SR.all=!SR.all;siRank()}
       else if(b.dataset.xpre){var pr=xrPre(b.dataset.xpre);CR.custom=false;CR.from=pr[0];CR.to=pr[1];$('#xr-from').value=pr[0];$('#xr-to').value=pr[1];xrBody()}
       else if(b.id==='xr-custom'){CR.custom=!CR.custom;xrBody()}
+      else if(b.id==='xr-fbtn'){CR.open=!CR.open;xrBody()}
+      else if(b.id==='cw-only'){CW.only=!CW.only;xrBody()}
+      else if(b.dataset.cwcity!==undefined){CW.city=b.dataset.cwcity;CW.cq=CW.city;var ci=$('#cw-city-q');if(ci)ci.value=CW.city;xrBody()}
+      else if(b.dataset.cwc){var cu=customers.filter(function(x){return String(x.id)===b.dataset.cwc})[0];CR=newCR();CR.party=b.dataset.cwc;CR.pq=cu?cu.en:'';CR.back=true;repView='cr';openReports();v.scrollTop=0;$('#main').scrollTop=0}
       else if(b.dataset.xd&&b.dataset.xa){var l=$('#'+b.dataset.xd+'-l');if(l.hidden)xdList(b.dataset.xd,true);else l.hidden=true}
       else if(b.dataset.xd&&b.hasAttribute('data-xv'))xdPick(b.dataset.xd,b.getAttribute('data-xv'),b.getAttribute('data-xt'));
-      else if(b.id==='xr-clear'){if(repView==='sr')SR=newSR();else CR=newCR();v.innerHTML=xrShell();xrBody()}
+      else if(b.id==='xr-clear'){if(repView==='sr')SR=newSR();else if(repView==='cw')CW=newCW();else{var bk=CR.back;CR=newCR();CR.back=bk}v.innerHTML=xrShell();xrBody()}
       else if(b.id==='xr-retry')outLoad();
     });
+    v.addEventListener('change',function(ev){
+      if(ev.target.name==='srm'){SR.mode=ev.target.value;SR.openDate='';SR.openItem='';xrBody()}
+    });
     document.addEventListener('click',function(ev){
+      /* click outside the opened date / item = fold it back */
+      if(repView==='sr'&&tab==='reports'&&(SR.openDate||SR.openItem)){
+        var tt=ev.target;
+        if(!(tt.closest&&tt.closest('[data-dt],[data-ritem],.dw-p'))){SR.openDate='';SR.openItem='';if(SR.mode==='date')svDateRefresh();else siRank()}
+      }
       if(ev.target.closest&&ev.target.closest('.cbx'))return;
       var a=document.querySelectorAll('.cbl[id$="-l"]');for(var k=0;k<a.length;k++)a[k].hidden=true;
     });
@@ -3281,7 +3239,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
       var b=ev.target.closest('button');if(!b)return;
       if(b.dataset.pk){RP.pk=b.dataset.pk;RP.party='';RP.open={};openReports();return}
       if(b.dataset.rep){repView=b.dataset.rep;RP.party='';RP.open={};openReports();$('#main').scrollTop=0;return}
-      if(b.id==='repBack'){repView='menu';openReports();return}
+      if(b.id==='repBack'){repView=(repView==='cr'&&CR.back)?'cw':'menu';openReports();return}
       if(b.dataset.pre){
         var n=new Date(),y=n.getFullYear(),m=n.getMonth(),k=b.dataset.pre;
         if(k==='all'){RP.from='';RP.to=''}
