@@ -276,6 +276,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent-fill);outline:
 .btn.pri{background:var(--accent-fill);color:var(--on-accent)}
 .btn.sec{background:var(--soft);color:var(--accent)}
 .btn.dng{background:var(--danger);color:#fff}
+.opt.dgr .dot{background:var(--danger);color:#fff}.opt.dgr .t b,.opt.dgr .t .gu{color:var(--danger)}
+.wpcode{margin:12px 0 10px;padding:12px;border-radius:12px;text-align:center;font-size:34px;font-weight:800;letter-spacing:12px;padding-left:24px;user-select:none;-webkit-user-select:none;color:var(--danger);background:repeating-linear-gradient(135deg,var(--soft) 0 8px,transparent 8px 16px);border:1.5px dashed var(--danger)}
 .prompt{background:var(--soft);color:var(--fg);border-radius:12px;padding:14px;line-height:1.5}
 .prompt .gu{display:block;color:var(--accent);font-weight:600}
 .confirm{border:1.5px solid var(--danger);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px}
@@ -863,6 +865,14 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
           <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
         </button>
       </div>
+      <h2>Danger Zone<span class="gu">જોખમી વિભાગ</span></h2>
+      <div class="menu">
+        <button class="opt dgr" id="adm-wipe" type="button">
+          <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg></span>
+          <span class="t"><b>Delete All Data</b><span class="gu">બધો ડેટા કાઢો</span><small>Clears the whole Google Sheet · આખી ગૂગલ શીટ ખાલી થશે</small></span>
+          <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
+        </button>
+      </div>
     </section>
 
     <section class="view" id="v-abill" hidden></section>
@@ -1165,6 +1175,82 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
   /* GOOGLE SHEET: paste your Apps Script Web App URL between the quotes (ends with /exec). Leave empty to save only on this device. */
   var SHEET_URL='https://script.google.com/macros/s/AKfycby-VWnBj_Vjm2OrVG8T7JsLRCuuTmrB6DKl_ykTitiodjoQfU_7sZzgQ8e6A-tEt0zj/exec';
   var QUEUE_KEY='cyan-navy-sheet-queue-v1', SYNC_KEY='cyan-navy-items-synced-v1', PSYNC_KEY='cyan-navy-prices-synced-v1', CSYNC_KEY='cyan-navy-customers-synced-v1';
+
+  /* ===== SPEED (added): cache for Sheet GET calls + ONE 'init' call at startup =====
+     - fresh answers (< 60 s) come from the phone, no network wait
+     - if the network is slower than 2.5 s, the last good answer is shown instead (and refreshed in background)
+     - any save (POST) clears this cache, so screens never show old numbers after a save
+     - add '&nc=1' to a URL to skip this cache (used for bill number + advance, which must always be live) */
+  (function(){
+    if(!SHEET_URL||!window.fetch||!window.Response)return;
+    var raw=window.fetch.bind(window), TTL=60000, SLOW=2500, KEEP=1800000, PFX='cn-gc:', VK='cn-gc-ver';
+    var mem={}, fly={}, ver=0, initP=null;
+    try{ver=+(localStorage.getItem(VK)||0)||0}catch(x){}
+    function now(){return Date.now()}
+    function rd(k){
+      var e=mem[k];if(e)return e;
+      try{var s=localStorage.getItem(PFX+k);
+        if(s){var i=s.indexOf('|'),j=s.indexOf('|',i+1);e={t:+s.slice(0,i),v:+s.slice(i+1,j),d:JSON.parse(s.slice(j+1))};mem[k]=e;return e}
+      }catch(x){}
+      return null;
+    }
+    function wr(k,d,v){
+      mem[k]={t:now(),v:v,d:d};
+      try{localStorage.setItem(PFX+k,now()+'|'+v+'|'+JSON.stringify(d))}catch(x){}
+    }
+    function bump(){ver=now();mem={};try{localStorage.setItem(VK,String(ver))}catch(x){}}
+    function ok(e){return !!e&&e.v===ver}
+    function resp(d){return new Response(JSON.stringify(d),{status:200,headers:{'Content-Type':'application/json'}})}
+    function getData(k,u,o){
+      var e=rd(k), v0=ver;
+      if(ok(e)&&now()-e.t<TTL)return Promise.resolve(e.d);
+      var net=raw(u,o).then(function(r){return r.json()}).then(function(d){
+        if(ver===v0&&d&&typeof d==='object'&&!d.error)wr(k,d,v0);
+        return d;
+      });
+      if(!(ok(e)&&now()-e.t<KEEP))return net;
+      return new Promise(function(res){
+        var done=false, tm=setTimeout(function(){if(!done){done=true;res(e.d)}},SLOW);
+        net.then(function(d){if(!done){done=true;clearTimeout(tm);res(d)}},
+                 function(){if(!done){done=true;clearTimeout(tm);res(e.d)}});
+      });
+    }
+    var INIT={'?type=items':1,'?type=customers':1,'?type=suppliers':1,'?type=dues':1,'?type=summary':1};
+    window.fetch=function(u,o){
+      var s=typeof u==='string'?u:((u&&u.url)||'');
+      if(s.indexOf(SHEET_URL)!==0)return raw(u,o);
+      var m=String((o&&o.method)||'GET').toUpperCase();
+      if(m!=='GET'){
+        var p=raw(u,o);bump();
+        p.then(bump,bump);
+        return p;
+      }
+      var k=s.slice(SHEET_URL.length);
+      if(k.indexOf('?type=')!==0||k.indexOf('nc=1')>-1)return raw(u,o);
+      var run=function(){
+        if(o&&o.signal)return getData(k,s,o);
+        return fly[k]||(fly[k]=getData(k,s,o).then(function(d){delete fly[k];return d},function(x){delete fly[k];throw x}));
+      };
+      var w=(INIT[k]&&initP)?initP.then(run,run):run();
+      return w.then(resp);
+    };
+    /* one request instead of items + customers + suppliers + dues + summary */
+    (function(){
+      try{ /* remove cache entries older than 1 day */
+        var del=[],i,key,s,t;
+        for(i=0;i<localStorage.length;i++){key=localStorage.key(i);
+          if(key&&key.indexOf(PFX)===0){s=localStorage.getItem(key)||'';t=+s.slice(0,s.indexOf('|'));if(!t||now()-t>86400000)del.push(key)}}
+        del.forEach(function(x){localStorage.removeItem(x)});
+      }catch(x){}
+      if(navigator.onLine===false)return;
+      var v0=ver;
+      initP=raw(SHEET_URL+'?type=init').then(function(r){return r.json()}).then(function(d){
+        if(ver!==v0||!d||!Array.isArray(d.items)||!d.dues)return;
+        wr('?type=items',d.items,v0);wr('?type=customers',d.customers||[],v0);wr('?type=suppliers',d.suppliers||[],v0);
+        wr('?type=dues',d.dues,v0);wr('?type=summary',d.summary||{},v0);
+      }).catch(function(){}).then(function(){initP=null});
+    })();
+  })();
   var UNITS=[['KG','કિલો'],['Gram','ગ્રામ'],['Quintal','ક્વિન્ટલ'],['Ton','ટન'],['Litre','લિટર'],['Bag','બોરી'],['Box','બોક્સ'],['Dozen','ડઝન'],['Nos','નંગ']];
   /* English word -> Gujarati word. Used for the default translation. Add more pairs as needed. */
   var DICT=[['Items','વસ્તુઓ'],['Item','વસ્તુ'],['Cement','સિમેન્ટ'],['Wheat','ઘઉં'],['Rice','ચોખા'],['Sugar','ખાંડ'],['Salt','મીઠું'],['Flour','લોટ'],['Oil','તેલ'],['Ghee','ઘી'],['Milk','દૂધ'],['Tea','ચા'],['Steel','સ્ટીલ'],['Iron','લોખંડ'],['Sand','રેતી'],['Bricks','ઈંટ'],['Brick','ઈંટ'],['Coal','કોલસો'],['Cotton','કપાસ'],['Groundnut','મગફળી'],['Castor','એરંડા'],['Cumin','જીરું'],['Chana','ચણા'],
@@ -1531,7 +1617,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     function done(){if(cb)cb()}
     if(!SHEET_URL)return done();
     var ctl=window.AbortController?new AbortController():null, to=setTimeout(function(){if(ctl)ctl.abort()},6000);
-    fetch(SHEET_URL+'?type=report&kind='+kind,ctl?{signal:ctl.signal}:{}).then(function(r){return r.json()}).then(function(d){
+    fetch(SHEET_URL+'?type=report&kind='+kind+'&nc=1',ctl?{signal:ctl.signal}:{}).then(function(r){return r.json()}).then(function(d){
       if(!d||!Array.isArray(d.bills))throw 0;
       var m=0;d.bills.forEach(function(b){m=Math.max(m,seqNum(b.billNo))});
       billSeq[kind]=m;save(kind==='out'?BILL_KEY:BILL_IN_KEY,m);
@@ -1728,7 +1814,7 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     function pick(){var o=(DU[key]||[]).filter(function(x){return String(x.id)===pid})[0];return o?Math.max(+o.amt||0,0):0}
     if(!SHEET_URL)return cb(pick());
     if(load(QUEUE_KEY,[]).length){sheetFlush();return cb(pick())}
-    fetch(SHEET_URL+'?type=dues').then(function(r){return r.json()}).then(function(d){
+    fetch(SHEET_URL+'?type=dues&nc=1').then(function(r){return r.json()}).then(function(d){
       if(d&&Array.isArray(d.recv)){DU={recv:d.recv||[],pay:d.pay||[],arecv:d.arecv||[],apaid:d.apaid||[]};save(DUES_KEY,DU)}
       cb(pick());
     }).catch(function(){cb(pick())});
@@ -2003,10 +2089,51 @@ button,input,select,textarea,option,optgroup,label{text-transform:uppercase}
     sheetSend({action:'editBill',type:B.out?'out':'in',billNo:B.no,data:B.data});
     bill=newBill(bill.type);renderBill();toast('Bill updated · બિલ સુધારાયું');
   }
+  /* ---------- Delete ALL data (Admin): 4-digit captcha, then the Sheet is cleared ---------- */
+  var wipeCode='', wiping=false;
+  function wipeAsk(){
+    wipeCode=String(Math.floor(1000+Math.random()*9000));wiping=false;
+    openMdl('<div class="pvt" style="color:var(--danger)">Delete All Data · બધો ડેટા કાઢો</div>'+
+      '<div class="pnote" style="display:block;text-align:center">All items, customers, suppliers, bills and payments will be erased from the Google Sheet and this phone. This cannot be undone. · બધી આઇટમ, ગ્રાહક, સપ્લાયર, બિલ અને ચુકવણી શીટ અને ફોનમાંથી કાઢી નખાશે. આ પાછું ફરશે નહીં.</div>'+
+      '<div class="wpcode" aria-label="Code">'+wipeCode+'</div>'+
+      '<input type="text" id="wp-in" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="Type the 4 digits above · ઉપરના 4 અંક લખો" style="text-align:center;font-size:18px;letter-spacing:4px">'+
+      '<div class="pv-acts"><button type="button" class="btn sec" id="wp-no">Cancel<span class="gu">રદ કરો</span></button><button type="button" class="btn dng" id="wp-go">Delete All<span class="gu">બધું કાઢો</span></button></div>');
+    setTimeout(function(){var i=$('#wp-in');if(i)i.focus()},60);
+  }
+  function wipeFail(msg){wiping=false;closeMdl();toast(msg)}
+  function wipeLocal(){
+    save(QUEUE_KEY,[]);
+    var keep={};[THEME,SYNC_KEY,PSYNC_KEY,CSYNC_KEY,'cyan-navy-demo-cleaned-v2'].forEach(function(k){keep[k]=1});
+    var del=[],i,k;
+    try{
+      for(i=0;i<localStorage.length;i++){k=localStorage.key(i);
+        if(k&&((k.indexOf('cyan-navy-')===0&&!keep[k])||k.indexOf('cn-gc:')===0))del.push(k)}
+      del.forEach(function(x){localStorage.removeItem(x)});
+    }catch(e){}
+    location.reload();
+  }
+  function wipeGo(){
+    var i=$('#wp-in');if(!i||wiping)return;
+    if(i.value!==wipeCode){toast('Wrong code · ખોટો કોડ');wipeAsk();return}
+    if(!SHEET_URL)return wipeLocal();
+    if(navigator.onLine===false)return wipeFail('No internet, nothing deleted · ઇન્ટરનેટ નથી, કંઈ કાઢ્યું નથી');
+    wiping=true;var g=$('#wp-go');if(g){g.disabled=true;g.textContent='Deleting… · કાઢી રહ્યા છીએ…'}
+    fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'clearAll',confirm:'DELETE_ALL'})})
+      .then(function(){return fetch(SHEET_URL+'?type=init&nc=1')}).then(function(r){return r.json()})
+      .then(function(d){
+        /* the browser cannot read the reply of a save, so check that the Sheet is really empty before clearing this phone */
+        if(d&&Array.isArray(d.items)&&!d.items.length&&!(d.customers||[]).length&&!(d.suppliers||[]).length&&d.dues&&!(d.dues.recv||[]).length&&!(d.dues.pay||[]).length)wipeLocal();
+        else wipeFail('Sheet not cleared. Update the Apps Script and try again. · શીટ ખાલી થઈ નથી. Apps Script અપડેટ કરો.');
+      }).catch(function(){wipeFail('Could not confirm. Check the Sheet. · ખાતરી થઈ નથી. શીટ તપાસો.')});
+  }
+  document.addEventListener('input',function(ev){var t=ev.target;if(t&&t.id==='wp-in')t.value=t.value.replace(/\D/g,'')});
   document.addEventListener('click',function(ev){
     var b=ev.target.closest&&ev.target.closest('button');
     if(b){
       if(b.dataset.open==='ebill'||b.dataset.open==='dbill'){adminView=b.dataset.open;showView();return}
+      if(b.id==='adm-wipe'){wipeAsk();return}
+      if(b.id==='wp-no'){wipeCode='';closeMdl();return}
+      if(b.id==='wp-go'){wipeGo();return}
       if(b.id==='abBack'){adminView='menu';showView();return}
       if(b.id==='ab-retry'){abLoad();return}
       if(b.id==='ab-no'){abDel=null;closeMdl();return}
