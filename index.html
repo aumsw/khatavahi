@@ -887,7 +887,7 @@ g-j{display:inline}
       <div class="menu">
         <button class="opt dgr" id="adm-wipe" type="button">
           <span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg></span>
-          <span class="t"><b>Delete All Data</b><span class="gu">બધો ડેટા કાઢો</span><small>Clears the whole Google Sheet · આખી ગૂગલ શીટ ખાલી થશે</small></span>
+          <span class="t"><b>Delete All Data</b><span class="gu">બધો ડેટા કાઢો</span><small>Clears the whole database · આખો ડેટાબેઝ ખાલી થશે</small></span>
           <svg class="i chev" viewBox="0 0 24 24"><path d="M9.4 6 8 7.4l4.6 4.6L8 16.6 9.4 18l6-6z"/></svg>
         </button>
       </div>
@@ -1210,85 +1210,174 @@ g-j{display:inline}
   var ADMIN_T={items:['Items','આઇટમ'],customer:['Customer','ગ્રાહક'],supplier:['Supplier','સપ્લાયર'],prices:['Price List','ભાવ પત્રક'],ebill:['Edit Bill','બિલ સુધારો'],dbill:['Delete Bill','બિલ કાઢો']};
   var TITLES={home:['Khatavahi','ખાતાવહી'],payment:['Payment','ચુકવણી'],bill:['Bill','બિલ'],reports:['Reports','રિપોર્ટ'],admin:['Admin','એડમિન']};
   var THEME='cyan-navy-theme', ITEMS_KEY='cyan-navy-items-v1', PRICES_KEY='cyan-navy-prices-v1', SPRICES_KEY='cyan-navy-sprices-v1';
-  /* GOOGLE SHEET: paste your Apps Script Web App URL between the quotes (ends with /exec). Leave empty to save only on this device. */
-  var SHEET_URL='https://script.google.com/macros/s/AKfycby-VWnBj_Vjm2OrVG8T7JsLRCuuTmrB6DKl_ykTitiodjoQfU_7sZzgQ8e6A-tEt0zj/exec';
+var SHEET_URL='https://db.local/';
+/* ===== SUPABASE BACKEND =====
+   Paste your Supabase Project URL and anon key below (Supabase > Project Settings > API).
+   The whole database is kept in memory + phone storage, so every screen opens instantly;
+   changes are saved to Supabase in the background (the existing queue retries when offline). */
+var SB_URL='https://qxwxhsddgtuepjkxbmos.supabase.co', SB_KEY='sb_publishable_Ws_ea7aLCwgBcUtR7YwZmw_qcil2xC8';
+var OLD_SHEET_URL='https://script.google.com/macros/s/AKfycby-VWnBj_Vjm2OrVG8T7JsLRCuuTmrB6DKl_ykTitiodjoQfU_7sZzgQ8e6A-tEt0zj/exec';
+var SBX=window.SBX={};
+(function(){
+  var raw=window.fetch.bind(window), CK='cn-sb-cache-v1', ok=/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(SB_URL)&&SB_KEY.length>20;
+  var S={items:[],customers:[],suppliers:[],bills:[],pays:[]}, loaded=false, inflight=0, last=0, BD={}, IS=null, rp=null;
+  try{var c=JSON.parse(localStorage.getItem(CK)||'null');if(c&&c.items){S=c;loaded=true}}catch(e){}
+  function keep(){try{localStorage.setItem(CK,JSON.stringify(S))}catch(e){}}
+  function r2(x){return Math.round(x*100)/100}
+  function api(p,o){o=o||{};o.headers=Object.assign({apikey:SB_KEY},SB_KEY.indexOf('sb_')===0?{}:{Authorization:'Bearer '+SB_KEY},o.headers||{});return raw(SB_URL+'/rest/v1/'+p,o)}
+  function req(m,p,body,pref){
+    var h={'Content-Type':'application/json'};if(pref)h.Prefer=pref;
+    return api(p,{method:m,headers:h,body:body?JSON.stringify(body):undefined}).then(function(r){if(!r.ok)throw new Error(r.status);return r});
+  }
+  function all(t,sel,ord){
+    var out=[],off=0;
+    return (function nx(){
+      return api(t+'?select='+sel+'&order='+ord,{headers:{Range:off+'-'+(off+999),'Range-Unit':'items'}}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()}).then(function(a){out=out.concat(a);if(a.length<1000)return out;off+=1000;return nx()});
+    })();
+  }
+  function refresh(){
+    if(!ok||rp)return rp||Promise.resolve();
+    rp=Promise.all([all('items','*','id'),all('customers','*','id'),all('suppliers','*','id'),
+      all('bills','kind,bill_no,bill_date,party_id,party,city,total','kind,bill_no'),all('payments','*','id')]).then(function(a){
+      if(inflight)return;
+      S={items:a[0],customers:a[1],suppliers:a[2],bills:a[3],pays:a[4]};loaded=true;last=Date.now();IS=null;keep();
+    }).catch(function(){}).then(function(){rp=null});
+    return rp;
+  }
+  refresh();
+  window.addEventListener('online',refresh);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden&&Date.now()-last>20000)refresh()});
+  var PK={out:'cust','in':'supp'};
+  function paidMap(pk){var m={};S.pays.forEach(function(p){if(p.kind===pk&&p.bill_no)m[p.bill_no]=(m[p.bill_no]||0)+(+p.amount||0)});return m}
+  function report(kind){
+    var pk=PK[kind],pm=paidMap(pk);
+    return {bills:S.bills.filter(function(b){return b.kind===kind}).map(function(b){var p=r2(pm[b.bill_no]||0);return {id:b.bill_no,billNo:b.bill_no,date:b.bill_date,party:b.party,partyId:b.party_id,city:b.city||'',total:+b.total||0,paid:p,due:r2((+b.total||0)-p)}}),
+      pays:S.pays.filter(function(p){return p.kind===pk}).map(function(p){return {id:p.id,date:p.pay_date,party:p.party_name,partyId:p.party_id,billNo:p.bill_no||'',amount:+p.amount||0,note:p.note||'',adjBill:p.adj_bill||''}})};
+  }
+  function dues(){
+    var o={recv:[],pay:[],arecv:[],apaid:[]};
+    [['out','recv','arecv',S.customers],['in','pay','apaid',S.suppliers]].forEach(function(k){
+      var R=report(k[0]),due={},adv={},nm={};
+      k[3].forEach(function(p){nm[p.id]=p});
+      R.bills.forEach(function(b){if(b.due>0)due[b.partyId]=(due[b.partyId]||0)+b.due});
+      R.pays.forEach(function(p){if(!p.billNo)adv[p.partyId]=(adv[p.partyId]||0)+p.amount});
+      function add(dst,m){Object.keys(m).forEach(function(id){var a=r2(m[id]);if(a>0){var p=nm[id]||{};o[dst].push({id:+id,name:p.en||'',city:p.city||'',amt:a})}})}
+      add(k[1],due);add(k[2],adv);
+    });
+    return o;
+  }
+  function sum(l){return r2(l.reduce(function(a,x){return a+x.amt},0))}
+  function summary(){var d=dues();return {recv:sum(d.recv),pay:sum(d.pay),arecv:sum(d.arecv),apaid:sum(d.apaid)}}
+  function itemsOut(){return S.items.map(function(i){return {id:i.id,en:i.en,gu:i.gu||'',unit:i.unit||'',rate:i.rate,srate:i.srate}})}
+  function get(q){
+    var t=q.get('type'),kind=q.get('kind');
+    if(t==='items')return itemsOut();
+    if(t==='customers')return S.customers;
+    if(t==='suppliers')return S.suppliers;
+    if(t==='dues')return dues();
+    if(t==='summary')return summary();
+    if(t==='init')return {items:itemsOut(),customers:S.customers,suppliers:S.suppliers,dues:dues(),summary:summary()};
+    if(t==='report')return report(kind);
+    if(t==='bills'){var party=q.get('party');return report(kind).bills.filter(function(b){return String(b.partyId)===String(party)})}
+    if(t==='bill'){
+      var no=q.get('no'),k=kind+'|'+no;if(BD[k])return BD[k];
+      return api('bills?kind=eq.'+kind+'&bill_no=eq.'+encodeURIComponent(no)+'&select=data').then(function(r){return r.json()}).then(function(a){return a[0]?a[0].data:{}});
+    }
+    if(t==='itemsales'){
+      if(IS)return IS;
+      return all('bills','bill_no,bill_date,party_id,party,city,items','kind,bill_no').then(function(a){return a});
+    }
+    return {};
+  }
+  /* itemsales needs only outward bills */
+  var _get=get;
+  get=function(q){
+    if(q.get('type')==='itemsales'&&!IS)return api('bills?kind=eq.out&select=bill_no,bill_date,party_id,party,city,items&order=bill_no').then(function(r){return r.json()}).then(function(a){IS=a.map(function(b){return {billNo:b.bill_no,date:b.bill_date,partyId:b.party_id,party:b.party,city:b.city,items:b.items||[]}});return IS});
+    return _get(q);
+  };
+  function upl(arr,fn,row){for(var i=0;i<arr.length;i++)if(fn(arr[i])){Object.assign(arr[i],row);return}arr.push(row)}
+  function drop(arr,fn){for(var i=arr.length-1;i>=0;i--)if(fn(arr[i]))arr.splice(i,1)}
+  function iso(d){var m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(d||'');return m?m[3]+'-'+m[2]+'-'+m[1]:null}
+  function clean(o,keys){var r={};keys.forEach(function(k){if(o[k]!==undefined)r[k]=o[k]});return r}
+  function post(r){
+    var a=r.action,id=r.id,P;
+    var IK=['en','gu','unit','rate','srate'],CKY=['en','mobile','email','address','city'];
+    if(a==='add'){var it=clean(r,IK);it.id=id;upl(S.items,function(x){return x.id===id},it);it=Object.assign({id:id},clean(r,IK));P=['POST','items?on_conflict=id',it,'resolution=merge-duplicates']}
+    else if(a==='editItem'||a==='setRate'){var u=clean(r,a==='setRate'?['rate','srate']:IK);upl(S.items,function(x){return x.id===id},u);P=['PATCH','items?id=eq.'+id,u]}
+    else if(a==='deleteItem'){drop(S.items,function(x){return x.id===id});P=['DELETE','items?id=eq.'+id]}
+    else if(a==='addCustomer'||a==='addSupplier'||a==='editCustomer'||a==='editSupplier'||a==='deleteCustomer'||a==='deleteSupplier'){
+      var tb=/Customer/.test(a)?'customers':'suppliers',row=clean(r,CKY);
+      if(/^add/.test(a)){row.id=id;upl(S[tb],function(x){return x.id===id},row);P=['POST',tb+'?on_conflict=id',row,'resolution=merge-duplicates']}
+      else if(/^edit/.test(a)){upl(S[tb],function(x){return x.id===id},row);P=['PATCH',tb+'?id=eq.'+id,row]}
+      else{drop(S[tb],function(x){return x.id===id});P=['DELETE',tb+'?id=eq.'+id]}
+    }
+    else if(a==='saveBill'||a==='editBill'){
+      var d=r.data,pt=d.customer||d.supplier||{};
+      var row2={kind:r.type,bill_no:r.billNo,bill_date:d.date,date_iso:iso(d.date),party_id:pt.id,party:pt.name,city:pt.city||'',total:d.grandTotal,items:d.items,data:d};
+      BD[r.type+'|'+r.billNo]=d;IS=null;
+      upl(S.bills,function(x){return x.kind===r.type&&x.bill_no===r.billNo},{kind:r.type,bill_no:r.billNo,bill_date:d.date,party_id:pt.id,party:pt.name,city:pt.city||'',total:d.grandTotal});
+      P=['POST','bills?on_conflict=kind,bill_no',row2,'resolution=merge-duplicates'];
+    }
+    else if(a==='deleteBill'){drop(S.bills,function(x){return x.kind===r.type&&x.bill_no===r.billNo});delete BD[r.type+'|'+r.billNo];IS=null;P=['DELETE','bills?kind=eq.'+r.type+'&bill_no=eq.'+encodeURIComponent(r.billNo)]}
+    else if(a==='savePayment'){
+      var p={id:String(id),kind:r.kind,pay_date:r.date,date_iso:r.dateIso||iso(r.date),party_id:r.partyId,party_name:r.partyName,bill_no:r.billNo||'',amount:r.amount,note:r.note||'',adj_bill:r.adjBill||'',saved_at:r.savedAt};
+      upl(S.pays,function(x){return x.id===p.id},p);P=['POST','payments?on_conflict=id',p,'resolution=merge-duplicates'];
+    }
+    else if(a==='clearAll'){
+      S={items:[],customers:[],suppliers:[],bills:[],pays:[]};BD={};IS=null;keep();
+      if(!ok)return Promise.resolve();
+      inflight++;
+      return Promise.all([['items','id=gte.-9223372036854775808'],['customers','id=gte.-9223372036854775808'],['suppliers','id=gte.-9223372036854775808'],['bills','bill_no=not.is.null'],['payments','id=not.is.null']].map(function(t){return req('DELETE',t[0]+'?'+t[1])})).then(function(){inflight--},function(e){inflight--;throw e});
+    }
+    else return Promise.resolve();
+    keep();
+    if(!ok)return Promise.resolve();
+    inflight++;
+    return req(P[0],P[1],P[2],P[3]).then(function(){inflight--},function(e){inflight--;throw e});
+  }
+  window.fetch=function(u,o){
+    var s=typeof u==='string'?u:((u&&u.url)||'');
+    if(s.indexOf(SHEET_URL)!==0)return raw(u,o);
+    function J(d){return new Response(JSON.stringify(d),{status:200,headers:{'Content-Type':'application/json'}})}
+    if(String((o&&o.method)||'GET').toUpperCase()==='POST'){
+      var rec;try{rec=JSON.parse(o.body)}catch(e){return Promise.reject(new Error('bad'))}
+      return post(rec).then(function(){return J({ok:1})});
+    }
+    var q=new URLSearchParams(s.slice(SHEET_URL.length).replace(/^\?/,''));
+    var go=function(){return Promise.resolve(get(q)).then(J)};
+    return (loaded||!ok)?go():(rp||refresh()).then(go);
+  };
+  /* ---- one-time copy of the old Google Sheet data into Supabase ---- */
+  SBX.migrate=function(say){
+    if(!ok)return say('Paste SB_URL and SB_KEY first');
+    function g(u){return raw(OLD_SHEET_URL+u).then(function(r){return r.json()})}
+    function put(t,rows,conf){
+      var ch=[];for(var i=0;i<rows.length;i+=200)ch.push(rows.slice(i,i+200));
+      return ch.reduce(function(p,c){return p.then(function(){return req('POST',t+'?on_conflict='+conf,c,'resolution=merge-duplicates')})},Promise.resolve());
+    }
+    say('Reading old Google Sheet…');
+    var NB={};
+    return Promise.all([g('?type=items'),g('?type=customers'),g('?type=suppliers'),g('?type=report&kind=out&nc=1'),g('?type=report&kind=in&nc=1')]).then(function(a){
+      var it=a[0].map(function(i){return {id:+i.id,en:i.en,gu:i.gu||'',unit:i.unit||'',rate:(i.rate===''||i.rate==null)?null:+i.rate,srate:(i.srate===''||i.srate==null)?null:+i.srate}});
+      var cu=a[1].map(function(c){return {id:+c.id,en:c.en,mobile:c.mobile||'',email:c.email||'',address:c.address||'',city:c.city||''}});
+      var su=a[2].map(function(c){return {id:+c.id,en:c.en,mobile:c.mobile||'',email:c.email||'',address:c.address||'',city:c.city||''}});
+      var pays=[];['out','in'].forEach(function(k,n){a[3+n].pays.forEach(function(p){pays.push({id:String(p.id),kind:PK[k],pay_date:p.date,date_iso:iso(p.date),party_id:+p.partyId,party_name:p.party,bill_no:p.billNo||'',amount:+p.amount||0,note:p.note||'',adj_bill:p.adjBill||''})})});
+      var list=[];['out','in'].forEach(function(k,n){a[3+n].bills.forEach(function(b){list.push([k,b.billNo])})});
+      var rows=[],done=0;
+      say('Copying items & parties…');
+      return put('items',it,'id').then(function(){return put('customers',cu,'id')}).then(function(){return put('suppliers',su,'id')}).then(function(){
+        return (function nx(i){
+          if(i>=list.length)return;
+          var part=list.slice(i,i+6);
+          return Promise.all(part.map(function(b){return g('?type=bill&kind='+b[0]+'&no='+encodeURIComponent(b[1])).then(function(d){var pt=d.customer||d.supplier||{};rows.push({kind:b[0],bill_no:b[1],bill_date:d.date,date_iso:iso(d.date),party_id:pt.id,party:pt.name,city:pt.city||'',total:d.grandTotal,items:d.items||[],data:d})})})).then(function(){say('Copying bills '+Math.min(i+6,list.length)+'/'+list.length);return nx(i+6)});
+        })(0);
+      }).then(function(){return put('bills',rows,'kind,bill_no')}).then(function(){say('Copying payments…');return put('payments',pays,'id')}).then(function(){say('Done ✓ '+rows.length+' bills, '+pays.length+' payments');return refresh()});
+    }).catch(function(e){say('Migration failed: '+(e&&e.message||e))});
+  };
+})();
+
   var QUEUE_KEY='cyan-navy-sheet-queue-v1', SYNC_KEY='cyan-navy-items-synced-v1', PSYNC_KEY='cyan-navy-prices-synced-v1', CSYNC_KEY='cyan-navy-customers-synced-v1';
 
-  /* ===== SPEED (added): cache for Sheet GET calls + ONE 'init' call at startup =====
-     - fresh answers (< 60 s) come from the phone, no network wait
-     - if the network is slower than 2.5 s, the last good answer is shown instead (and refreshed in background)
-     - any save (POST) clears this cache, so screens never show old numbers after a save
-     - add '&nc=1' to a URL to skip this cache (used for bill number + advance, which must always be live) */
-  (function(){
-    if(!SHEET_URL||!window.fetch||!window.Response)return;
-    var raw=window.fetch.bind(window), TTL=60000, SLOW=2500, KEEP=1800000, PFX='cn-gc:', VK='cn-gc-ver';
-    var mem={}, fly={}, ver=0, initP=null;
-    try{ver=+(localStorage.getItem(VK)||0)||0}catch(x){}
-    function now(){return Date.now()}
-    function rd(k){
-      var e=mem[k];if(e)return e;
-      try{var s=localStorage.getItem(PFX+k);
-        if(s){var i=s.indexOf('|'),j=s.indexOf('|',i+1);e={t:+s.slice(0,i),v:+s.slice(i+1,j),d:JSON.parse(s.slice(j+1))};mem[k]=e;return e}
-      }catch(x){}
-      return null;
-    }
-    function wr(k,d,v){
-      mem[k]={t:now(),v:v,d:d};
-      try{localStorage.setItem(PFX+k,now()+'|'+v+'|'+JSON.stringify(d))}catch(x){}
-    }
-    function bump(){ver=now();mem={};try{localStorage.setItem(VK,String(ver))}catch(x){}}
-    function ok(e){return !!e&&e.v===ver}
-    function resp(d){return new Response(JSON.stringify(d),{status:200,headers:{'Content-Type':'application/json'}})}
-    function getData(k,u,o){
-      var e=rd(k), v0=ver;
-      if(ok(e)&&now()-e.t<TTL)return Promise.resolve(e.d);
-      var net=raw(u,o).then(function(r){return r.json()}).then(function(d){
-        if(ver===v0&&d&&typeof d==='object'&&!d.error)wr(k,d,v0);
-        return d;
-      });
-      if(!(ok(e)&&now()-e.t<KEEP))return net;
-      return new Promise(function(res){
-        var done=false, tm=setTimeout(function(){if(!done){done=true;res(e.d)}},SLOW);
-        net.then(function(d){if(!done){done=true;clearTimeout(tm);res(d)}},
-                 function(){if(!done){done=true;clearTimeout(tm);res(e.d)}});
-      });
-    }
-    var INIT={'?type=items':1,'?type=customers':1,'?type=suppliers':1,'?type=dues':1,'?type=summary':1};
-    window.fetch=function(u,o){
-      var s=typeof u==='string'?u:((u&&u.url)||'');
-      if(s.indexOf(SHEET_URL)!==0)return raw(u,o);
-      var m=String((o&&o.method)||'GET').toUpperCase();
-      if(m!=='GET'){
-        var p=raw(u,o);bump();
-        p.then(bump,bump);
-        return p;
-      }
-      var k=s.slice(SHEET_URL.length);
-      if(k.indexOf('?type=')!==0||k.indexOf('nc=1')>-1)return raw(u,o);
-      var run=function(){
-        if(o&&o.signal)return getData(k,s,o);
-        return fly[k]||(fly[k]=getData(k,s,o).then(function(d){delete fly[k];return d},function(x){delete fly[k];throw x}));
-      };
-      var w=(INIT[k]&&initP)?initP.then(run,run):run();
-      return w.then(resp);
-    };
-    /* one request instead of items + customers + suppliers + dues + summary */
-    (function(){
-      try{ /* remove cache entries older than 1 day */
-        var del=[],i,key,s,t;
-        for(i=0;i<localStorage.length;i++){key=localStorage.key(i);
-          if(key&&key.indexOf(PFX)===0){s=localStorage.getItem(key)||'';t=+s.slice(0,s.indexOf('|'));if(!t||now()-t>86400000)del.push(key)}}
-        del.forEach(function(x){localStorage.removeItem(x)});
-      }catch(x){}
-      if(navigator.onLine===false)return;
-      var v0=ver;
-      initP=raw(SHEET_URL+'?type=init').then(function(r){return r.json()}).then(function(d){
-        if(ver!==v0||!d||!Array.isArray(d.items)||!d.dues)return;
-        wr('?type=items',d.items,v0);wr('?type=customers',d.customers||[],v0);wr('?type=suppliers',d.suppliers||[],v0);
-        wr('?type=dues',d.dues,v0);wr('?type=summary',d.summary||{},v0);
-      }).catch(function(){}).then(function(){initP=null});
-    })();
-  })();
   var UNITS=[['KG','કિલો'],['Gram','ગ્રામ'],['Quintal','ક્વિન્ટલ'],['Ton','ટન'],['Litre','લિટર'],['Bag','બોરી'],['Box','બોક્સ'],['Dozen','ડઝન'],['Nos','નંગ']];
   /* English word -> Gujarati word. Used for the default translation. Add more pairs as needed. */
   var DICT=[['Items','વસ્તુઓ'],['Item','વસ્તુ'],['Cement','સિમેન્ટ'],['Wheat','ઘઉં'],['Rice','ચોખા'],['Sugar','ખાંડ'],['Salt','મીઠું'],['Flour','લોટ'],['Oil','તેલ'],['Ghee','ઘી'],['Milk','દૂધ'],['Tea','ચા'],['Steel','સ્ટીલ'],['Iron','લોખંડ'],['Sand','રેતી'],['Bricks','ઈંટ'],['Brick','ઈંટ'],['Coal','કોલસો'],['Cotton','કપાસ'],['Groundnut','મગફળી'],['Castor','એરંડા'],['Cumin','જીરું'],['Chana','ચણા'],
